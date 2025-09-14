@@ -1,10 +1,10 @@
 <?php
-    $sql=$con->prepare('SELECT clientFname FROM  tblclient WHERE clientID = ? ');
+    $sql=$con->prepare('SELECT clientFname FROM   tblclient WHERE clientID  = ? ');
     $sql->execute(array($user_id));
     $checkuser = $sql->rowCount();
     if( $checkuser == 1){
         $res_name = $sql->fetch();
-        $user_Account_name = $res_name['client_FName'];
+        $user_Account_name = $res_name['clientFname'];
     }else{
         $user_Account_name = 'My Account';
     }
