@@ -14,9 +14,11 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <?php include 'include/header.php'?>
-    <?php include 'include/clientheader.php' ?>
-
+    <?php 
+        include 'include/header.php';
+        include 'include/clientheader.php'; 
+        include 'include/catecorysname.php';
+    ?>
     <?php include 'common/jslinks.php'?>
     <script src="js/index.js"></script>
 </body>
