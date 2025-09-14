@@ -1,0 +1,33 @@
+.slideshow-container {
+    width: 80%;
+    margin: 0 auto; /* center horizontally */
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.slideshow-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.mySlide {
+    display: none; /* all hidden by default */
+}
+
+/* Tablet (max width ~ 992px) */
+@media (max-width: 992px) {
+    .slideshow-container {
+        width: 90%;
+    }
+}
+
+/* Mobile (max width ~ 600px) */
+@media (max-width: 600px) {
+    .slideshow-container {
+        width: 100%;
+    }
+}
