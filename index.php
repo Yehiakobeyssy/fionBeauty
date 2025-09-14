@@ -1,7 +1,10 @@
-<?php 
+<?php
+    session_start();
     include 'settings/connect.php';
     include 'common/function.php';
     include 'common/head.php';
+
+    $user_id = 0;
 ?>    
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <link href="common/css/bootstrap.min.css" rel="stylesheet">
@@ -12,6 +15,7 @@
 </head>
 <body>
     <?php include 'include/header.php'?>
+    <?php include 'include/clientheader.php' ?>
 
     <?php include 'common/jslinks.php'?>
     <script src="js/index.js"></script>

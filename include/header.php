@@ -1,7 +1,3 @@
-<?php 
-    include 'settings/connect.php';
-    
-?>   
 <style>
     header {
         background-color: var(--color-primary);
