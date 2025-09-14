@@ -1,0 +1,220 @@
+/* root.css
+    Variables and basic global styles for the site
+    Palette: #009245 (green), #FFFFFF (white), #2E2E2E (dark gray), #F8F8F8 (light gray)
+*/
+
+/* ============================
+    CSS Variables (theme tokens)
+   ============================ */
+:root{
+  /* Primary brand */
+    --color-primary: #009245;        /* أخضر الشعار */
+    --color-primary-variant: #00B25C;/* hover / accent */
+    --color-white: #FFFFFF;
+
+  /* Neutrals */
+    --color-dark: #2E2E2E;           /* نص رئيسي بديل للأسود */
+    --color-muted: #6B6B6B;
+    --color-bg: #F8F8F8;             /* خلفية خفيفة */
+    --color-card: #FFFFFF;           /* خلفية البطاقات */
+
+  /* Semantic */
+    --color-success: #28A745;
+    --color-danger: #D64545;
+
+  /* Elevation / shadows */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 6px 20px rgba(0,0,0,0.08);
+
+  /* Spacing scale */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+
+  /* Typography */
+    --font-sans: "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "Courier New", monospace;
+    --text-base-size: 16px;
+    --text-line-height: 1.5;
+    --radius: 8px;
+}
+
+/* ============================
+    Global reset / base
+   ============================ */
+* { 
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+}
+html,body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-base-size);
+    line-height: var(--text-line-height);
+    color: var(--color-dark);
+    background-color: var(--color-white); /* default page bg (you can change to --color-bg if prefer) */
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+}
+
+/* Use light site background by default; content containers can use white cards */
+.app-wrapper {
+    min-height: 100%;
+    background-color: var(--color-bg);
+}
+
+/* ============================
+    Header
+   ============================ */
+.site-header {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: calc(var(--space-4)) calc(var(--space-4) * 1.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 10;
+}
+
+.site-header a,
+.site-header .logo {
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+/* Header small text / helper */
+.site-header .muted {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.95rem;
+}
+
+/* ============================
+   Footer
+   ============================ */
+.site-footer {
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    padding: calc(var(--space-4));
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Footer links */
+.site-footer a { color: rgba(255,255,255,0.9); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; color: var(--color-white); }
+
+/* ============================
+    Typography helpers
+   ============================ */
+.h1 { font-size: 2rem; margin: 0 0 var(--space-3); color: var(--color-dark); }
+.h2 { font-size: 1.5rem; margin: 0 0 var(--space-3); color: var(--color-dark); }
+.p { margin: 0 0 var(--space-3); color: var(--color-muted); }
+
+/* Links in content */
+a { color: var(--color-primary); text-decoration: none; }
+a:hover, a:focus { color: var(--color-primary-variant); text-decoration: underline; }
+
+/* ============================
+    Buttons
+   ============================ */
+.btn {
+    display: inline-block;
+    padding: calc(var(--space-2)) calc(var(--space-4));
+    border-radius: calc(var(--radius) / 1.25);
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    transition: transform .08s ease, box-shadow .12s ease, background-color .12s ease;
+}
+
+/* Primary button */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-primary-variant);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Ghost / outline */
+.btn-ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+.btn-ghost:hover { background: rgba(0,0,0,0.03); }
+
+/* Disabled */
+.btn[disabled],
+.btn.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ============================
+   Cards / containers
+   ============================ */
+.card {
+    background: var(--color-card);
+    border-radius: var(--radius);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ============================
+   Form elements
+   ============================ */
+.input, input[type="text"], input[type="email"], textarea, select {
+    width: 100%;
+    padding: calc(var(--space-2) + 4px);
+    border-radius: 6px;
+    border: 1px solid #E6E6E6;
+    background: var(--color-card);
+    color: var(--color-dark);
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow .08s ease, border-color .08s ease;
+}
+.input:focus, input:focus, textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(0,146,69,0.07);
+}
+
+/* ============================
+   Utilities
+   ============================ */
+.text-center { text-align: center; }
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+
+/* Small responsive tweaks */
+@media (max-width: 768px){
+    .site-header { padding: var(--space-3); }
+    .h1 { font-size: 1.5rem; }
+}
+
+/* ============================
+   Accessibility notes
+   - Ensure sufficient contrast for text on green backgrounds (we used white text).
+   - Use :focus outlines for keyboard navigation if you remove default ones.
+   ============================ */
+:focus { outline: 3px solid rgba(0,146,69,0.12); outline-offset: 2px; }
+
+
