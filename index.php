@@ -37,7 +37,7 @@
             </div>
         <?php endforeach; ?>
     </div>
-    <div class="newArrvals">
+    <div class="newArrvals section_index">
         <div class="sectiontitle">
             <h4>Featured</h4>
         </div>
@@ -55,51 +55,59 @@
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
 
-<div class="container_new">
-    <?php if(count($categories) >= 4): ?>
-        <!-- Left Image -->
-        <div class="left-image">
-            <img src="images/items/<?= $categories[0]['carImg'] ?>" alt="<?= $categories[0]['catName'] ?>" class="category-img">
-            <div class="overlay">
-                <h3><?= $categories[0]['catName'] ?></h3>
-                <p><?= $categories[0]['catDescription'] ?></p>
-                <a href="shop.php?catId=<?= $categories[0]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
-            </div>
-        </div>
-
-        <!-- Right Images -->
-        <div class="right-images">
-            <div class="top-right">
-                <img src="images/items/<?= $categories[1]['carImg'] ?>" alt="<?= $categories[1]['catName'] ?>" class="category-img">
-                <div class="overlay">
-                    <h3><?= $categories[1]['catName'] ?></h3>
-                    <p><?= $categories[1]['catDescription'] ?></p>
-                    <a href="shop.php?catId=<?= $categories[1]['categoryId'] ?>"  class="btn btn-primary">Shop Now</a>
-                </div>
-            </div>
-
-            <div class="bottom-right">
-                <div>
-                    <img src="images/items/<?= $categories[2]['carImg'] ?>" alt="<?= $categories[2]['catName'] ?>" class="category-img">
+        <div class="container_new">
+            <?php if(count($categories) >= 4): ?>
+                <!-- Left Image -->
+                <div class="left-image">
+                    <img src="images/items/<?= $categories[0]['carImg'] ?>" alt="<?= $categories[0]['catName'] ?>" class="category-img">
                     <div class="overlay">
-                        <h3><?= $categories[2]['catName'] ?></h3>
-                        <p><?= $categories[2]['catDescription'] ?></p>
-                        <a href="shop.php?catId=<?= $categories[2]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
+                        <h3><?= $categories[0]['catName'] ?></h3>
+                        <p><?= $categories[0]['catDescription'] ?></p>
+                        <a href="category.php?cat=<?= $categories[0]['catName'] ?>" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
-                <div>
-                    <img src="images/items/<?= $categories[3]['carImg'] ?>" alt="<?= $categories[3]['catName'] ?>" class="category-img">
-                    <div class="overlay">
-                        <h3><?= $categories[3]['catName'] ?></h3>
-                        <p><?= $categories[3]['catDescription'] ?></p>
-                        <a href="shop.php?catId=<?= $categories[3]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
+
+                <!-- Right Images -->
+                <div class="right-images">
+                    <div class="top-right">
+                        <img src="images/items/<?= $categories[1]['carImg'] ?>" alt="<?= $categories[1]['catName'] ?>" class="category-img">
+                        <div class="overlay">
+                            <h3><?= $categories[1]['catName'] ?></h3>
+                            <p><?= $categories[1]['catDescription'] ?></p>
+                            <a href="category.php?cat=<?= $categories[1]['catName'] ?>"  class="btn btn-primary">Shop Now</a>
+                        </div>
+                    </div>
+
+                    <div class="bottom-right">
+                        <div>
+                            <img src="images/items/<?= $categories[2]['carImg'] ?>" alt="<?= $categories[2]['catName'] ?>" class="category-img">
+                            <div class="overlay">
+                                <h3><?= $categories[2]['catName'] ?></h3>
+                                <p><?= $categories[2]['catDescription'] ?></p>
+                                <a href="category.php?cat=<?= $categories[2]['catName'] ?>" class="btn btn-primary">Shop Now</a>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="images/items/<?= $categories[3]['carImg'] ?>" alt="<?= $categories[3]['catName'] ?>" class="category-img">
+                            <div class="overlay">
+                                <h3><?= $categories[3]['catName'] ?></h3>
+                                <p><?= $categories[3]['catDescription'] ?></p>
+                                <a href="category.php?cat=<?= $categories[3]['catName'] ?>" class="btn btn-primary">Shop Now</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
-    <?php endif; ?>
-</div>
-
+    </div>
+    <div class="foryou section_index">
+        <div class="sectiontitle">
+            <h4>For you </h4>
+        </div>
+        <div class="title">
+            <h2>Best Selling Products</h2>
+        </div>
+    </div>           
     <?php include 'common/jslinks.php'?>
     <script src="js/index.js"></script>
 </body>
