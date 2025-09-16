@@ -101,20 +101,23 @@
         </div>
     </div>
 
-        <div class="foryou section_index">
-            <div class="sectiontitle">
-                <h4>For you </h4>
-            </div>
-            <div class="title">
-                <h2>Best Selling Products</h2>
-            </div>
-            <div class="items_cards"></div>
+    <div class="foryou section_index">
+        <div class="sectiontitle">
+            <h4>For you </h4>
+        </div>
+        <div class="title">
+            <h2>Best Selling Products</h2>
+        </div>
+        <div class="items_cards"></div>
 
-            <div class="pagination">
-                <button id="btnBack">Back</button>
-                <button id="btnNext">Next</button>
-            </div>
-        </div>       
+        <div class="pagination">
+            <button id="btnBack">Back</button>
+            <button id="btnNext">Next</button>
+        </div>
+    </div>
+    <div id="categories_container">
+    
+    </div>       
     <?php include 'common/jslinks.php'?>
     <script src="js/index.js"></script>
 </body>
