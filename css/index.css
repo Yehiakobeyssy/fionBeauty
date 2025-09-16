@@ -315,6 +315,34 @@
   /* remove white background */
   background-color: transparent;
 }
+
+.topbrands{
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  padding: 30px;
+  border-radius: 12px;
+}
+.brandslogos{
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+.brnadcard{
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white);
+  color: var(--color-muted);
+  margin: 0 25px;
+  border-radius: 15px;
+  padding: 15px;
+}
+.brnadcard img{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 7px;
+}
 /* Tablet (max width ~ 992px) */
 @media (max-width: 992px) {
     .slideshow-container {
