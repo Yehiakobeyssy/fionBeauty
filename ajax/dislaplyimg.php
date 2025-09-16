@@ -1,5 +1,5 @@
 <?php
-    include '../setting/connect.php';
+    include '../settings/connect.php';
 
     $catid= (isset($_GET['catID']))?$_GET['catID']:0;
 

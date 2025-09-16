@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include '../setting/connect.php';
+include '../settings/connect.php';
 
 try {
     // Get the search term from the query string

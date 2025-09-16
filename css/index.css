@@ -142,14 +142,119 @@
     overflow: hidden;
 }
 
+.items_cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: var(--color-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 15px;
+  text-align: left;
+}
+
+.card-body h5 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.rating {
+  margin-bottom: 10px;
+}
+
+.card-body p {
+  font-size: 14px;
+  color: var(--color-muted);
+  min-height: 40px;
+}
+.card-body h5.item-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.card-body h5.item-title .name {
+  flex: 1;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.card-body h5.item-title .rating {
+  white-space: nowrap;
+  font-size: 14px;
+  color: #f39c12; /* gold */
+}
+
+.price {
+  color: var(--color-primary);
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.btn-cart {
+  width: 100%;
+  padding: 10px;
+  background: var(--color-primary-variant);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-cart:hover {
+  background: var(--color-primary);
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  background: var( --color-primary);
+  color: var(--color-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background: var(--color-primary-variant);
+}
+
+
 /* Tablet (max width ~ 992px) */
 @media (max-width: 992px) {
     .slideshow-container {
         width: 90%;
     }
-    .newArrvals{
+    .section_index{
         width: 90%;
     }
+    .items_cards {
+    grid-template-columns: repeat(2, 1fr);
+    }
+
 }
 
 @media (max-width: 768px) {
@@ -176,7 +281,11 @@
     .slideshow-container {
         width: 100%;
     }
-    .newArrvals{
+    .section_index{
         width: 100%;
     }
+    .items_cards {
+    grid-template-columns: 1fr;
+    }
+
 }
