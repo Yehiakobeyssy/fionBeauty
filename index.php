@@ -115,8 +115,39 @@
             <button id="btnNext">Next</button>
         </div>
     </div>
+    <div class="special_item section_index">
+        <?php
+            // Fetch one random active item with its brand
+            $stmt = $con->prepare("
+                SELECT i.itmId, i.itmName, i.itmDesc, i.mainpic, b.brandName
+                FROM tblitems i
+                JOIN tblbrand b ON i.brandId = b.brandId
+                WHERE i.itmActive = 1
+                ORDER BY RAND()
+                LIMIT 1
+            ");
+            $stmt->execute();
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            ?>
+
+            <?php if ($item): ?>
+            <section class="featured-item">
+            <div class="container_spe">
+                <div class="item-content">
+                    <div class="item-text">
+                        <h2>Don’t Miss Out! Grab the <span class="item-name"><?= htmlspecialchars($item['itmName']) ?></span> by <span class="brand-name"><?= htmlspecialchars($item['brandName']) ?></span> Now!</h2>
+                        <p><?= htmlspecialchars($item['itmDesc']) ?></p>
+                        <a href="buy.php?itmId=<?= $item['itmId'] ?>" class="btn-buy">Buy Now</a>
+                    </div>
+                    <div class="item-image">
+                        <img src="images/items/<?= htmlspecialchars($item['mainpic']) ?>" alt="<?= htmlspecialchars($item['itmName']) ?>" class="remove-white">
+                    </div>
+                </div>
+            </div>
+            </section>
+        <?php endif; ?>        
+    </div>
     <div id="categories_container">
-    
     </div>       
     <?php include 'common/jslinks.php'?>
     <script src="js/index.js"></script>

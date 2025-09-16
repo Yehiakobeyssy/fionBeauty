@@ -242,7 +242,79 @@
   background: var(--color-primary-variant);
 }
 
+.featured-item {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.featured-item .container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.item-content {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  width: 100%;
+}
+
+.item-text {
+  flex: 1;
+}
+
+.item-text h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.item-text .brand-name {
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.item-text p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.btn-buy {
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  font-weight: 700;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.btn-buy:hover {
+  background-color: var(--color-primary-variant);
+  color: var(--color-white);
+}
+
+.item-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.item-image img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  /* remove white background */
+  background-color: transparent;
+}
 /* Tablet (max width ~ 992px) */
 @media (max-width: 992px) {
     .slideshow-container {
@@ -253,6 +325,32 @@
     }
     .items_cards {
     grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item-content {
+      flex-direction: column-reverse; /* image on top for tablets and smaller screens */
+      gap: 30px;
+    }
+
+    .item-text {
+      text-align: center;
+    }
+
+    .item-text h2 {
+      font-size: 2rem; /* smaller heading */
+    }
+
+    .item-text p {
+      font-size: 1rem; /* smaller description */
+    }
+
+    .btn-buy {
+      padding: 12px 25px; /* smaller button */
+    }
+
+    .item-image img {
+      max-width: 80%;
+      margin: 0 auto;
     }
 
 }
@@ -286,6 +384,27 @@
     }
     .items_cards {
     grid-template-columns: 1fr;
+    }
+
+    .featured-item {
+      padding: 40px 15px;
+    }
+
+    .item-text h2 {
+      font-size: 1.5rem;
+    }
+
+    .item-text p {
+      font-size: 0.95rem;
+    }
+
+    .btn-buy {
+      width: 100%;
+      padding: 12px 0;
+    }
+
+    .item-image img {
+      max-width: 100%;
     }
 
 }

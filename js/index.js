@@ -38,7 +38,7 @@ $(document).ready(function() {
 
                 html += `
                     <div class="card">
-                        <img src="images/items/${item.itmId}.jpg" alt="${item.itmName}">
+                        <img src="images/items/${item.mainpic}" alt="${item.itmName}">
                         <div class="card-body">
                             <h5 class="item-title">
                                 <span class="name">${item.itmName}</span>
@@ -121,7 +121,7 @@ $(document).ready(function() {
 
                 html += `
                     <div class="card">
-                        <img src="images/items/${item.itmId}.jpg" alt="${item.itmName}">
+                        <img src="images/items/${item.mainpic}" alt="${item.itmName}">
                         <div class="card-body">
                             <h5 class="item-title">
                                 <span class="name">${item.itmName}</span>
