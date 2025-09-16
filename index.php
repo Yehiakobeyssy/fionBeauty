@@ -238,6 +238,7 @@
             </div>
         </div>
     </div>
+    <?php include  'include/footer.php' ?>
     <?php include 'common/jslinks.php'?>
     <script src="js/index.js"></script>
 </body>
