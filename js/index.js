@@ -39,7 +39,7 @@ $(document).ready(function() {
                 html += `
                     <div class="card">
                         <img src="images/items/${item.mainpic}" alt="${item.itmName}">
-                        <div class="card-body">
+                        <div class="card-body itm_daitail" data-index="${item.itmId}">
                             <h5 class="item-title">
                                 <span class="name">${item.itmName}</span>
                                 <span class="rating">${stars}</span>
@@ -102,7 +102,7 @@ $(document).ready(function() {
     });
 
     // Load items for a specific category
-    function loadItemscat(categoryId, page) {
+    function loadItemscat(categoryId, page) { 
         let section = $(`.foryou[data-category='${categoryId}']`);
         let itemsContainer = section.find(".items_cards");
         itemsContainer.html('<p>Loading...</p>');
@@ -122,7 +122,7 @@ $(document).ready(function() {
                 html += `
                     <div class="card">
                         <img src="images/items/${item.mainpic}" alt="${item.itmName}">
-                        <div class="card-body">
+                        <div class="card-body itm_daitail" data-index="${item.itmId}">
                             <h5 class="item-title">
                                 <span class="name">${item.itmName}</span>
                                 <span class="rating">${stars}</span>
@@ -159,6 +159,11 @@ $(document).ready(function() {
         let totalPages = section.data("totalPages") || 1;
         let prevPage = currentPage <= 1 ? totalPages : currentPage - 1;
         loadItemscat(section.data("category"), prevPage);
+    });
+
+    $(document).on("click", ".itm_daitail", function(){
+        let itmID = $(this).data('index');
+        alert(itmID);
     });
 
 });
