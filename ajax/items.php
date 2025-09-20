@@ -1,8 +1,14 @@
 <?php
+session_start();
 // items.php
-include '../settings/connect.php'; // contains $con connection
-$user_id = 0 ; // example logged client id (replace with real session)
-
+include '../settings/connect.php'; // contains $con connection; // example logged client id (replace with real session)
+    if (isset($_SESSION['user_id'])) {
+        $user_id = (int) $_SESSION['user_id'];  
+    } elseif (isset($_COOKIE['user_id'])) {
+        $user_id = (int) $_COOKIE['user_id'];  
+    } else {
+        $user_id = 0; // if neither session nor cookie exist
+    }
 // pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 4;

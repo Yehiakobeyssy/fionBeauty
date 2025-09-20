@@ -1,4 +1,5 @@
 <?php
+session_start();
 // category_items.php
 include '../settings/connect.php';
 
@@ -8,7 +9,13 @@ $limit = 4;
 $offset = ($page - 1) * $limit;
 
 // check client active (example: user_id=0)
-$user_id = 0;
+    if (isset($_SESSION['user_id'])) {
+        $user_id = (int) $_SESSION['user_id'];  
+    } elseif (isset($_COOKIE['user_id'])) {
+        $user_id = (int) $_COOKIE['user_id'];  
+    } else {
+        $user_id = 0; // if neither session nor cookie exist
+    };
 $stmtClient = $con->prepare("SELECT clientActive FROM tblclient WHERE clientID=?");
 $stmtClient->execute([$user_id]);
 $clientActive = $stmtClient->fetchColumn() ?: 0;

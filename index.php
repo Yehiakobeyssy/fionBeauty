@@ -4,7 +4,13 @@
     include 'common/function.php';
     include 'common/head.php';
 
-    $user_id = 0;
+    if (isset($_SESSION['user_id'])) {
+        $user_id = (int) $_SESSION['user_id'];  
+    } elseif (isset($_COOKIE['user_id'])) {
+        $user_id = (int) $_COOKIE['user_id'];  
+    } else {
+        $user_id = 0; // if neither session nor cookie exist
+    };
 ?>    
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <link href="common/css/bootstrap.min.css" rel="stylesheet">
@@ -63,7 +69,7 @@
                     <div class="overlay">
                         <h3><?= $categories[0]['catName'] ?></h3>
                         <p><?= $categories[0]['catDescription'] ?></p>
-                        <a href="category.php?cat=<?= $categories[0]['catName'] ?>" class="btn btn-primary">Shop Now</a>
+                        <a href="category.php?cat=<?= urlencode($categories[0]['catName']) ?>" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
 
@@ -74,7 +80,7 @@
                         <div class="overlay">
                             <h3><?= $categories[1]['catName'] ?></h3>
                             <p><?= $categories[1]['catDescription'] ?></p>
-                            <a href="category.php?cat=<?= $categories[1]['catName'] ?>"  class="btn btn-primary">Shop Now</a>
+                            <a href="category.php?cat=<?= urlencode($categories[1]['catName']) ?>"  class="btn btn-primary">Shop Now</a>
                         </div>
                     </div>
 
@@ -84,7 +90,7 @@
                             <div class="overlay">
                                 <h3><?= $categories[2]['catName'] ?></h3>
                                 <p><?= $categories[2]['catDescription'] ?></p>
-                                <a href="category.php?cat=<?= $categories[2]['catName'] ?>" class="btn btn-primary">Shop Now</a>
+                                <a href="category.php?cat=<?= urlencode($categories[2]['catName']) ?>" class="btn btn-primary">Shop Now</a>
                             </div>
                         </div>
                         <div>
@@ -92,7 +98,7 @@
                             <div class="overlay">
                                 <h3><?= $categories[3]['catName'] ?></h3>
                                 <p><?= $categories[3]['catDescription'] ?></p>
-                                <a href="category.php?cat=<?= $categories[3]['catName'] ?>" class="btn btn-primary">Shop Now</a>
+                                <a href="category.php?cat=<?= urlencode($categories[3]['catName']) ?>" class="btn btn-primary">Shop Now</a>
                             </div>
                         </div>
                     </div>
