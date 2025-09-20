@@ -10,6 +10,7 @@
 .itemDiscription{
     display: flex;
     padding: 30px;
+    border-bottom: var(--color-primary) 2px solid;
 }
 .image , .info{
     width: 48%;
@@ -121,6 +122,265 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+.takeSection{
+  margin: 30px 0;
+  text-align: center;
+  
+}
+.takeSection label{
+  color: var(--color-muted);
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; /* 150% */
+  cursor: pointer;
+  margin: 0 15px;
+  padding: 5px 10px;
+  border-bottom: 2px solid transparent;
+}
+#Description_section,
+#reviws_section {
+  display: none; /* الكل مخفي */
+}
+
+#Description_section.active-section {
+  display: flex; /* الوصف يظهر كـ flex */
+}
+
+#reviws_section.active-section {
+  display: block; /* المراجعات تظهر كـ block */
+}
+.sec_Des_text,.sec_Des_img{
+  width: 48%;
+  padding: 30px;
+}
+.sec_Des_img {
+  text-align: center;
+}
+.active-tab {
+        color: var(--color-primary) !important;
+        border-bottom: 2px solid var(--color-primary) !important;
+        font-weight: bold;
+    }
+
+    section {
+        display: none;
+    }
+
+    section.active-section {
+        display: block;
+    }
+
+    /* Container كل المراجعات */
+#reviews_container {
+    width: 80%;
+    margin: 20px auto ;
+}
+
+
+/* كل مراجعة */
+.review {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+}
+
+/* Header الاسم و الوقت */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* اسم العميل */
+.client-name {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+/* وقت المراجعة */
+.review-time {
+    font-size: 12px;
+    color: #888;
+}
+
+/* تقييم النجوم */
+.review-rate {
+    color: #f5c518; /* لون النجوم أصفر */
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* نص التعليق */
+.review-comment {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+/* زر Load More */
+#load_more {
+    display: inline-block;
+    padding: 8px 15px;
+    margin: 15px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+#load_more:hover {
+    background: #f5f5f5;
+    border-color: #999;
+}
+
+/* نجوم التقييم (إذا أردت يمكن تحويلها إلى أيقونات) */
+.review-rate span {
+    margin-right: 2px;
+}
+
+
+
+/*items*/
+.container_items {
+    flex: 1;
+    width: 100%;
+    margin: 25px 0;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 3 per row on big screens */
+    gap: 25px;
+}
+
+
+/* ========== CARD ========== */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.card-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 220px; /* fixed height */
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.card:hover .card-image img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card:hover .card-overlay {
+    opacity: 1;
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-title {
+    display: flex;
+    justify-content: space-between; /* name left, rating right */
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.item-rating {
+    color: #f5c518;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.item-desc {
+    font-size: 14px;
+    color: #666;
+    min-height: 40px;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #28a745;
+    margin-bottom: 8px;
+}
+
+.price.login-required {
+    color: #ff4d4f;
+    font-weight: 600;
+}
+
+.btn-cart {
+    padding: 10px;
+    width: 100%;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-cart:hover {
+    background-color: var(--color-primary-variant);
+}
+
+/* remove overlay completely */
+.card-overlay {
+    display: none;
+}
+
+.title_item {
+  margin: 25px;
+  color: var(--color-primary);
+  font-family: Outfit;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 48px; /* 133.333% */
+  letter-spacing: 1.44px;
+}
 /* Large desktops / smaller wide screens */
 @media (max-width: 1200px) {
   .itemDiscription {
@@ -162,6 +422,10 @@
   .rating_item i { font-size: 13px; }
   .inputquantity input { width: 80px; }
   .btnadd { width: 140px; margin: 0 10px; }
+}
+.container_items {
+    grid-template-columns: repeat(4, 1fr); /* 3 per row on big screens */
+
 }
 
 /* Small tablets / large phones */
@@ -215,6 +479,18 @@
 
   .shareitem button { margin: 0 6px 6px 0; }
   .secure { flex-direction: column; gap: 12px; align-items: flex-start; }
+
+  #Description_section.active-section{
+    flex-direction:column-reverse;
+  }
+  .sec_Des_text,.sec_Des_img{
+    width: 100%;
+    padding: 30px;
+  }
+  .container_items {
+    grid-template-columns: repeat(2, 1fr); /* 3 per row on big screens */
+
+}
 }
 
 /* Phones / very small screens */
@@ -262,6 +538,14 @@
 
   /* Reduce large image left-over space */
   .image, .info { padding-left: 0; padding-right: 0; }
+  #reviews_container {
+    width: 100%;
+    margin: 20px 0 ;
+}
+.container_items {
+    grid-template-columns: repeat(1, 1fr); /* 3 per row on big screens */
+
+}
 }
 
 /* Utility tweak: make buttons easier to tap on touch devices */

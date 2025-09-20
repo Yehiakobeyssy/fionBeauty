@@ -24,6 +24,22 @@
         $itemInfo= $sql->fetch();
     }
 
+
+    if ($user_id == 0) {
+        $isActive = 0;
+    } else {
+        $sql = $con->prepare('SELECT clientActive FROM tblclient WHERE clientID = ?');
+        $sql->execute([$user_id]);
+        $result_user = $sql->fetch(PDO::FETCH_ASSOC);
+
+        if ($result_user) {
+            $isActive = $result_user['clientActive'];
+        } else {
+            $isActive = 0; // في حالة مفيش نتيجة
+        }
+    }
+
+
 ?>    
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <link href="common/css/bootstrap.min.css" rel="stylesheet">
@@ -79,32 +95,39 @@
                 ?>
             </div>
             <div class="price">
-                <h1><?= number_format($itemInfo['sellPrice'],2)?> $</h1>
+                <?php
+                    if($isActive == 1){
+                        echo '<h1>'. number_format($itemInfo['sellPrice'],2).' $</h1>';
+                    }else{
+                        echo '<h1>???</h1>';
+                    }
+                ?>
+                
             </div>
             <div class="shortdiscription">
                 <p><?= nl2br(substr($itemInfo['itmDesc'], 0, 150)) . (strlen($itemInfo['itmDesc']) > 150 ? '...' : '') ?></p>
             </div>
             <div class="mini">
-                <label for="">Minimum Quantity : <?= $itemInfo['minQuantity'] ?></label>
+                <label for="">Minimum Quantity : <span id="minquantity"><?= $itemInfo['minQuantity'] ?></span></label>
             </div>
             <div class="addtocart">
                 <div class="inputquantity">
-                    <button class="btnquantity">-</button>
-                    <input type="number" name="" id="">
-                    <button class="btnquantity">+</button>
+                    <button class="btnquantity" id="qdec">-</button>
+                    <input type="number" name="" id="quantity" value="<?= $itemInfo['minQuantity'] ?>">
+                    <button class="btnquantity" id="qinc">+</button>
                 </div>
                 <button class="btnadd btnbuy"><i class="fa-solid fa-credit-card"></i> Buy Now</button>
                 <button class="btnadd btncart"><i class="fas fa-cart-plus"></i> Add to Cart</button>
             </div>
             <div class="shareitem">
                 <label for="">Share Item:</label>
-                <button>
+                <button id="btnshare">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                         <path d="M20.2626 4.47332C22.4933 2.23332 25.9293 2.05198 27.9386 4.06665C29.9467 6.08265 29.7653 9.53332 27.5346 11.7733L24.3026 15.0173M13.396 18.6666C11.3866 16.6506 11.5693 13.2 13.7986 10.9613L16.6666 8.08265" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
                         <path d="M18.6053 13.3333C20.6133 15.3493 20.432 18.8 18.2013 21.0386L14.9693 24.2826L11.7373 27.5266C9.50667 29.7666 6.07067 29.948 4.06133 27.9333C2.05333 25.9173 2.23467 22.4666 4.46533 20.2266L7.69733 16.9826" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
                 </button>
-                <button>
+                <button id="btn_fb_share">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-labelledby="fbTitle">
                     <title id="fbTitle">Facebook</title>
 
@@ -125,7 +148,7 @@
                     </svg>
 
                 </button>
-                <button>
+                <button id="btn_whats_share">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
                         <g clip-path="url(#clip0_1323_28018)">
                             <path d="M0.682949 15.8085C0.682199 18.4971 1.3902 21.1224 2.73645 23.4363L0.554199 31.3423L8.7082 29.2208C10.9635 30.4391 13.4904 31.0774 16.0582 31.0776H16.065C24.5418 31.0776 31.4422 24.2332 31.4458 15.8205C31.4475 11.744 29.849 7.9107 26.9447 5.02673C24.041 2.14301 20.1791 0.554046 16.0643 0.552185C7.58645 0.552185 0.686574 7.39622 0.683074 15.8085" fill="url(#paint0_linear_1323_28018)"/>
@@ -174,8 +197,81 @@
             </div>
         </div>
     </div>
+    <div class="takeSection">
+        <label id="showDescription" class="active-tab">Description</label>
+        <label id="showreviws">Customer's reviews</label>
+    </div>
+    <section id="Description_section" class="active-section">
+        <div class="sec_Des_text">
+            <p><?= nl2br($itemInfo['itmDesc']) ?></p>
+        </div>
+        <div class="sec_Des_img">
+            <img src="images/items/<?= $itemInfo['mainpic'] ?>" alt="" srcset="">
+        </div>
+    </section>
+    <section id="reviws_section">
+            <div id="reviews_container"></div>
+            <button id="load_more" data-offset="0" data-itemid="<?= $item_ID ?>">Load More</button>
+    </section>
+    <div class="title_item">
+        <h3>Similar Products</h3>
+    </div>
+    <div class="container_items">
+        <?php
+        // جلب معرف الفئة للمنتج الحالي
+        $sql = $con->prepare("SELECT catId FROM tblitems WHERE itmId = ?");
+        $sql->execute([$item_ID]);
+        $category = $sql->fetch(PDO::FETCH_ASSOC);
+
+        if($category) {
+            $categoryID = $category['catId'];
+
+            // جلب 10 منتجات من نفس الفئة مع استبعاد المنتج الحالي
+            $sql2 = $con->prepare("
+                SELECT *, 
+                    (SELECT AVG(rateScore) FROM tblrating r WHERE r.itemID = t.itmId) AS avgRating 
+                FROM tblitems t
+                WHERE catId = ? AND itmId != ? 
+                LIMIT 10
+            ");
+            $sql2->execute([$categoryID, $item_ID]);
+            $relatedItems = $sql2->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach($relatedItems as $item){
+                $desc = nl2br(substr($item['itmDesc'], 0, 50)) . (strlen($item['itmDesc']) > 50 ? '...' : '');
+
+                 if($isActive == 1){
+                        $priceHtml = '<p class="item-price">'.number_format($item['sellPrice'], 2).' $</p>';
+                    }else{
+                        $priceHtml = '<p class="item-price"> ??? $</p>';
+                    }
+                
+                ?>
+                <div class="items_cards">
+                    <div class="card itm_daitail" data-index="<?= $item['itmId'] ?>">
+                        <div class="card-image">
+                            <img src="images/items/<?= $item['mainpic'] ?>" alt="<?= htmlspecialchars($item['itmName']) ?>">
+                        </div>
+                        <div class="card-body" >
+                            <div class="item-title" data-index="<?= $item['itmId'] ?>">
+                                <span class="name"><?= htmlspecialchars($item['itmName']) ?></span>
+                                <span class="item-rating"><?= number_format($item['avgRating'], 1) ?> ⭐</span>
+                            </div>
+                            <p class="item-desc"><?= $desc ?></p>
+                            <?= $priceHtml ?>
+                            <button class="btn-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+        }
+        ?>
+
+    </div>
 
     <?php include  'include/footer.php' ?>
     <?php include 'common/jslinks.php'?>
     <script src="js/daitailitem.js"></script>
+
 </body>
