@@ -1,0 +1,273 @@
+.titleCatecory {
+    width: 100%;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
+    color: var(--color-bg);
+}
+
+.itemDiscription{
+    display: flex;
+    padding: 30px;
+}
+.image , .info{
+    width: 48%;
+
+}
+.image{
+    text-align: center;
+
+}
+.image img{
+    width: 550px;
+    height: auto;
+}
+.info h2{
+    color: var(--color-primary);
+    font-family: Outfit;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 30px; /* 83.333% */
+    letter-spacing: 1.44px;
+}
+.rating_item i{
+    font-size: 14px;
+}
+.rating_item label{
+    color: var(--color-muted);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+.price h1{
+    color: #000;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 36px */
+}
+.shortdiscription{
+    padding: 10px;
+    border-bottom: var(--color-primary) 2px solid;
+}
+.shortdiscription p{
+    color: #000;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px; /* 150% */
+}
+.mini{
+    margin: 10px;
+    color: var(--color-muted);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+.addtocart{
+    display: flex;
+    padding: 15px;
+    border-bottom: var(--color-muted) 1px solid;
+}
+.inputquantity{
+    padding: 8px;
+    border-radius: 170px;
+    border: 1px solid var(--Gray-Scale-Gray-100, #E6E6E6);
+    background: var(--Gray-Scale-White, #FFF);
+    margin-right: 15px;
+}
+.inputquantity input{
+    border: transparent;
+    width: 100px;
+    text-align: center;
+}
+.btnquantity{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: transparent;
+}
+.btnadd{
+    margin: 0 15px;
+    width: 150px;
+    color: var(--color-bg);
+    border: transparent;
+    border-radius: 5px;
+}
+.btnbuy{
+    background-color: var(--color-dark);
+}
+.btncart{
+    background-color: var(--color-primary);
+}
+.shareitem {
+    padding: 15px;
+}
+.shareitem button{
+    background-color: transparent;
+    border: transparent;
+    margin:  0 8px;
+}
+.secure{
+    padding: 15px;
+    display: flex;
+    justify-content: space-evenly;
+}
+/* Large desktops / smaller wide screens */
+@media (max-width: 1200px) {
+  .itemDiscription {
+    padding: 24px;
+  }
+  .image, .info {
+    width: 48%;
+  }
+  .image img {
+    max-width: 480px;
+    width: 100%;
+    height: auto;
+  }
+  .info h2 { font-size: 32px; line-height: 1.05; }
+  .price h1 { font-size: 22px; }
+  .inputquantity input { width: 90px; }
+}
+
+/* Medium screens / tablets */
+@media (max-width: 992px) {
+  .titleCatecory {
+    padding: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .itemDiscription {
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+  }
+  .image, .info {
+    width: 50%;
+  }
+  .image img {
+    max-width: 420px;
+  }
+  .info h2 { font-size: 28px; }
+  .price h1 { font-size: 20px; }
+  .rating_item i { font-size: 13px; }
+  .inputquantity input { width: 80px; }
+  .btnadd { width: 140px; margin: 0 10px; }
+}
+
+/* Small tablets / large phones */
+@media (max-width: 768px) {
+  .titleCatecory {
+    padding: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Stack image and info vertically for narrow viewports */
+  .itemDiscription {
+    flex-direction: column;
+    padding: 16px;
+  }
+  .image, .info {
+    width: 100%;
+  }
+  .image { margin-bottom: 18px; }
+  .image img {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .info h2 {
+    font-size: 26px;
+    line-height: 1.1;
+  }
+  .price h1 { font-size: 20px; }
+  .shortdiscription p { font-size: 14px; }
+
+  .addtocart {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .inputquantity {
+    margin-bottom: 12px;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .inputquantity input { width: 60px; }
+  .btnadd {
+    width: 100%;
+    margin: 6px 0;
+  }
+
+  .shareitem button { margin: 0 6px 6px 0; }
+  .secure { flex-direction: column; gap: 12px; align-items: flex-start; }
+}
+
+/* Phones / very small screens */
+@media (max-width: 576px) {
+  .titleCatecory {
+    padding: 14px;
+    text-align: center;
+    align-items: center;
+  }
+  .titleCatecory .navbarsection h5 { font-size: 13px; }
+  .titleCatecory .catecoryname h2 { font-size: 20px; }
+
+  .itemDiscription {
+    padding: 12px;
+  }
+  .image img {
+    max-width: 100%;
+  }
+
+  .info h2 { font-size: 20px; }
+  .price h1 { font-size: 18px; }
+
+  .rating_item i { font-size: 12px; }
+  .rating_item label { font-size: 13px; }
+
+  .inputquantity {
+    width: 140px;
+    padding: 6px;
+  }
+  .inputquantity input { width: 48px; font-size: 14px; }
+
+  .btnadd {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  /* Make share icons smaller and easier to tap */
+  .shareitem button svg { width: 28px; height: 28px; }
+  .shareitem { padding: 10px 0; }
+
+  /* Secure cards stack */
+  .secure { flex-direction: column; align-items: stretch; gap: 10px; }
+  .card_secure { display: flex; gap: 12px; align-items: center; }
+  .card_secure svg { width: 36px; height: 36px; }
+
+  /* Reduce large image left-over space */
+  .image, .info { padding-left: 0; padding-right: 0; }
+}
+
+/* Utility tweak: make buttons easier to tap on touch devices */
+@media (pointer: coarse) {
+  .btnadd, .btnquantity, .inputquantity input, .shareitem button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+}

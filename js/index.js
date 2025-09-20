@@ -163,7 +163,7 @@ $(document).ready(function() {
 
     $(document).on("click", ".itm_daitail", function(){
         let itmID = $(this).data('index');
-        alert(itmID);
+        location.href="daitailitem.php?itemid="+itmID;
     });
 
 });
