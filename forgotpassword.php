@@ -55,12 +55,12 @@
                                 include 'mail.php';
 
                                 $mail->setFrom($applicationemail, 'Fion Beauty'); // Sender
-                                $mail->addAddress($sendetto);              // Receiver
+                                $mail->addAddress($email);              // Receiver
                                 $mail->Subject = 'Reset Password';
 
                                 //Content
                                 $mail->isHTML(true);
-                                $mail->CharSet = 'UTF-8';
+                                $mail->CharSet = 'UTF-8';   
                                 $resetLink = $websiteaddresse.'forgotpassword.php?do=newpass&token='.$newclientActivation;
                                 $mail->Body = "Click the link to reset your password: <a href='$resetLink'>$resetLink</a>";
 

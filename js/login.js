@@ -121,37 +121,36 @@ $(document).ready(function(){
     });
 
     // ---------- LOGIN: submit via AJAX ----------
-    $('#login-form').on('submit', function(e){
-        e.preventDefault();
-        var email = $('#loginemail').val().trim();
-        var pass = $('#loginpass').val();
-        if(!email || !pass){
-            showMsg('Please enter both email and password', 'error');
-            return;
-        }
+$('#login-form').on('submit', function(e){
+    e.preventDefault();
+    var fd = new FormData(this);
 
-        $.ajax({
-            url: 'ajax/login.php',
-            method: 'POST',
-            data: { loginemail: email, loginpass: pass },
-            dataType: 'json',
-            beforeSend: function(){
-                $('#login-submit').prop('disabled', true).text('Signing in...');
-                hideMsg();
-            }
-        }).done(function(res){
-            if(res.success){
-                // redirect to index
-                window.location.href = res.redirect || 'index.php';
-            } else {
-                showMsg(res.message || 'Username or Password incorrect!', 'error');
-            }
-        }).fail(function(){
-            showMsg('Login request failed', 'error');
-        }).always(function(){
-            $('#login-submit').prop('disabled', false).text('Sign in');
-        });
+    $.ajax({
+        url: 'ajax/login.php',
+        method: 'POST',
+        data: fd,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        beforeSend: function(){
+            $('#login-submit').prop('disabled', true).text('Signing in...');
+            hideMsg();
+        }
+    }).done(function(res){
+        if(res.success){
+            window.location.href = res.redirect || 'index.php';
+        } else {
+            showMsg(res.message || 'Username or Password incorrect!', 'error');
+        }
+    }).fail(function(jqXHR, textStatus){
+        console.log("Fail response:", jqXHR.responseText);
+        showMsg('Login request failed: ' + textStatus, 'error');
+    }).always(function(){
+        $('#login-submit').prop('disabled', false).text('Sign in');
     });
+});
+
+
 
     
 

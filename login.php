@@ -1,5 +1,4 @@
 <?php
-session_start();
 // no processing here: HTML + minimal PHP for session detection/rendering only
 include 'settings/connect.php'; // $con available if needed for rendering (e.g. professions)
 include 'common/function.php';
@@ -56,7 +55,7 @@ include 'common/function.php';
 
                 <label for="loginpass">Password</label>
                 <input type="password" name="loginpass" id="loginpass" required>
-
+ 
                 <div class="forgot">
                     <a href="forgotpassword.php">Forgot Password?</a>
                 </div>
