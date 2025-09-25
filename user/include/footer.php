@@ -125,7 +125,7 @@
 ?>
 <footer>
     <div class="footer_logo">
-        <img src="images/logo_white.png" alt="" srcset="">
+        <img src="../images/logo_white.png" alt="" srcset="">
         <label for="">fionBeauty</label>
     </div>
     <div class="support">

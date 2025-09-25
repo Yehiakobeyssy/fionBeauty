@@ -16,7 +16,9 @@
     --color-dark: #2E2E2E;           /* نص رئيسي بديل للأسود */
     --color-muted: #6B6B6B;
     --color-bg: #F8F8F8;             /* خلفية خفيفة */
-    --color-card: #FFFFFF;           /* خلفية البطاقات */
+    --color-card: #FFFFFF; 
+    --color-icon: #cccccc;
+    --color-text: #cccccc;          /* خلفية البطاقات */
 
   /* Semantic */
     --color-success: #28A745;

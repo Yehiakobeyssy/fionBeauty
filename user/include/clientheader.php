@@ -280,7 +280,7 @@
 </style>
 <div class="navbarcompany">
     <div class="companylogo">
-        <img src="images/logo.png" alt="" srcset="">
+        <img src="../images/logo.png" alt="" srcset="">
         <label for="">Fion Beauty</label>
     </div>
     <div class="nav_user">
