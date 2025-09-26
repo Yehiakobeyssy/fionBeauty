@@ -191,7 +191,7 @@
                                         <td>{$formattedDate}</td>
                                         <td><strong>\${$total}</strong> ({$count_item} items)</td>
                                         <td><div class='{$statusClass}'>{$order['statusName']}</div></td>
-                                        <td><a href='order_details.php?id={$order['invoiceID']}'>View -></a></td>
+                                        <td><a href='orderhistory.php?do=detail&id={$order['invoiceID']}'>View -></a></td>
                                     </tr>
                                 ";
                             }
