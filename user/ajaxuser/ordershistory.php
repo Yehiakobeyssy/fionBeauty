@@ -18,7 +18,7 @@ $offset = ($page - 1) * $limit;
 $search = isset($_POST['search']) ? trim($_POST['search']) : "";
 
 // الأساس
-$sql = "SELECT invoiceID, invoiceCode, invoiceDate, statusName
+$sql = "SELECT invoiceID, invoiceCode, invoiceDate, statusName,invoiceAmount
         FROM tblinvoice 
         INNER JOIN tblstatus ON tblstatus.statusID = tblinvoice.invoiceStatus
         WHERE clientID = :clientID";
@@ -71,7 +71,7 @@ foreach ($orders as $order) {
         "date" => date("j F, Y", strtotime($order['invoiceDate'])),
         "status" => $order['statusName'],
         "items" => $result['items'],
-        "total" => number_format($result['total'], 2)
+        "total" => number_format($order['invoiceAmount'], 2)
     ];
 }
 

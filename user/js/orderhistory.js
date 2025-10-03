@@ -13,12 +13,12 @@ function loadOrders(page = 1, search = "") {
             if (response.orders.length > 0) {
                 $.each(response.orders, function(index, order) {
                     let statusClass = "";
-                    switch (order.status) {
-                        case 'Pending': statusClass = 'alert alert-info p-1 m-0'; break;
-                        case 'Paid': statusClass = 'alert alert-light p-1 m-0'; break;
-                        case 'Shipped': statusClass = 'alert alert-primary p-1 m-0'; break;
-                        case 'Delivered': statusClass = 'alert alert-success p-1 m-0'; break;
-                        case 'Cancelled': statusClass = 'alert alert-danger p-1 m-0'; break;
+                    switch (order.status.toLowerCase()) {
+                        case 'order received': statusClass = 'alert alert-info p-1 m-0'; break;
+                        case 'processing': statusClass = 'alert alert-light p-1 m-0'; break;
+                        case 'on the way': statusClass = 'alert alert-primary p-1 m-0'; break;
+                        case 'delivered': statusClass = 'alert alert-success p-1 m-0'; break;
+                        case 'cancelled': statusClass = 'alert alert-danger p-1 m-0'; break;
                         default: statusClass = 'alert alert-secondary p-1 m-0';
                     }
 
@@ -42,7 +42,7 @@ function loadOrders(page = 1, search = "") {
                 $("#pagination").html(""); // تفريغ الباجينيشن لو مافي نتائج
             }
         }
-    });
+    }); 
 }
 
 function buildPagination() {

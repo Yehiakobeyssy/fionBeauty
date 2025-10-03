@@ -27,7 +27,7 @@
     font-weight: 700;
     line-height: 120%;
 }
-main{
+main{ 
     width: 80%;
     margin: 25px auto;
     display: flex;
@@ -51,6 +51,9 @@ main{
     font-style: normal;
     font-weight: 500;
     line-height: 150%; 
+}
+.title_section a{
+    color: var(--color-primary );
 }
 .sereachdiv{
     display: flex;
@@ -116,4 +119,243 @@ td{
 #pagination button.active {
   background: var(--color-primary);
   color: var(--color-bg);
+}
+.title_section span{
+    color:  #4D4D4D;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+.invoice_info{
+    display: flex;
+}
+.addreese{
+    width: 70%;
+    display: flex;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin: 10px 0;
+}
+.main_add{
+    border-right: 1px solid #eee;
+}
+.shiping_add{
+    padding-left: 15px;
+}
+.main_add, .shiping_add{
+    width: 49%;
+}
+.title_main_add{
+    color: var(--color-muted);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 14px */
+    letter-spacing: 0.42px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+.invoiceinfo{
+    margin: 10px 15px;
+    border: 1px solid #eee;
+    width: 28%;
+    padding: 18px 20px;
+}
+.no_pay{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+.no_pay h4 {
+    color: var(--color-muted);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 14px */
+    letter-spacing: 0.42px;
+    text-transform: uppercase;
+}
+.invoice_no {
+    width: 49%;
+    border-right: 1px solid #eee;
+}
+.lbltitle{
+    color: var(--color-muted);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+}
+.txttable{
+    text-align: right;
+    color: var(--color-dark);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+}
+
+/**/
+.progressbar {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 40px auto;
+  max-width: 800px;
+}
+
+
+.progressbar .step {
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.progressbar .step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 100%;
+  height: 4px;
+  background: var(--color-gray);
+  z-index: -1;
+}
+
+.progressbar .step.active:not(:last-child)::after {
+  background: var(--color-primary);
+}
+
+.progressbar .circle {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  border: 2px dashed var(--color-gray);
+  margin: 0 auto 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--color-gray);
+  background: #fff;
+}
+
+.progressbar .step.active .circle {
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  color: #fff;
+}
+
+.progressbar .label {
+  font-size: 14px;
+  margin-top: 5px;
+}
+.daitail_invoice img{
+    width:60px;
+    height: 60px;
+    border-radius: 15px;
+    margin-right: 8px;
+}
+
+/* للأجهزة الصغيرة جداً (موبايل أقل من 576px) */
+@media (max-width: 575.98px) {
+
+  main {
+    width: 95%;
+    flex-direction: column;
+  }
+
+  .sections_side {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 15px;
+  }
+
+  .invoice_info {
+    flex-direction: column;
+  }
+
+  .addreese,
+  .invoiceinfo {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .main_add, .shiping_add {
+    width: 100%;
+    border-right: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+  }
+
+  table th, table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .progressbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progressbar .step {
+    flex: none;
+    margin-bottom: 20px;
+  }
+
+  .progressbar .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    width: 2px;
+    height: 40px;
+    background: var(--color-gray);
+  }
+
+  .progressbar .step.active:not(:last-child)::after {
+    background: var(--color-primary);
+  }
+}
+
+/* للأجهزة المتوسطة (تابلت أقل من 992px) */
+@media (max-width: 991.98px) {
+
+  main {
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .sections_side {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+
+  .invoice_info {
+    flex-direction: column;
+  }
+
+  .addreese, .invoiceinfo {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .progressbar {
+    max-width: 100%;
+  }
+}
+
+/* للأجهزة الكبيرة (ديسكتوب أقل من 1200px) */
+@media (max-width: 1199.98px) {
+  main {
+    width: 95%;
+  }
 }
