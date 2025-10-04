@@ -74,7 +74,30 @@
         <div class="desgin">
 
         </div>
-    </div> 
+    </div>
+        <?php
+    $sql = $con->prepare('SELECT clientActive FROM tblclient WHERE clientID = ?');
+    $sql->execute([$user_id]);
+    $check = $sql->fetch(PDO::FETCH_ASSOC);
+
+    if ($check['clientActive'] == 0) {
+        echo '
+            <div style="
+                width: 80%;
+                margin: 20px auto;
+                padding: 15px;
+                background-color: #fff3cd; /* Bootstrap warning yellow */
+                border: 1px solid #ffeeba; /* Slight border like bootstrap */
+                color: #856404; /* Text color for warning */
+                font-family: Arial, sans-serif;
+                text-align: center;
+                border-radius: 5px;
+            ">
+                Your account is not yet active. Please contact the admin to activate your account.
+            </div>
+        ';
+    }
+    ?>
     <div class="welcome_note">
         <?php
             $sql= $con->prepare('SELECT clientFname , clientLname FROM tblclient WHERE clientID  = ?');
