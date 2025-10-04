@@ -15,6 +15,7 @@
   /* Neutrals */
     --color-dark: #2E2E2E;           /* نص رئيسي بديل للأسود */
     --color-muted: #6B6B6B;
+    --color-gary:#F6F6F6;
     --color-bg: #F8F8F8;             /* خلفية خفيفة */
     --color-card: #FFFFFF; 
     --color-icon: #cccccc;
@@ -167,6 +168,14 @@ a:hover, a:focus { color: var(--color-primary-variant); text-decoration: underli
     transform: none;
 }
 
+.btn-cancel{
+    background-color: var(--color-muted);
+    color: var(--color-white);
+    box-shadow: var(--shadow-sm);
+    padding: 8px;
+    border: transparent;
+    border-radius: 7px;
+}
 /* ============================
    Cards / containers
    ============================ */

@@ -1,0 +1,234 @@
+.titleCatecory {
+    width: 100%;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
+    color: var(--color-bg);
+}
+.welcome_note{
+    width: 100%;
+    text-align: center;
+    margin: 30px 0;
+}
+.welcome_note h2{
+    color: var( --color-dark);
+    font-family: Outfit;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 43.2px */
+}
+.welcome_note span{
+    color: var(--color-primary);
+    font-family: Outfit;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%;
+}
+main{ 
+    width: 80%;
+    margin: 25px auto;
+    display: flex;
+}
+.sections_side{
+    width: calc(100% - 250px);
+    margin-left: 15px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+} 
+.personal_info h4{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 30px */
+}
+.personal_info label{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+.personal_info input,.personal_info select{
+    margin-bottom: 7px; 
+}
+.btncontrol{
+    text-align: center;
+    margin: 10px 0;
+}
+.btn-primary{
+    border: transparent;
+    padding: 7px;
+    border-radius: 5px;
+}
+.addresses{
+    margin-top: 25px;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #eee;
+    padding: 15px;
+}
+.title a{
+    border: 1px solid var(--color-primary);
+    padding: 7px;
+}
+.container_add {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 per row */
+    gap: 20px; /* space between items */
+    margin-top: 15px;
+}
+
+.addresse {
+    background-color: var(--color-gary); /* use your muted color */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.controladd {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+.addresse h5{
+    color: #3C4242;
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 19px;
+}
+.addresse label{
+    color: #807D7E;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 115.969%; /* 18.555px */
+}
+.addresse span{
+    color: #807D7E;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 10px 0;
+}
+.controladd a{
+    color: #3C4242;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 100;
+    line-height: normal;
+    margin:  0 5px;
+    padding: 7px;
+    border-right: 1px solid #eee;
+}
+.double{
+    display: flex;
+}
+.insite{
+    width: 33%;
+    margin-right: 15px;
+}
+.set{
+    margin-top: 15px;
+}
+.frmadd label{
+    font-weight: bold;
+    margin: 5px 0;
+}
+/* Tablets and smaller screens */
+@media (max-width: 992px) {
+    main {
+        width: 95%;
+        flex-direction: column;
+        margin: 20px auto;
+    }
+
+    .sections_side {
+        width: 100%;
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .container_add {
+        grid-template-columns: 1fr; /* stack addresses in 1 column */
+        gap: 15px;
+    }
+
+    .insite {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .double {
+        flex-direction: column;
+    }
+
+    .titleCatecory {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .titleCatecory h2, .titleCatecory span {
+        font-size: 28px;
+    }
+
+    .welcome_note h2 {
+        font-size: 28px;
+    }
+
+    .welcome_note span {
+        font-size: 32px;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 576px) {
+    .titleCatecory {
+        padding: 10px;
+    }
+
+    .welcome_note h2 {
+        font-size: 24px;
+    }
+
+    .welcome_note span {
+        font-size: 28px;
+    }
+
+    .addresse {
+        padding: 10px;
+    }
+
+    .controladd a {
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .personal_info input, 
+    .personal_info select {
+        width: 100%;
+    }
+}

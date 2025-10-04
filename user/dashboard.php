@@ -92,11 +92,11 @@
                 <div class="main_add">
                     <div class="title_addresse">
                         <h4>Default Address</h4>
-                        <button>View All -></button>
+                        <button id="btnalladd">View All -></button>
                     </div>
                     <div class="add">
                         <?php
-                            $sql = $con->prepare('SELECT NameAdd,emailAdd,phoneNumber,street, bultingNo, doorNo, poatalCode, cityName, provinceName 
+                            $sql = $con->prepare('SELECT addresseID,NameAdd,emailAdd,phoneNumber,street, bultingNo, doorNo, poatalCode, cityName, provinceName 
                                                 FROM tbladdresse 
                                                 INNER JOIN tblcity ON tblcity.cityID = tbladdresse.cityID
                                                 INNER JOIN tblprovince ON tblprovince.provinceID = tbladdresse.provinceID
@@ -114,7 +114,7 @@
                                     </address>";
                                 echo "<label>{$row['emailAdd']}</label> <br>
                                         <label> {$row['phoneNumber']} </label><br>";
-                                echo "<div class='settingadd'><a href=''>Edid Address</a></div>";
+                                echo "<div class='settingadd'><a href='info.php?do=edidAdd&idadd={$row['addresseID']}'>Edid Address</a></div>";
                             } else {
                                 // Show danger alert
                                 echo '<div class="alert alert-danger">You haven\'t an address</div>';
@@ -127,7 +127,7 @@
             <div class="order_history">
                 <div class="table_title">
                     <h3>Recent Order History</h3>
-                    <button>View All</button>
+                    <button id="btnallorders">View All</button>
                 </div>
                 <table>
                     <thead>
@@ -166,13 +166,13 @@
                                 // حالة الطلب
                                 $statusClass = '';
                                 switch ($order['statusName']) {
-                                    case 'Pending':
+                                    case 'Order received':
                                         $statusClass = 'alert alert-info p-1 m-0';
                                         break;
-                                    case 'Paid':
+                                    case 'Processing':
                                         $statusClass = 'alert alert-light p-1 m-0';
                                         break;
-                                    case 'Shipped':
+                                    case 'On the way':
                                         $statusClass = 'alert alert-primary p-1 m-0';
                                         break;
                                     case 'Delivered':
