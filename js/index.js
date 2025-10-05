@@ -166,4 +166,19 @@ $(document).ready(function() {
         location.href="daitailitem.php?itemid="+itmID;
     });
 
+    $(document).on("click", ".btn-cart", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let itmID = $(this).data('id');
+
+        $.post("ajax/addtocart.php", { itemId: itmID }, function(response) {
+            let res = JSON.parse(response);
+            if (res.status === 'success') {
+                alert('✅ ' + res.message + '\nCart count: ' + res.cart_count);
+            } else {
+                alert('❌ ' + res.message);
+            }
+        });
+    });
 });

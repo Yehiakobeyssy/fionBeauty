@@ -66,7 +66,7 @@ $(document).ready(function() {
                         </div>
                         <p class="item-desc">${desc}</p>
                         ${priceHtml}
-                        <button class="btn-cart">Add to Cart</button>
+                        <button class="btn-cart"  data-id="${item.itmId}">Add to Cart</button>
                     </div>
                 </div>
             `;
@@ -101,4 +101,20 @@ $(document).ready(function() {
         location.href="daitailitem.php?itemid="+itmID;
     });
 
+    $(document).on("click", ".btn-cart", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let itmID = $(this).data('id');
+
+        $.post("ajax/addtocart.php", { itemId: itmID }, function(response) {
+            let res = JSON.parse(response);
+            if (res.status === 'success') {
+                alert('✅ ' + res.message + '\nCart count: ' + res.cart_count);
+            } else {
+                alert('❌ ' + res.message);
+            }
+        });
+    });
+    
 });

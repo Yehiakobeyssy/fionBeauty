@@ -117,7 +117,7 @@
                     <button class="btnquantity" id="qinc">+</button>
                 </div>
                 <button class="btnadd btnbuy"><i class="fa-solid fa-credit-card"></i> Buy Now</button>
-                <button class="btnadd btncart"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                <button class="btnadd btncart"  value="<?=$item_ID?>"><i class="fas fa-cart-plus"></i> Add to Cart</button>
             </div>
             <div class="shareitem">
                 <label for="">Share Item:</label>
