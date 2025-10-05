@@ -187,3 +187,140 @@
     color: white;
     border: transparent;
 }
+/* Medium devices (tablets) */
+@media screen and (max-width: 768px) {
+    .error_img {
+        width: 95%;
+        margin: 15px auto;
+    }
+    .error_img img {
+        width: 200px;
+    }
+    .error_img h3 {
+        font-size: 36px;
+        line-height: 110%;
+    }
+    .error_img label {
+        font-size: 14px;
+        line-height: 120%;
+    }
+
+    .title_cart h3 {
+        font-size: 28px;
+    }
+    .title_cart label {
+        font-size: 12px;
+    }
+
+    .tblcart table thead th,
+    .tblcart table tbody td {
+        padding: 10px;
+    }
+    .tblcart table tbody img {
+        width: 100px;
+        height: 100px;
+    }
+    .input_q {
+        width: 150px;
+    }
+    .input_q input {
+        width: 80px;
+        margin: 0 5px;
+    }
+
+    .summarry {
+        flex-direction: column;
+        padding: 20px;
+    }
+    .grand-total-table td {
+        padding: 6px 8px;
+    }
+
+    .promocode input {
+        width: 100%;
+    }
+
+    .delete_all {
+        margin: 20px 10px;
+    }
+}
+
+/* Small devices (phones) */
+@media screen and (max-width: 480px) {
+    .error_img img {
+        width: 150px;
+    }
+    .error_img h3 {
+        font-size: 24px;
+        line-height: 100%;
+    }
+    .title_cart h3 {
+        font-size: 22px;
+    }
+
+    /* Table becomes stacked cards */
+    .tblcart table,
+    .tblcart thead,
+    .tblcart tbody,
+    .tblcart th,
+    .tblcart td,
+    .tblcart tr {
+        display: block;
+        width: 100%;
+    }
+
+    .tblcart thead {
+        display: none; /* hide header */
+    }
+
+    .tblcart tbody tr {
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .tblcart tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 5px;
+        text-align: left;
+        border: none;
+    }
+
+    .tblcart tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        flex: 1;
+        color: #555;
+    }
+
+    .tblcart tbody img {
+        width: 80px;
+        height: 80px;
+        margin-right: 10px;
+    }
+
+    .input_q {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .summarry {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .grand-total-table td {
+        padding: 6px 8px;
+    }
+
+    .promocode input {
+        width: 100%;
+    }
+
+    .delete_all {
+        margin: 15px 10px;
+    }
+}

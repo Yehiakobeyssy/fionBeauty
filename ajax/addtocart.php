@@ -51,5 +51,5 @@ echo json_encode([
     'cart_count' => array_sum($_SESSION['cart']),
     'cart' => $_SESSION['cart']
 ]);
-exit;
+exit; 
 ?>

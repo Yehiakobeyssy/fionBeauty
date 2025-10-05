@@ -101,7 +101,11 @@ $(document).ready(function () {
         $.post("ajax/addtocart.php", { itemId: itmID, quantity: quantity }, function(response) {
             let res = JSON.parse(response);
             if (res.status === 'success') {
-                alert('✅ ' + res.message + '\nCart count: ' + res.cart_count);
+                if(res.cart_count > 0){
+                    $('.cartnumber').show();
+                }
+                $('#numberofitems').html(res.cart_count);
+                alert('✅ Successfully added to cart.')
             } else {
                 alert('❌ ' + res.message);
             }
