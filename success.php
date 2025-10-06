@@ -21,6 +21,9 @@
         $status = $intent->status; // succeeded, requires_payment_method, etc.
         $paymentMethod = $intent->payment_method_types[0] ?? 'unknown';
         $amount = $intent->amount_received / 100; // in your currency unit
+    }else{
+        header("Location: index.php");
+        exit();
     }
 
 
