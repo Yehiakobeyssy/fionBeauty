@@ -10,6 +10,7 @@ class ComposerStaticInita43284fe12b7f7a40c8a292fd9eff229
         'S' => 
         array (
             'Svg\\' => 4,
+            'Stripe\\' => 7,
             'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
@@ -34,6 +35,10 @@ class ComposerStaticInita43284fe12b7f7a40c8a292fd9eff229
         'Svg\\' => 
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
+        ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
         ),
         'Sabberworm\\CSS\\' => 
         array (

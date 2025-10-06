@@ -52,6 +52,11 @@ $(document).ready(function() {
     });
 
 
+    $(document).on('click','.checkout-btn',function(){
+        location.href="user/checkout.php";
+    })
+
+
     // 🔄 Load cart table
     function loadCart() {
         $.post('ajax/cart_action.php', { action: 'display' }, function(data) {

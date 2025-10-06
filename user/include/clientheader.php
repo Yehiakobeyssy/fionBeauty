@@ -8,11 +8,23 @@
     }else{
         $user_Account_name = 'My Account';
     }
+
+    if(isset($_SESSION['cart'])){
+        $cart_count = array_sum($_SESSION['cart']);
+    }else{
+        $cart_count = 0;
+    }
+
+    if($cart_count > 0 ){
+        $dislay= 'block';
+    }else{
+        $dislay = 'none';
+    }
 ?>
 
 <link href='https://fonts.googleapis.com/css?family=Baloo Bhaijaan' rel='stylesheet'>
 <link href='https://fonts.googleapis.com/css?family=Outfit' rel='stylesheet'>
-<style>
+<style> 
 /* ============================
    Navbar / Company Header
    ============================ */
@@ -166,12 +178,15 @@
     width: 23px;
     height: 23px;
     border-radius: 50%;
-    background-color: #e01212;
-    color: var(--color-white);
+    background-color: var(--color-primary);
+    color: var(--color-white) !important;
     text-align: center;
     font-size: 12px;
     line-height: 18px;
     padding: 2px 0;
+}
+.cartnumber label{
+    color: var(--color-white)
 }
 
 /* ============================
@@ -317,8 +332,8 @@
                 <path d="M7.5 12.5H19.1925C19.2792 12.5001 19.3633 12.4701 19.4304 12.4151C19.4975 12.3601 19.5434 12.2836 19.5605 12.1986L20.9105 5.44859C20.9214 5.39417 20.92 5.338 20.9066 5.28414C20.8931 5.23029 20.8679 5.18009 20.8327 5.13717C20.7975 5.09426 20.7532 5.05969 20.703 5.03597C20.6528 5.01225 20.598 4.99996 20.5425 5H6" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <label for="">Cart</label>
-            <div class="cartnumber">
-                <label for="" id="numberofitems"></label>
+            <div class="cartnumber" style="display:<?= $dislay ?>">
+                <label for="" id="numberofitems"><?= $cart_count ?></label>
             </div>
         </div>
         <div class="user_acount subnav">
@@ -687,7 +702,7 @@ $.ajax({
 
 
 $('.cart').click(function(){
-    location.href="cart.php";
+    location.href="../cart.php";
 })
 
 

@@ -138,7 +138,7 @@ main{
     padding: 7px;
     border-right: 1px solid #eee;
 }
-.double{
+.double{ 
     display: flex;
 }
 .insite{

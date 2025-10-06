@@ -1,0 +1,155 @@
+.titleCatecory {
+    width: 100%;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
+    color: var(--color-bg);
+}
+.title_page{
+    margin: 30px ;
+    text-align: center;
+}
+.title_page h4{
+    color: var(--color-dark);
+    text-align: center;
+    font-family: Outfit;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 38.4px */
+}
+
+.data_itm{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 7px 0;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+.order_information{
+    width: 80%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+}
+.order_summary{
+    width: 30%;
+    padding: 15px;
+    border: 1px solid #eee;
+}
+.tile_summary{
+    padding: 10px;
+}
+.tile_summary h4{
+    color: #3C4242;
+    font-family: Outfit;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 100;
+    line-height: normal;
+}
+.cart_info{
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.data_itm img{
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+}
+.cart_summary table{
+    width: 80%;
+    margin: 10px auto;
+    text-align: left;
+}
+.lblnumbers{
+    text-align: right;
+}
+.addresses_info{
+    width: 60%;
+}
+.cards_addresses{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 per row */
+    gap: 20px; /* space between items */
+}
+.add{
+    background-color: var(--color-bg);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.generalinfo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.generalinfo h5{
+    color: #3C4242;
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.openformadd{
+    text-align: center;
+    margin: 10px;
+}
+.openformadd h5{
+    color: #000;
+    font-family: Outfit;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px;
+    cursor: pointer;
+}
+.openformadd h5 span{
+    color: var(--color-primary);
+}
+.frmadd{
+    display: none;
+}
+.addinformation label{
+    color: #807D7E;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 115.969%; /* 18.555px */
+}
+.double{ 
+    display: flex;
+}
+.insite{
+    width: 33%;
+    margin-right: 15px;
+}
+.set{
+    margin-top: 15px;
+}
+.frmadd label{
+    font-weight: bold;
+    margin: 5px 0;
+}
+.frmadd h5{
+    margin-top: 10px;
+    color:var(--color-primary);
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.btncontrol{
+    text-align: center;
+    margin: 10px 0;
+}
+.btn-primary{
+    border: transparent;
+    padding: 7px;
+    border-radius: 5px;
+}
