@@ -298,6 +298,7 @@
         <input type="text" name="address" id="txtaddress"  hidden>
         <input type="text" name="" id="txtnote" hidden>
         <input type="number" name="" id="txtsubtotal" value="<?=($includeTax ? $subtotalExcludingTax : $totalSubtotal)?>" hidden>
+        <input type="number" name="" id="txtTax" value="<?=$totalTax?>" hidden>
         <input type="number" name="" id="txtdiscount" value="<?=$totalDiscount?>" hidden>
         <input type="number" name="" id="txtgrandtotal" value="<?=$grandTotal?>" hidden>
     </form>
@@ -400,6 +401,7 @@
                 note: document.getElementById("txtnote").value,
                 subtotal: document.getElementById("txtsubtotal").value,
                 discount: document.getElementById("txtdiscount").value,
+                tax:document.getElementById('txtTax').value,
                 grandtotal: document.getElementById("txtgrandtotal").value
             };
 

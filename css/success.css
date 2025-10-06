@@ -1,0 +1,45 @@
+
+        .status-box {
+            
+            margin: 25px auto !important;
+            padding: 40px 60px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 500px;
+            text-align: center;
+        }
+        .status-box img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .status-box h2 {
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+        .status-box p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+        .success {
+            color: #009245;
+        }
+        .cancel {
+            color: #e74c3c;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            background-color: #009245;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn.cancel {
+            background-color: #e74c3c;
+        }
