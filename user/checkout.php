@@ -40,9 +40,9 @@
 
     $stat = $con->prepare('SELECT PK, SK FROM tblfinancesetting WHERE SettingID = 1');
     $stat->execute();
-    $result_Keys = $stat->fetch();
-    $PK = $result_Keys['PK'];
-    $SK =$result_Keys['SK'];
+    $result_Keys = $stat->fetch(PDO::FETCH_ASSOC);
+    $PK = $result_Keys['PK'] ?? '';
+    $SK = $result_Keys['SK'] ?? '';
     
     include '../common/head.php';
 ?>
@@ -84,18 +84,19 @@
                                             ORDER BY mainAdd DESC');
                         $sql->execute([$user_id]);
                         $addresses = $sql->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($addresses as $useradd){
+                        foreach ($addresses as $i => $useradd){
+                            $checked = ($i === 0) ? 'checked' : ''; // first address = main
                             echo '
                                 <div class="add">
                                     <div class="generalinfo">
-                                        <input type="radio" name="" id="" class="choiceAdd" value="'.$useradd['addresseID'].'">
+                                        <input type="radio" name="choiceAdd" class="choiceAdd" value="'.$useradd['addresseID'].'" '.$checked.'>
                                         <h5>'.$useradd['NameAdd'].'</h5>
                                         <span>'.$useradd['phoneNumber'].'</span>
                                     </div>
                                     <div class="addinformation">
-                                        <label for="">'.$useradd['street'].' '.$useradd['bultingNo'].' '.$useradd['doorNo'].'</label><br>
-                                        <label for="">'.$useradd['cityName'].' - '.$useradd['provinceName'].'</label><br>
-                                        <label for="">'.$useradd['poatalCode'].'</label>
+                                        <label>'.$useradd['street'].' '.$useradd['bultingNo'].' '.$useradd['doorNo'].'</label><br>
+                                        <label>'.$useradd['cityName'].' - '.$useradd['provinceName'].'</label><br>
+                                        <label>'.$useradd['poatalCode'].'</label>
                                     </div>
                                 </div>
                             ';
@@ -293,15 +294,122 @@
         </div>
     </div>
     
-    <form action="">
-        <input type="text" name="address" id="txtaddress">
-        <input type="text" name="" id="txtnote">
-        <input type="number" name="" id="txtsubtotal" value="<?=($includeTax ? $subtotalExcludingTax : $totalSubtotal)?>">
-        <input type="number" name="" id="txtdiscount" value="<?=$totalDiscount?>">
-        <input type="number" name="" id="txtgrandtotal" value="<?=$grandTotal?>">
+    <form action="" id="cart-form">
+        <input type="text" name="address" id="txtaddress"  hidden>
+        <input type="text" name="" id="txtnote" hidden>
+        <input type="number" name="" id="txtsubtotal" value="<?=($includeTax ? $subtotalExcludingTax : $totalSubtotal)?>" hidden>
+        <input type="number" name="" id="txtdiscount" value="<?=$totalDiscount?>" hidden>
+        <input type="number" name="" id="txtgrandtotal" value="<?=$grandTotal?>" hidden>
     </form>
-    
+    <div class="payment_methods">
+        <h4>Choose Payment Method</h4>
+        <?php 
+            $sql = $con->prepare("SELECT methodName, methodNote FROM tblpaymentmethods WHERE methodActive = 1");
+            $sql->execute();
+            $methods = $sql->fetchAll();
+        ?>
+        <div class="containerpayment">
+            <?php foreach ($methods as $method): 
+                $slug = strtolower(str_replace([' ', '/'], '_', $method['methodName']));
+            ?>
+            <div class="payment_option" data-method="<?=$slug?>">
+                <label>
+                    <input type="radio" name="paymentMethod" value="<?=$slug?>" <?= $slug === 'card' ? 'checked' : '' ?>>
+                    <strong><?=$method['methodName']?></strong>
+                    
+                    <?php if($slug==='klarna'): ?><?php endif; ?>
+                    <?php if($slug==='afterpay_clearpay'): ?><?php endif; ?>
+                    <?php if($slug==='paypal'): ?><?php endif; ?>
+                    <?php if($slug==='card'): ?><?php endif; ?>
+                        <!-- <img src="img/card.png" alt="Card" class="pm-logo"> -->
+                </label>
+                <p class="note"><?=$method['methodNote']?></p>
+                <div class="method_container" id="method_<?=$slug?>"></div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        
+    </div>
     <?php include 'include/footer.php' ?>
     <?php include '../common/jslinks.php'?>
     <script src="js/checkout.js"></script>
+        
+    <script>
+        const addressRadios = document.querySelectorAll(".choiceAdd");
+    const addressField = document.getElementById("txtaddress");
+
+    // Fill hidden field when a radio is clicked
+    addressRadios.forEach(radio => {
+        radio.addEventListener("change", function(){
+            addressField.value = this.value;
+        });
+    });
+
+    // Auto-fill hidden field with the checked radio on page load
+    const checkedRadio = document.querySelector(".choiceAdd:checked");
+    if(checkedRadio) {
+        addressField.value = checkedRadio.value;
+    }
+
+        document.addEventListener("DOMContentLoaded", function(){
+            const radios = document.querySelectorAll("input[name='paymentMethod']");
+            const containers = document.querySelectorAll(".method_container");
+
+            async function loadPayment(method) {
+                // Check if an address is selected
+                const addressField = document.getElementById("txtaddress");
+                if (!addressField.value) {
+                    alert("Please select a billing/shipping address before paying.");
+                    // Optionally, scroll to the addresses section
+                    document.querySelector(".addresses_info").scrollIntoView({behavior: "smooth"});
+                    return; // stop further execution
+                }
+
+                // Hide other containers
+                const containers = document.querySelectorAll(".method_container");
+                containers.forEach(c => c.style.display = "none");
+
+                // Show selected container
+                const container = document.getElementById("method_" + method);
+                container.style.display = "block";
+                container.innerHTML = "<div style='text-align:center;color:#009245;'>Loading...</div>";
+
+                // Load via AJAX
+                const resp = await fetch("ajax_payment_section.php?method=" + method);
+                const html = await resp.text();
+                container.innerHTML = html;
+
+                // Execute inline scripts
+                container.querySelectorAll("script").forEach(scr => eval(scr.innerText));
+            }
+            
+            radios.forEach(radio => {
+                radio.addEventListener("change", function(){
+                    loadPayment(this.value);
+                });
+            });
+
+            // Load the default checked radio on page load
+            const defaultRadio = document.querySelector("input[name='paymentMethod']:checked");
+            if(defaultRadio) loadPayment(defaultRadio.value);
+        });
+
+        function saveOrderInfo() {
+            const orderData = {
+                address: document.getElementById("txtaddress").value,
+                note: document.getElementById("txtnote").value,
+                subtotal: document.getElementById("txtsubtotal").value,
+                discount: document.getElementById("txtdiscount").value,
+                grandtotal: document.getElementById("txtgrandtotal").value
+            };
+
+            // Send to server to store in session
+            fetch("ajaxuser/save_order_session.php", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(orderData)
+            });
+        }
+
+    </script>
 </body>
