@@ -204,6 +204,9 @@
                                     case 'Cancelled':
                                         $statusClass = 'alert alert-danger p-1 m-0';
                                         break;
+                                    case 'Full Refund':
+                                        $statusClass = 'alert alert-warning p-1 m-0';
+                                        break;
                                     default:
                                         $statusClass = 'alert alert-secondary p-1 m-0';
                                 }

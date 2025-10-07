@@ -128,7 +128,7 @@
                             </tr>
                         </thead>
                         <tbody id="tblorders">
-                        </tbody>
+                        </tbody> 
                     </table>
                     <div id="pagination"></div>
                 <?php
@@ -270,35 +270,51 @@
                     </div>
                     <div class="progressbar">
                         <?php
-                            $stmt = $con->prepare("SELECT statusID, statusName FROM tblstatus WHERE statusName != 'Cancelled' ORDER BY statusID ASC");
+                            // Fetch all statuses except Cancelled and Full Refund
+                            $stmt = $con->prepare("SELECT statusID, statusName 
+                                                FROM tblstatus 
+                                                WHERE statusName NOT IN ('Cancelled', 'Full Refund') 
+                                                ORDER BY statusID ASC");
                             $stmt->execute();
                             $statuses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
+                            // Get the current invoice status
                             $stmt = $con->prepare("SELECT invoiceStatus FROM tblinvoice WHERE invoiceID = ?");
                             $stmt->execute([$orderID]);
                             $currentStatus = $stmt->fetchColumn(); 
-                        ?>
-                        <?php foreach ($statuses as $status): ?>
-                            <?php 
-                            $id = $status['statusID'];
-                            $name = $status['statusName'];
-                            $isActive = ($currentStatus >= $id);
-                            $isCompleted = ($currentStatus > $id); 
                             ?>
-                            <div class="step <?php echo $isActive ? 'active' : ''; ?>">
-                            <div class="circle">
-                                <?php echo $isCompleted ? "✔" : str_pad($id, 2, "0", STR_PAD_LEFT); ?>
-                            </div>
-                            <div class="label"><?php echo htmlspecialchars($name); ?></div>
-                            </div>
-                        <?php endforeach; ?>
+
+                            <?php
+                            // ✅ Show alert if order is Cancelled or Full Refund
+                            if ($currentStatus === 5) {
+                                echo '<div class="alert alert-danger p-2 m-0 text-center" style="width:100%">❌ The order has been cancelled.</div>';
+                            } elseif ($currentStatus === 6) {
+                                echo '<div class="alert alert-warning p-2 m-0 text-center" style="width:100%">💰 A full refund has been issued for this order.</div>';
+                            } else {
+                                // ✅ Otherwise show the step progress
+                                foreach ($statuses as $status):
+                                    $id = $status['statusID'];
+                                    $name = $status['statusName'];
+                                    $isActive = ($currentStatus >= $id);
+                                    $isCompleted = ($currentStatus > $id);
+                                    ?>
+                                    <div class="step <?php echo $isActive ? 'active' : ''; ?>">
+                                        <div class="circle">
+                                            <?php echo $isCompleted ? "✔" : str_pad($id, 2, "0", STR_PAD_LEFT); ?>
+                                        </div>
+                                        <div class="label"><?php echo htmlspecialchars($name); ?></div>
+                                    </div>
+                                <?php endforeach;
+                            }
+                        ?>
+
                     </div>
                     <div class="daitail_invoice">
                         <?php
-                            $sql= $con->prepare('SELECT quantity,up,itmName,mainpic
+                            $sql= $con->prepare('SELECT quantity,up,itmName,mainpic,tblitemstatus.Status AS st
                                                 FROM tbldatailinvoice 
                                                 INNER JOIN tblitems ON tblitems.itmId  =  tbldatailinvoice.itmID
+                                                INNER JOIN tblitemstatus ON tblitemstatus.StatusID  =  tbldatailinvoice.status
                                                 WHERE invoiceID = ?');
                             $sql->execute([$orderID]);
                             $items = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -310,9 +326,19 @@
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Subtotal</th>
+                                <th>Status</th>
                             </thead>
                             <tbody>
-                                <?php foreach ($items as $itm): ?>
+                                <?php foreach ($items as $itm): 
+                                    if($itm['st'] == 'On Stock'){
+                                        $style = 'alert alert-success p-1 m-0';
+                                    }elseif($itm['st']== 'Out ouf Stock'){
+                                        $style = 'alert alert-danger p-1 m-0';
+                                    }elseif($itm['st'] == 'Refound'){
+                                        $style = 'alert alert-warning p-1 m-0';
+                                    }
+                                ?>
+                                    
                                     <tr>
                                         <td>
                                             <img src="../images/items/<?= $itm['mainpic']?>" alt="" srcset="">
@@ -321,6 +347,7 @@
                                         <td><?= number_format($itm['up'],2)?> $</td>
                                         <td>x <?= $itm['quantity'] ?></td>
                                         <td><?= number_format($itm['up']*$itm['quantity'],2) ?> $</td>
+                                        <td><span class="<?= $style ?>"><?= $itm['st']?></span></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
