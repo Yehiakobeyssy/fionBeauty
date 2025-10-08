@@ -1,3 +1,293 @@
 main{
     display: flex;
 }
+.container_info{
+    margin: 20px;
+    width: 100% ;
+}
+
+/* Ttile  */
+.welcome_note{
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+.nameofAdmin h3{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 62.5% */
+    letter-spacing: 0.16px;
+} 
+.nameofAdmin span{
+    color: var(--color-primary);
+}
+.nameofAdmin label{
+    margin-top: 14px;
+    color: var(--color-text);
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+.times {
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.times span {
+    color: var(--color-text);
+    font-family: Outfit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.07px;
+    margin: 0 6px;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.times span.Activetime {
+    background: var(--color-primary-variant);
+    color: var(--color-white) !important;
+}
+
+/* Main Statstic */
+
+.mainstatistic {
+    display: flex;
+    flex-wrap: wrap; /* allows wrapping on smaller screens */
+    gap: 20px; /* better than margin for spacing between cards */
+    margin: 20px 0;
+    justify-content: space-between;
+}
+
+.card {
+    flex: 1 1 calc(25% - 20px); /* responsive 4 per row, adjusts automatically */
+    min-width: 240px; /* ensures cards don’t get too small */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-radius: 12px;
+    background: var(--card-bg, #fff);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card .imges {
+    margin-right: 16px;
+    flex-shrink: 0; /* prevents image from shrinking */
+}
+
+.info {
+    flex-grow: 1;
+}
+
+.info label,.numberorder label {
+    color: var(--color-text) !important;
+    font-family: Outfit, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.08px;
+}
+.info h5,.numberorder h5{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px; /* 133.333% */
+    letter-spacing: 0.12px;
+}
+
+.bgCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.order_numbers {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.numberorder {
+    margin: 0 9px;
+    flex: 1;
+    text-align: center;
+}
+.titleoverview h4{
+    color: var(--color-primary);
+    font-family: Outfit;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 100% */
+    letter-spacing: 0.12px;
+}
+
+/* cschart */
+.overviewstatistic,.reoprts{
+    display: flex;
+    justify-content: space-between;
+}
+#chart_div,.report-card{
+    width: 60%;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 1.5px 2px 0 rgba(16, 24, 40, 0.10);
+}
+#piechart_3d,.recentOrders{
+    width: 35%;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 1.5px 2px 0 rgba(16, 24, 40, 0.10);
+}
+.reoprts{
+    margin-top: 35px;
+}
+.report-card{
+    padding: 24px;
+}
+.title_rep h4{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 26px; /* 144.444% */
+    letter-spacing: -0.36px;
+}
+.title_rep p,.stat-card span{
+    color: var(--color-text);
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+}
+.stats{
+    display: flex;
+    justify-content: space-between;
+}
+.stat-card{
+    padding: 15px 8px;
+    cursor: pointer;
+}
+.stat-card h5{
+    color: var(--color-dark);
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: Outfit;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22px; /* 91.667% */
+}
+.active_card{
+    border-bottom: 3px solid var(--color-primary);
+    background: linear-gradient(180deg, rgba(15, 96, 255, 0.00) 0%, rgba(15, 96, 255, 0.04) 100%);
+}
+.recentOrders{
+    padding: 17px 30px;
+}
+.title{
+    display: flex;
+    justify-content: space-between;
+}
+.title h5{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.container_orders{
+    margin-top: 20px;
+}
+.order_card{
+    padding: 7px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    cursor: pointer;
+}
+.itemimg{
+    width: 22%;
+}
+.itemimg img{
+    width: 75px;
+    height: 75px;
+    border-radius: 12px;
+}
+.orderdaitail{
+    width: 75%;
+}
+.itemnameanddate{
+    display: flex;
+    justify-content: space-between;
+}
+.itemnameanddate h6{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.07px;
+}
+.itemnameanddate span{
+    color: var(--color-text);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.numberofitems{
+    color: var(--color-text);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 150% */
+    letter-spacing: 0.06px;
+}
+.general{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+.general h6{
+    color: var(--color-text);
+    font-family: Outfit;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 166.667% */
+    letter-spacing: 0.06px;
+}
+.general h6 span{
+    color: var(--color-primary);
+}
+.general label{
+    padding: 8px;
+}

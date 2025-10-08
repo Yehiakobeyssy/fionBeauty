@@ -179,7 +179,7 @@ a:hover, a:focus { color: var(--color-primary-variant); text-decoration: underli
 /* ============================
    Cards / containers
    ============================ */
-.card {
+.card,.bgCard {
     background: var(--color-card);
     border-radius: var(--radius);
     padding: var(--space-4);
