@@ -1,0 +1,201 @@
+main{
+    display: flex;
+}
+.container_info{
+    margin: 20px;
+    width: 100% ;
+}
+.mainstatistic{
+    width: 50%;
+    margin: 50px auto;
+}
+.title{
+    margin-bottom: 10px;
+}
+.title h5{
+    text-align: center;
+    color:var(--color-dark);
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.card{
+    border-radius: 8px;
+    border: 1px solid  #E0E2E7;
+    background: #FFF;
+    box-shadow: 0 1.5px 2px 0 rgba(16, 24, 40, 0.10);
+    display: flex;
+    flex-direction: column;
+    padding: 17px 25px;
+}
+.numbers{
+    display: flex;
+    justify-content: space-around;
+}
+.card_num{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.card_num label{
+    color: var(--color-icon) !important;
+    font-family: Inter;
+    font-size: 14px !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 7px;
+}
+.card_num span{
+    color: var(--color-dark) !important;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.tbl{
+    width: 100%;
+}
+.filter-section {
+
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    font-family: "Poppins", sans-serif;
+}
+
+.filter-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    color: #333;
+    font-weight: 500;
+}
+
+.interval-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.interval-buttons button {
+    background: #f4f4f4;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #333;
+    transition: all 0.2s ease;
+}
+
+.interval-buttons button:hover {
+    background: #009245;
+    color: #fff;
+}
+
+.interval-buttons button.active {
+    background: #009245;
+    color: #fff;
+}
+
+.search-input,
+.date-input,
+.status-select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    min-width: 160px;
+    transition: 0.2s;
+}
+
+.search-input:focus,
+.date-input:focus,
+.status-select:focus {
+    border-color: #009245;
+    outline: none;
+}
+.tbl table{
+    width: 100%;
+}
+.tbl table thead{
+    background-color: var(--color-primary-variant);
+    color: var(--color-white);
+}
+.tbl table thead th{
+    padding: 18px 24px;
+}
+.tbl table tbody td{
+    padding: 18px 24px;
+    border-bottom: 1px solid #eee;
+}
+.client,.product-name{
+    color: var(--color-dark);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.07px;
+}
+.client span,.smallinfo,.product-count,.pagination-info{
+    margin-top: 3px;
+    color: var(--color-icon);
+
+/* Text S/Regular */
+font-family: Inter;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 18px; /* 150% */
+letter-spacing: 0.06px;
+}
+.product-info{
+    display: flex;
+}
+.product-info img{
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    margin-right: 8px;
+}
+.pagination-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 24px;
+}
+.pagination button{
+    border: transparent;
+    background-color:  var(--color-primary);
+    color: var(--color-white);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0 3px;
+
+}
+.roworder {
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.roworder:hover {
+    background: #f8f8f8;
+}
