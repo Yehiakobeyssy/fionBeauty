@@ -234,6 +234,127 @@
                     </div>
                 </div>
             </div>
+            <div class="top">
+                <div class="topProducts">
+                    <div class="title">
+                        <h5>Top Selling Product</h5>
+                        <a href="">View All</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <th>Product</th>
+                            <th>Orders</th>
+                            <th>Amount</th>
+                            <th>Price</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $sql= $con->prepare('SELECT 
+                                                        i.itmID,
+                                                        i.mainpic AS mainImage,
+                                                        i.itmName,
+                                                        c.catName AS categoryName,
+                                                        i.sellPrice,
+                                                        SUM(d.quantity) AS totalQuantity,
+                                                        SUM(d.up * d.quantity) AS totalRevenue
+
+                                                    FROM tbldatailinvoice d
+                                                    JOIN tblitems i ON d.itmID = i.itmID
+                                                    JOIN tblcategory c ON i.catId = c.categoryId
+
+                                                    WHERE d.status = 1
+
+                                                    GROUP BY i.itmID
+                                                    ORDER BY totalQuantity DESC
+                                                    LIMIT 5;
+                                                    ');
+                                $sql->execute();
+                                $topitems = $sql->fetchAll();
+                                foreach ($topitems as $top){
+                                    echo '
+                                        <tr>
+                                            <td>
+                                                <div class="itemdis">
+                                                    <div class="itmimg">
+                                                        <img src="../images/items/'.$top['mainImage'].'">
+                                                    </div>
+                                                    <div class="iteminfo">
+                                                        <h6>'.$top['itmName'].'</h6>
+                                                        <span>'.$top['categoryName'].'</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>'.$top['totalQuantity'].'</td>
+                                            <td>'.number_format($top['totalRevenue'],2).'</td>
+                                            <td>'.number_format($top['sellPrice'],2).'</td>
+                                        </tr>
+                                    ';
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="topClients">
+                    <div class="title">
+                        <h6>Active Customers</h6>
+                    </div>
+                    <table>
+                        <thead>
+                            <th>Customer</th>
+                            <th>Orders</th>
+                            <th>Amount</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $sql = "
+                                        SELECT 
+                                            c.clientID,
+                                            c.clientFname,
+                                            c.clientLname,
+                                            c.clientEmail,
+                                            COUNT(i.invoiceID) AS totalOrders,
+                                            COALESCE(SUM(i.invoiceAmount), 0) AS totalAmount
+                                        FROM tblclient c
+                                        LEFT JOIN tblinvoice i ON c.clientID = i.clientID
+                                        WHERE invoiceStatus < 5
+                                        GROUP BY c.clientID
+                                        ORDER BY totalAmount DESC
+                                        LIMIT 5
+                                        ";
+
+                                $stmt = $con->prepare($sql);
+                                $stmt->execute();
+                                $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Colors for avatars (Gmail style)
+                                $colors = ['#e57373','#64b5f6','#81c784','#ba68c8','#ffb74d','#4db6ac','#7986cb'];
+                            
+
+                            $i = 0;
+                            foreach ($clients as $c):
+                                $initials = strtoupper(substr($c['clientFname'], 0, 1) . substr($c['clientLname'], 0, 1));
+                                $color = $colors[$i % count($colors)];
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="client-info">
+                                        <div class="avatar" style="background-color: <?= $color ?>;">
+                                            <?= $initials ?>
+                                        </div>
+                                        <div class="client-details">
+                                            <span class="name"><?= htmlspecialchars($c['clientFname'] . ' ' . $c['clientLname']) ?></span>
+                                            <span class="email"><?= htmlspecialchars($c['clientEmail']) ?></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><?= (int)$c['totalOrders'] ?></td>
+                                <td>$<?= number_format((float)$c['totalAmount'], 2) ?></td>
+                            </tr>
+                            <?php $i++; endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
     <?php include '../common/jslinks.php'?>

@@ -150,13 +150,13 @@ main{
     display: flex;
     justify-content: space-between;
 }
-#chart_div,.report-card{
+#chart_div,.report-card,.topProducts{
     width: 60%;
     border: 1px solid #eee;
     border-radius: 8px;
     box-shadow: 0 1.5px 2px 0 rgba(16, 24, 40, 0.10);
 }
-#piechart_3d,.recentOrders{
+#piechart_3d,.recentOrders,.topClients{
     width: 35%;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -290,4 +290,91 @@ main{
 }
 .general label{
     padding: 8px;
+}
+.top{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+}
+.topProducts{
+    padding: 18px 24px;
+}
+.topProducts table,.topClients table{
+    width: 100%;
+    margin-top: 25px;
+}
+.topProducts table thead,.topClients table thead{
+    background-color: var(--color-primary-variant);
+    color: var(--color-white);
+}
+.topProducts table thead th ,.topClients table thead th{
+    padding: 18px 24px;
+}
+.topProducts table tbody td , .topClients table tbody td{
+    padding: 18px 24px;
+    border-bottom: 1px solid #eee;
+}
+.itemdis{
+    display: flex ;
+    align-items: center;
+}
+.itmimg img{
+    width: 58px;
+    height: 58px;
+    border-radius: 12px;
+    margin-right: 8px;
+}
+.iteminfo h6{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.07px;
+}
+.iteminfo span{
+    color: var(--color-icon );
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 150% */
+    letter-spacing: 0.06px;
+}
+.topClients{
+    padding: 18px 24px;
+
+}
+.client-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 12px;
+    font-size: 15px;
+}
+
+.client-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.client-details .name {
+    font-weight: 600;
+    color: #222;
+}
+
+.client-details .email {
+    font-size: 13px;
+    color: #888;
 }
