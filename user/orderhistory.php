@@ -140,11 +140,12 @@
                             header("Location: orderhistory.php");
                             exit(); 
                         }else{
-                            $sql=$con->prepare('SELECT invoiceDate FROM tblinvoice WHERE invoiceID  = ? ');
+                            $sql=$con->prepare('SELECT invoiceDate,invoiceCode FROM tblinvoice WHERE invoiceID  = ? ');
                             $sql->execute([$orderID]);
                             $result=$sql->fetch();
                             $dateInvoice = $result['invoiceDate'];
                             $formatdate =  date("j F, Y", strtotime($dateInvoice));
+                            $invoiceCode = $result['invoiceCode'];
 
                             $sql= $con->prepare('SELECT COUNT(daitailInvoiceId) AS items FROM tbldatailinvoice WHERE invoiceID = ?');
                             $sql->execute([$orderID]);
@@ -228,7 +229,7 @@
                             <div class="no_pay">
                                 <div class="invoice_no">
                                     <h4>Order ID</h4>
-                                    <span># <?php echo  $orderID ?></span>
+                                    <span># <?php echo  $invoiceCode ?></span>
                                 </div>
                                 <div class="method">
                                     <?php 

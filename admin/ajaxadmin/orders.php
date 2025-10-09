@@ -1,8 +1,8 @@
 <?php
-include '../../settings/connect.php'; // adjust path if needed
+include '../../settings/connect.php';
 header('Content-Type: application/json');
 
-$days = isset($_POST['days']) ? (int)$_POST['days'] : 9999; // 9999 = All time
+$days = isset($_POST['days']) ? (int)$_POST['days'] : 9999;
 $search = isset($_POST['search']) ? trim($_POST['search']) : '';
 $status = isset($_POST['status']) ? (int)$_POST['status'] : 0;
 $selectedDate = isset($_POST['selectedDate']) ? $_POST['selectedDate'] : '';
@@ -10,7 +10,7 @@ $selectedDate = isset($_POST['selectedDate']) ? $_POST['selectedDate'] : '';
 $where = [];
 $params = [];
 
-// 1. Time filter
+// Time filter
 if ($days != 9999) {
     if ($days == 1) {
         $where[] = "DATE(i.invoiceDate) = CURDATE()";
@@ -20,28 +20,25 @@ if ($days != 9999) {
     }
 }
 
-// 2. Status filter
+// Status filter
 if ($status > 0) {
     $where[] = "i.invoiceStatus = :status";
     $params[':status'] = $status;
 }
 
-// 3. Selected specific date
+// Selected date
 if (!empty($selectedDate)) {
     $where[] = "DATE(i.invoiceDate) = :selectedDate";
     $params[':selectedDate'] = $selectedDate;
 }
 
-// 4. Search filter (client name, email, invoice code)
+// Search
 if (!empty($search)) {
     $where[] = "(c.clientFname LIKE :search OR c.clientLname LIKE :search OR c.clientEmail LIKE :search OR i.invoiceCode LIKE :search)";
     $params[':search'] = "%$search%";
 }
 
-$whereSQL = '';
-if (count($where) > 0) {
-    $whereSQL = "WHERE " . implode(" AND ", $where);
-}
+$whereSQL = count($where) ? "WHERE " . implode(" AND ", $where) : "";
 
 $sql = "
 SELECT 
@@ -54,26 +51,18 @@ SELECT
     CONCAT(c.clientFname, ' ', c.clientLname) AS clientName,
     c.clientEmail,
     (
-        SELECT itmName 
-        FROM tbldatailinvoice d
-        INNER JOIN tblitems t ON d.itmID = t.itmID
-        WHERE d.invoiceID = i.invoiceID
-        ORDER BY d.daitailInvoiceId ASC
-        LIMIT 1
-    ) AS firstItemName,
-    (
-        SELECT mainpic 
-        FROM tbldatailinvoice d
-        INNER JOIN tblitems t ON d.itmID = t.itmID
-        WHERE d.invoiceID = i.invoiceID
-        ORDER BY d.daitailInvoiceId ASC
-        LIMIT 1
-    ) AS firstItemPic,
-    (
         SELECT COUNT(*) 
         FROM tbldatailinvoice d
         WHERE d.invoiceID = i.invoiceID
-    ) AS totalItems
+    ) AS totalItems,
+    (
+        SELECT SUM(
+            (d.quantity * d.up - (d.quantity * d.up * d.discount / 100)) * (t.commtion / 100)
+        )
+        FROM tbldatailinvoice d
+        INNER JOIN tblitems t ON d.itmID = t.itmID
+        WHERE d.invoiceID = i.invoiceID
+    ) AS invoiceCommition
 FROM tblinvoice i
 INNER JOIN tblclient c ON i.clientID = c.clientID
 INNER JOIN tblstatus s ON i.invoiceStatus = s.statusID
@@ -82,8 +71,6 @@ ORDER BY i.invoiceID DESC
 ";
 
 $stmt = $con->prepare($sql);
-
-// bind params
 foreach ($params as $key => $value) {
     if ($key === ':days') {
         $stmt->bindValue($key, (int)$value, PDO::PARAM_INT);
@@ -91,7 +78,6 @@ foreach ($params as $key => $value) {
         $stmt->bindValue($key, $value);
     }
 }
-
 $stmt->execute();
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

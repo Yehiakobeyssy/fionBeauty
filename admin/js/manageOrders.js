@@ -113,6 +113,7 @@ $(document).ready(function(){
                         <td class="smallinfo">${formatTime(order.invoiceDate)}</td>
                         <td>${productInfo}</td>
                         <td class="smallinfo">$${parseFloat(order.invoiceAmount).toFixed(2)}</td>
+                        <td class="smallinfo">$${parseFloat(order.invoiceCommition || 0).toFixed(2)}</td>
                         <td class="smallinfo">${order.transactionNO || '-'}</td>
                         <td><div class="${statusClass}" style="font-size:12px;">${order.statusName}</div></td>
                     </tr>
