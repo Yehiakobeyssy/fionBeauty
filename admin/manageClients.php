@@ -138,6 +138,378 @@
                         </div>
                     </div>
                 <?php
+                }elseif($do=='add'){?>
+                    <div class="containernewClient">
+                        <div class="title">
+                            <h4>Add New Customer</h4>
+                        </div>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="double">
+                                <label for="">Client Name</label>
+                                <div class="inputs">
+                                    <input type="text" name="clientFname" id="" placeholder="First Name" required>
+                                    <input type="text" name="clientLname" id="" placeholder="Last Name" required>
+                                </div>
+                            </div>
+                            <div class="double">
+                                <label for="">Contact:</label>
+                                <div class="inputs">
+                                    <input type="text" name="clientPhoneNumber" id="" placeholder="Phone Number">
+                                    <input type="email" name="clientEmail" id="txtemail" placeholder="E-mail" required>
+                                </div>
+                                <span id="erroremail"></span>
+                            </div>
+                            <div class="double">
+                                <label for="">Certivicate</label>
+                                <div class="inputs">
+                                    <select name="profession" id="" required>
+                                        <option value="0">SELECT ONE</option>
+                                        <?php
+                                            $sql =$con->prepare('SELECT professionID ,profession FROM tblprofession WHERE professionAcctive = 1');
+                                            $sql->execute();
+                                            $professions = $sql->fetchAll();
+                                            foreach($professions as $pro){
+                                                echo '<option value="'.$pro['professionID'].'">'.$pro['profession'].'</option>';
+                                            }
+                                        ?>
+                                    </select>
+                                    <input type="file" name="certificate" id="">
+                                </div>
+                            </div>
+                            <div class="double">
+                                <label for="">Password</label>
+                                <input type="password" name="clientPassword" id="" required>
+                            </div>
+                            <div class="double">
+                                <label for="">About Client</label>
+                                <textarea name="clientAbout" id="" placeholder="Note about Client"></textarea>
+                            </div>
+                            <div class="btncontrol">
+                                <button type="submit" class="btn btn-primary" name="btnsaveuser">Add Client</button>
+                            </div>
+
+                            <?php
+                                if(isset($_POST['btnsaveuser'])){
+                                    $email = $_POST['clientEmail'];
+                                    $checkemail = checkItem('clientEmail','tblclient', $email);
+                                    
+                                    if($checkemail == 0){
+                                        $newfilename = '';
+                                        if (isset($_FILES['certificate']) && $_FILES['certificate']['error'] === UPLOAD_ERR_OK) {
+                                            $temp = explode(".", $_FILES['certificate']['name']);
+                                            $ext = strtolower(end($temp));
+                                            $allowed = ['jpg','jpeg','png','pdf'];
+
+                                            if (!in_array($ext, $allowed)) {
+                                                $response['message'] = "Invalid file type. Allowed: jpg, jpeg, png, pdf.";
+                                                echo json_encode($response); exit;
+                                            }
+
+                                            $newfilename = round(microtime(true)) . '.' . $ext;
+                                            $uploadPath = '../documents/' . $newfilename;
+
+                                            if (!move_uploaded_file($_FILES['certificate']['tmp_name'], $uploadPath)) {
+                                                $response['message'] = "File upload failed.";
+                                                echo json_encode($response); exit;
+                                            }
+                                        }
+
+                                        $clientFname        = trim($_POST['clientFname'] ?? '');
+                                        $clientLname        = trim($_POST['clientLname'] ?? '');
+                                        $clientPhoneNumber  = trim($_POST['clientPhoneNumber'] ?? '');
+                                        $clientEmail        = trim($_POST['clientEmail'] ?? '');
+                                        $profession         = (int)($_POST['profession'] ?? 0);
+                                        $clientPassword     = $_POST['clientPassword'] ?? '';
+                                        $hashedPassword     = sha1($clientPassword);
+                                        $clientActive       = 1;
+                                        $clientActivation   = sha1(date('Y.m.d'));
+                                        $clientBlock        = 0;
+                                        $pushId             = '';
+                                        $clientAbout        = $_POST['clientAbout'];
+
+                                        $sql = $con->prepare("INSERT INTO tblclient 
+                                                                (clientFname, clientLname, clientPhoneNumber, clientEmail, certificate, profession, clientPassword, clientActive, clientActivation, clientBlock, pushId, clientAbout) 
+                                                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+                                        
+                                        $sql->execute([
+                                            $clientFname,
+                                            $clientLname,
+                                            $clientPhoneNumber,
+                                            $clientEmail,
+                                            $newfilename,
+                                            $profession,
+                                            $hashedPassword,
+                                            $clientActive,
+                                            $clientActivation,
+                                            $clientBlock,
+                                            $pushId,
+                                            $clientAbout
+                                        ]);
+                                        echo "<script>alert('Client added successfully!');</script>";
+                                    }
+                                }
+                            ?>
+                        </form>
+                    </div>
+                <?php
+                }elseif($do=='view'){
+                    $userID = isset($_GET['clientID'])?$_GET['clientID']:0;
+                    $checkUser = checkItem('clientID','tblclient', $userID);
+
+                    if($checkUser == 1){?>
+                        <div class="btnblock">
+                            <?php
+                                $sql= $con->prepare('SELECT clientActive , clientBlock  FROM tblclient WHERE clientID  = ?');
+                                $sql->execute([$userID]);
+                                $resultbtn= $sql->fetch();
+                                $isActive = $resultbtn['clientActive'];
+                                $isBlocked = $resultbtn['clientBlock'];
+
+                                if ($isActive == 1) {
+                                    $txtbtn = 'Set Inactive';
+                                    $class_btnactive = 'btn btn-red';
+                                } else {
+                                    $txtbtn = 'Set Active';
+                                    $class_btnactive = 'btn btn-green';
+                                }
+
+                                if($isBlocked == 0){
+                                    $txtbtnblock = 'Block';
+                                    $class_btnblock = 'btn btn-red';
+                                }else{
+                                    $txtbtnblock = 'UnBlock';
+                                    $class_btnblock = 'btn btn-green';
+                                }
+                            ?>
+                            <button class="<?=$class_btnactive?> btngotoactive" value="<?=$userID?>"><?=$txtbtn?></button>
+                            <button class="<?=$class_btnblock?> btngotoblock" value="<?=$userID?>"><?=$txtbtnblock?></button>
+                        </div>
+                        <?php
+                            $sql = "
+                                    SELECT 
+                                        IFNULL(SUM(CASE WHEN invoiceStatus < 5 THEN invoiceAmount ELSE 0 END), 0) AS totalBalance,
+                                        COUNT(*) AS allOrders,
+                                        SUM(CASE WHEN invoiceStatus < 4 THEN 1 ELSE 0 END) AS processing,
+                                        SUM(CASE WHEN invoiceStatus = 6 THEN 1 ELSE 0 END) AS returned,
+                                        SUM(CASE WHEN invoiceStatus = 5 THEN 1 ELSE 0 END) AS cancelled,
+                                        SUM(CASE WHEN invoiceStatus = 4 THEN 1 ELSE 0 END) AS completed
+                                    FROM tblinvoice
+                                    WHERE clientID = :userID
+                                    ";
+
+                            // تنفيذ الاستعلام
+                            $stmt = $con->prepare($sql);
+                            $stmt->execute([':userID' => $userID]);
+                            $data = $stmt->fetch(PDO::FETCH_ASSOC);
+                        ?>
+                        <div class="statistic_card">
+                            <div class="totalBalance">
+                                <label for="">Total Balance</label>
+                                <h4><?= number_format($data['totalBalance'], 2) ?></h4>
+                            </div>
+                            <div class="daitaailorders">
+                                <div class="card_number">
+                                    <label for="">All Orders</label>
+                                    <h5><?= $data['allOrders'] ?></h5>
+                                </div>
+                                <div class="card_number">
+                                    <label for="">Processing</label>
+                                    <h5><?= $data['processing'] ?></h5>
+                                </div>
+                                <div class="card_number">
+                                    <label for="">Returned</label>
+                                    <h5><?= $data['returned'] ?></h5>
+                                </div>
+                                <div class="card_number">
+                                    <label for="">Cancelled</label>
+                                    <h5><?= $data['cancelled'] ?></h5>
+                                </div>
+                                <div class="card_number">
+                                    <label for="">Completed</label>
+                                    <h5><?= $data['completed'] ?></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info_client">
+                            <div class="client_info">
+                                <?php
+                                    // Prepare and execute query (LEFT JOIN allows clients without profession)
+                                    $sql = $con->prepare('
+                                        SELECT 
+                                            clientFname, clientLname, clientPhoneNumber, clientEmail, 
+                                            certificate, tblprofession.profession, clientFirstLogin
+                                        FROM tblclient
+                                        LEFT JOIN tblprofession ON tblprofession.professionID = tblclient.profession
+                                        WHERE clientID = ?
+                                    ');
+                                    $sql->execute([$userID]);
+                                    $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+                                    if ($result) {
+                                        // Safely extract values with defaults
+                                        $fname   = $result['clientFname'] ?? '';
+                                        $lname   = $result['clientLname'] ?? '';
+                                        $fullname = trim("$fname $lname");
+                                        $initials = strtoupper(substr($fname, 0, 1) . substr($lname, 0, 1));
+                                        $firstLetter = strtoupper(substr($fname ?: 'A', 0, 1));
+
+                                        // Letter → color map
+                                        $colors = [
+                                            'A' => '#4285F4','B' => '#34A853','C' => '#FBBC05','D' => '#EA4335','E' => '#9C27B0',
+                                            'F' => '#FF5722','G' => '#009688','H' => '#795548','I' => '#3F51B5','J' => '#CDDC39',
+                                            'K' => '#607D8B','L' => '#E91E63','M' => '#00BCD4','N' => '#8BC34A','O' => '#FFC107',
+                                            'P' => '#673AB7','Q' => '#FF9800','R' => '#F44336','S' => '#4CAF50','T' => '#03A9F4',
+                                            'U' => '#9E9E9E','V' => '#FFEB3B','W' => '#8E24AA','X' => '#1E88E5','Y' => '#D32F2F','Z' => '#2E7D32',
+                                        ];
+                                        $bgColor = $colors[$firstLetter] ?? '#333';
+                                ?>
+                                    <!-- Client Name -->
+                                    <div class="name_client">
+                                        <div class="design" style="background-color:<?= $bgColor ?>">
+                                            <?= htmlspecialchars($initials ?: '?') ?>
+                                        </div>
+                                        <h5><?= htmlspecialchars($fullname ?: 'Unknown Client') ?></h5>
+                                    </div>
+
+                                    <!-- Contact Info -->
+                                    <div class="comonication_info">
+                                        <!-- Phone -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.6443 14.5494L13.1861 12.0912L11.5643 14.2389L10.9751 14.0063L10.9713 14.0048L10.964 14.0019L10.9388 13.9917C10.9175 13.9831 10.8872 13.9706 10.8489 13.9545C10.7722 13.9223 10.6629 13.8753 10.5278 13.8145C10.2581 13.6929 9.88341 13.515 9.45902 13.2874C8.62205 12.8386 7.54176 12.1704 6.70099 11.3297C5.86021 10.4889 5.19201 9.40854 4.74313 8.57153C4.51552 8.14711 4.33755 7.77241 4.21599 7.50267C4.15512 7.3676 4.10814 7.25829 4.07591 7.18158C4.05979 7.14321 4.04735 7.11294 4.03868 7.09164L4.02852 7.06649L4.02559 7.05915L4.02433 7.05599L3.79146 6.46613L5.9392 4.84431L3.48104 2.38616C2.99362 3.18265 2.36654 4.53715 2.36253 6.22129C2.35837 7.96782 3.02334 10.178 5.43797 12.5927C7.85262 15.0073 10.0628 15.6722 11.8093 15.668C13.4934 15.664 14.8478 15.0368 15.6443 14.5494ZM5.82718 7.01737L6.94356 6.17436C7.75121 5.56448 7.83334 4.38143 7.11771 3.6658L4.58762 1.13572C3.92966 0.477757 2.74215 0.445369 2.15584 1.36211C1.56243 2.28996 0.701122 4.01133 0.69587 6.21733C0.690547 8.45339 1.5655 11.0772 4.25946 13.7712C6.95344 16.4652 9.57725 17.3401 11.8133 17.3347C14.0193 17.3294 15.7406 16.468 16.6684 15.8746C17.5851 15.2882 17.5527 14.1008 16.8947 13.4428L14.3646 10.9127C13.649 10.1971 12.4659 10.2792 11.856 11.0869L11.013 12.2032C10.7974 12.1022 10.5346 11.973 10.2467 11.8186C9.46638 11.4002 8.55127 10.8229 7.8795 10.1511C7.20772 9.47937 6.63041 8.5642 6.21191 7.78384C6.05745 7.49582 5.92821 7.23298 5.82718 7.01737Z" fill="#17163A"/>
+                                        </svg>
+                                        <label><?= htmlspecialchars($result['clientPhoneNumber'] ?: 'No phone number') ?></label>
+
+                                        <!-- Email -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14" fill="none">
+                                            <path d="M1.25 0.75L10 7L18.75 0.75M1.25 13.25H18.75V0.75H1.25V13.25Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <label><?= htmlspecialchars($result['clientEmail'] ?: 'No email') ?></label>
+                                    </div>
+
+                                    <!-- Profession & Certificate -->
+                                    <div class="certivicate_info">
+                                        <label>Profession:</label>
+                                        <span><?= htmlspecialchars($result['profession'] ?: 'Not specified') ?></span>
+
+                                        <label>Certificate:</label>
+                                        <?php if (!empty($result['certificate'])): ?>
+                                            <a href="../documents/<?= htmlspecialchars($result['certificate']) ?>" target="_blank">Show</a>
+                                        <?php else: ?>
+                                            <span>No certificate uploaded</span>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <!-- Customer Since -->
+                                    <div class="customersince">
+                                        <label>Customer since:</label>
+                                        <span><?= !empty($result['clientFirstLogin']) ? date("d M Y - h:i a", strtotime($result['clientFirstLogin'])) : 'N/A' ?></span>
+                                    </div>
+
+                                <?php
+                                    } else {
+                                        // No client found at all
+                                        echo '<div class="alert alert-warning">No client record found for the provided ID.</div>';
+                                    }
+                                ?>
+                            </div>
+                            <div class="shipping_add">
+                                <div class="title_shipping">
+                                    <h4>Shipping Address</h4>
+                                </div>
+                                <div class="add">
+                                    <?php
+                                        $sql = $con->prepare('SELECT addresseID,NameAdd,emailAdd,phoneNumber,street, bultingNo, doorNo, poatalCode, cityName, provinceName 
+                                                            FROM tbladdresse 
+                                                            INNER JOIN tblcity ON tblcity.cityID = tbladdresse.cityID
+                                                            INNER JOIN tblprovince ON tblprovince.provinceID = tbladdresse.provinceID
+                                                            WHERE mainAdd = 1 AND userID = ?');
+                                        $sql->execute([$userID]);
+                                        $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+                                        if ($row) {
+                                            // Display like a Canadian mailing address
+                                            echo "<h5>{$row['NameAdd']}</h5>";
+                                            echo "<address>
+                                                    {$row['street']} {$row['bultingNo']} {$row['doorNo']}<br>
+                                                    {$row['cityName']}, {$row['provinceName']}<br>
+                                                    {$row['poatalCode']}
+                                                </address>";
+                                            echo "<label>{$row['emailAdd']}</label> <br>
+                                                    <label> {$row['phoneNumber']} </label><br>";
+                                            
+                                        } else {
+                                            // Show danger alert
+                                            echo '
+                                                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                                    <div>No address has been registered for this client.</div>
+                                                </div>';
+
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tblorders_history">
+                            <div class="title_history">
+                                <h5>Order History</h5>
+                            </div>
+                            <div class="tblhistory">
+                                <input type="hidden" id="clientID" value="<?= $userID ?>">
+                                <table>
+                                    <thead>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Produts</th>
+                                        <th>Total</th>
+                                        <th>Commition</th>
+                                        <th>Trasaction NO:</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody id="tblordershistory">
+                                        
+                                    </tbody>
+                                </table>        
+                            </div>
+                        </div>
+                    <?php
+                    }else{
+                        echo '<script>location.href="manageClients.php"</script>';
+                    }
+
+                }elseif($do=='active'){
+                    $userID = isset($_GET['clientID'])?$_GET['clientID']:0;
+                    $checkUser = checkItem('clientID','tblclient', $userID);
+                    if($checkUser == 1){
+                        $sql = "UPDATE tblclient 
+                                    SET clientActive = CASE WHEN clientActive = 1 THEN 0 ELSE 1 END
+                                    WHERE clientID = :clientID";
+                            
+                        $stmt = $con->prepare($sql);
+                        $stmt->bindValue(':clientID', $userID, PDO::PARAM_INT);
+                        $stmt->execute();
+                        echo '<script> location.href="manageClients.php?do=view&clientID='.$userID.'"</script>';
+                    }else{
+                        echo '<script>location.href="manageClients.php"</script>';
+                    }
+                }elseif($do=='block'){
+                    $userID = isset($_GET['clientID'])?$_GET['clientID']:0;
+                    $checkUser = checkItem('clientID','tblclient', $userID);
+                    if($checkUser == 1){
+                        $sql = "UPDATE tblclient 
+                                    SET clientBlock = CASE WHEN clientBlock = 1 THEN 0 ELSE 1 END
+                                    WHERE clientID = :clientID";
+                            
+                        $stmt = $con->prepare($sql);
+                        $stmt->bindValue(':clientID', $userID, PDO::PARAM_INT);
+                        $stmt->execute();
+                        echo '<script> location.href="manageClients.php?do=view&clientID='.$userID.'"</script>';
+                    }else{
+                        echo '<script>location.href="manageClients.php"</script>';
+                    }
+                }else{
+                    echo '<script>location.href="manageClients.php"</script>';
                 }
             ?>
         </div>
