@@ -430,4 +430,30 @@
             return 'No Document'; // or handle move failure
         }
     }
+
+
+    function generatePassword($length = 8) {
+        $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        $numbers   = '0123456789';
+        $symbols   = '!@#$%^&*()_+[]{}<>?/|';
+
+        // Make sure we have at least one of each
+        $password  = '';
+        $password .= $uppercase[random_int(0, strlen($uppercase) - 1)];
+        $password .= $lowercase[random_int(0, strlen($lowercase) - 1)];
+        $password .= $numbers[random_int(0, strlen($numbers) - 1)];
+        $password .= $symbols[random_int(0, strlen($symbols) - 1)];
+
+        // Fill the rest randomly
+        $all = $uppercase . $lowercase . $numbers . $symbols;
+        while (strlen($password) < $length) {
+            $password .= $all[random_int(0, strlen($all) - 1)];
+        }
+
+        // Shuffle to randomize character order
+        $password = str_shuffle($password);
+
+        return $password;
+    }
 ?>

@@ -105,8 +105,147 @@
                         </table>
                     </div>
                 <?php
-                }elseif($do== 'add'){
+                }elseif($do== 'add'){?>
+                        <?php
+                            if(isset($_POST['btnaddadmin'])){
+                                $adminPassword = generatePassword();
+                                $plainPassword = $adminPassword; // keep the generated password before hashing
+                                $hashadminPassword = sha1($adminPassword);
+                                
+                                $checkEmail = checkItem('adminEmail', 'tbladmin',$_POST['adminEmail']);
 
+                                if($checkEmail == 0){
+                                    $fName          = $_POST['fName'];
+                                    $lName          = $_POST['lName'];
+                                    $phoneNumber    = $_POST['phoneNumber'];
+                                    $adminEmail     = $_POST['adminEmail'];
+                                    $adminPassword  = $hashadminPassword;
+                                    $adminRole      = $_POST['adminRole'];
+                                    $province       = $_POST['province'];
+                                    $adminActive    = $_POST['adminActive'];
+                                    $token          = bin2hex(random_bytes(16));
+                                    $admin_block    = 0;
+
+                                    $sql=$con->prepare('INSERT INTO tbladmin (fName,lName,phoneNumber,adminEmail,adminPassword,adminRole,province,adminActive,token,admin_block)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?)');
+                                    $sql->execute([$fName,$lName,$phoneNumber,$adminEmail,$adminPassword,$adminRole,$province,$adminActive,$token,$admin_block]);
+
+
+                                    include '../mail.php';
+
+                                    $mail->setFrom($applicationemail, 'Fion Beauty'); // Sender
+                                    $mail->addAddress($adminEmail);                    // Receiver
+                                    $mail->Subject = 'You’ve Been Added as an Admin at Fion Beauty Supplies 💚';
+
+                                    // Content
+                                    $mail->isHTML(true);
+                                    $mail->CharSet = 'UTF-8';   
+                                    $mail->Body = "
+                                        <div style='font-family: Arial, sans-serif; background-color: #F8F8F8; padding: 25px;'>
+                                            <div style='max-width:650px; margin:auto; background:#FFFFFF; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.08); padding:30px;'>
+                                                
+                                                <h2 style='color:#009245; text-align:center; font-weight:700;'>Welcome to Fion Beauty Supplies</h2>
+                                                <p style='text-align:center; color:#6B6B6B; font-size:15px;'>You have been added as a new <strong>Admin</strong> in our management system.</p>
+
+                                                <p style='color:#2E2E2E;'>Dear <strong>{$fName} {$lName}</strong>,</p>
+                                                <p style='color:#2E2E2E;'>We are pleased to inform you that your administrator account has been successfully created.  
+                                                Please find your login credentials below:</p>
+
+                                                <table style='border-collapse:collapse; width:100%; margin:20px 0; font-size:14px;'>
+                                                    <tr>
+                                                        <td style='padding:10px; border:1px solid #ddd; background:#F6F6F6; width:35%; font-weight:bold; color:#2E2E2E;'>Email</td>
+                                                        <td style='padding:10px; border:1px solid #ddd; color:#2E2E2E;'>{$adminEmail}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style='padding:10px; border:1px solid #ddd; background:#F6F6F6; font-weight:bold; color:#2E2E2E;'>Password</td>
+                                                        <td style='padding:10px; border:1px solid #ddd; color:#2E2E2E;'>{$plainPassword}</td>
+                                                    </tr>
+                                                </table>
+
+                                                <p style='color:#2E2E2E;'>You can log in to the admin panel using the following link:</p>
+                                                <p style='text-align:center; margin:25px 0;'>
+                                                    <a href='{$websiteaddresse}admin/index.php' 
+                                                    style='background:#009245; color:#FFFFFF; padding:12px 25px; border-radius:5px; text-decoration:none; font-weight:bold; display:inline-block;'>
+                                                    Go to Admin Panel
+                                                    </a>
+                                                </p>
+
+                                                <p style='color:#6B6B6B; font-size:14px;'>If you didn’t expect this message, please contact our support team immediately.</p>
+
+                                                <hr style='margin:30px 0; border:none; border-top:1px solid #eee;'>
+
+                                                <p style='font-size:13px; color:#999; text-align:center;'>
+                                                    © " . date('Y') . " Fion Beauty Supplies. All rights reserved.<br>
+                                                    This is an automated message — please do not reply directly.
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    ";
+                                    $mail->send();
+
+                                    echo '<div class="conformnewadmin ">
+                                            You Added new admin Successfully <br>
+                                            Email and password will be sent
+                                            </div> ';
+                                }
+                            }
+                        ?>
+                        
+                    
+                    <div class="newAdmin">
+                        <div class="title">
+                            <h4>Adding New Admin</h4>
+                        </div>
+                        <form action="" method="post">
+                            <div class="double">
+                                <input type="text" name="fName" id="" placeholder="First Name" required>
+                                <input type="text" name="lName" id="" placeholder="Last Name" required>
+                            </div>
+                            <div class="double">
+                                <input type="text" name="phoneNumber" id="" placeholder="Phone Number">
+                                <input type="email" name="adminEmail" id="adminnewemail" placeholder="Email" required>
+                                
+                            </div>
+                            <small id="emailError" style="color:red; display:none;"></small>
+                            <div class="double">
+                                <select name="adminRole" id="">
+                                    <option value="" disabled selected hidden>Role</option>
+                                    <?php
+                                        $sql=$con->prepare('SELECT adminRollId ,adminRoll FROM tbladminroll');
+                                        $sql->execute();
+                                        $roles = $sql->fetchAll();
+                                        foreach($roles as $role){
+                                            echo '<option value="'.$role['adminRollId'].'">'.$role['adminRoll'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                                <select name="province" id="">
+                                    <option value="" disabled selected hidden> Province</option>
+                                    <?php
+                                        $sql= $con->prepare('SELECT provinceID ,provinceName FROM tblprovince ORDER BY provinceName');
+                                        $sql->execute();
+                                        $provinces = $sql->fetchAll();
+                                        foreach($provinces as $province){
+                                            echo '<option value="'.$province['provinceID'].'"> '.$province['provinceName'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="full">
+                                <select name="adminActive" id="" required>
+                                    <option value="" disabled selected hidden>Select Status</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">InActive</option>
+                                </select>
+                            </div>
+                            <div class="btncontrol">
+                                <button type="reset" class="btn btn-outboder">Cancel</button>
+                                <button type="submit" class="btn btn-inboder"  name="btnaddadmin">Add Admnin</button>
+                            </div>
+                        </form>
+                    </div>
+                <?php
                 }elseif($do == 'edid'){
 
                 }elseif($do == 'block'){

@@ -108,7 +108,7 @@ table tbody td{
 }
 /* Alerts */
 .alert-success {
-    background: #d4edda;
+    background: #d4edda; 
     color: #155724;
     padding: 3px 8px;
     border-radius: 4px;
@@ -430,4 +430,3 @@ address{
     line-height: 18px; /* 150% */
     letter-spacing: 0.06px;
 }
-

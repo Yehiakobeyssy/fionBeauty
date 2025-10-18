@@ -16,7 +16,7 @@ $(document).ready(function(){
             },
             dataType: "json",
                 success: function(response) {
-                renderAdminsTable(response.data);
+                renderAdminsTable(response.data); 
                 renderAdminsPagination(response.total, page);
             },
             error: function(xhr, status, error) {
@@ -120,4 +120,51 @@ $(document).ready(function(){
         let aid = $(this).data('id')
         alert(aid);
     })
+
+    $("#adminnewemail").on("blur", function() {
+        let email = $(this).val().trim().toLowerCase();
+        let errorMsg = "";
+
+        // --- Basic checks ---
+        if (email === "") {
+            errorMsg = "Please enter your email.";
+        } else if (/@hotmail\.com$/.test(email) || /@icloud\.com$/.test(email)) {
+            errorMsg = "❌ Hotmail or iCloud emails are not allowed.";
+        }
+
+        if (errorMsg) {
+            showError(errorMsg);
+            return; // Stop here if basic validation failed
+        }
+
+        // --- AJAX check if email exists ---
+        $.ajax({
+            url: "ajaxadmin/check_email.php",
+            type: "POST",
+            dataType: "json",
+            data: { email: email },
+            success: function(response) {
+                if (response.error) {
+                    showError("⚠️ Server error: " + response.error);
+                } else if (response.exists) {
+                    showError("❌ This email already exists in the system.");
+                } else {
+                    clearError();
+                }
+            },
+            error: function() {
+                showError("⚠️ Could not connect to server.");
+            }
+        });
+    });
+
+    function showError(msg) {
+        $("#emailError").text(msg).show();
+        $("#adminnewemail").addClass("error");
+    }
+
+    function clearError() {
+        $("#emailError").hide();
+        $("#adminnewemail").removeClass("error");
+    }
 });

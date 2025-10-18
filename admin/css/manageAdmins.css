@@ -148,3 +148,63 @@ table tbody td{
     border: transparent;
     margin: 0 6px;
 }
+
+.conformnewadmin{
+    width: 40%;
+    margin: 30px auto;
+    padding: 16px 20px;
+    border-radius: 1px;
+    background: #F7F7F7;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.11), 5px 0 0 0 #22E012 inset;
+    text-align: center;
+    color: #22E012;
+    text-align: center;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px; /* 125% */
+}
+.newAdmin{
+    width: 60%;
+    margin: 30px auto;
+    padding: 38px 55px;
+    box-shadow: 0 1px 13px 0 rgba(0, 0, 0, 0.05);
+}
+.title{
+    margin-bottom: 46px;
+    color: var(--color-primary);
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 26px */
+    letter-spacing: 0.1px;
+    text-align: center;
+}
+.double{
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0;
+}
+.double input,.double select{
+    width: 48%;
+}
+.btncontrol{
+    margin-top: 47px;
+    text-align: center;
+}
+.btn-outboder{
+    padding: 16px 20px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    background-color: transparent;
+    margin-right: 20px;
+}
+.btn-inboder{
+    padding: 16px 20px;
+    border: transparent;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+}
