@@ -82,7 +82,7 @@ aside a.active svg path {
         </svg>
         Suppliers
     </a> -->
-    <a href="">
+    <a href="manageAdmins.php">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M8 14C8 13.4477 8.44772 13 9 13H15C15.5523 13 16 13.4477 16 14C16 14.5523 15.5523 15 15 15H9C8.44772 15 8 14.5523 8 14Z" fill="#667085"/>
             <path d="M9 9.5C8.44772 9.5 8 9.94772 8 10.5C8 11.0523 8.44772 11.5 9 11.5H15C15.5523 11.5 16 11.0523 16 10.5C16 9.94772 15.5523 9.5 15 9.5H9Z" fill="#667085"/>

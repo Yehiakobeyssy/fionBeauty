@@ -1,0 +1,150 @@
+main{
+    display: flex;
+}
+.container_info{
+    margin: 20px;
+    width: 100% ;
+}
+.btnaddnewaddmin{
+    margin: 30px 50px;
+    text-align: right;
+}
+.statistic{
+    width: 50%;
+    margin: 30px auto;
+    padding:  17px 30px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+} 
+.statiscticNumbers{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.statiscticNumbers label{
+    color: var(--color-icon);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.statiscticNumbers h6{
+    color: var(--color-dark);
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.duration-buttons{
+    border: 1px solid #eee;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+.filter_admin .filter-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter_admin label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.duration-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.duration-btn {
+    border: transparent;
+    background-color: transparent;
+    color: var(--color-icon);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.07px;
+    padding: 3px;
+    margin: 6px;
+}
+
+
+
+.duration-btn.active {
+    background-color:var(--color-primary);
+    color: var(--color-white);
+    border-radius: 6px;
+}
+
+.filter_admin input[type="text"],
+.filter_admin input[type="date"] {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 150px;
+}
+
+
+
+table{
+    margin: 30px 0;
+    width: 100%;
+}
+table thead{
+    background-color: var(--color-primary-variant);
+    color: var(--color-white);
+}
+table thead th{
+    padding: 18px 22px;
+}
+table tbody td{
+    padding: 18px 22px;
+    border-bottom: 1px solid #eee;
+}
+
+#paginationContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 14px 24px;
+}
+.pagination-info{
+    color: var(--color-icon);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: 0.07px;
+}
+.pagination-buttons button{
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: var(--color-primary);
+    border: transparent;
+    background-color: var(--color-icon);
+    margin: 0 6px;
+}
+.pagination-buttons .active{
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+#tblmanageAdmin button{
+    background-color: transparent;
+    border: transparent;
+    margin: 0 6px;
+}
