@@ -53,8 +53,10 @@ $(document).ready(function(){
                                 </svg>
                             </button>
                             <button class="btndelete" data-id="${a.adminID}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
-                                    <path d="M17.1667 4.64286H4.94449L6.0556 17.5H14.9445L16.0556 4.64286H3.83337M10.5 7.85714V14.2857M13.2778 7.85714L12.7223 14.2857M7.72226 7.85714L8.27782 14.2857M8.27782 4.64286L8.83337 2.5H12.1667L12.7223 4.64286" stroke="#E01212" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="10" fill="none" stroke="#E01212" stroke-width="1.8"/>
+                                    <line x1="8" y1="8" x2="16" y2="16" stroke="#E01212" stroke-width="1.8" stroke-linecap="round"/>
+                                    <line x1="16" y1="8" x2="8" y2="16" stroke="#E01212" stroke-width="1.8" stroke-linecap="round"/>
                                 </svg>
                             </button>
                         </td>
@@ -113,12 +115,12 @@ $(document).ready(function(){
 
     $(document).on('click','.btnedid',function(){
         let aid = $(this).data('id')
-        alert(aid);
+        location.href="manageAdmins.php?do=edid&adminId="+aid;
     })
 
     $(document).on('click','.btndelete',function(){
         let aid = $(this).data('id')
-        alert(aid);
+        location.href="manageAdmins.php?do=block&adminId="+aid;
     })
 
     $("#adminnewemail").on("blur", function() {

@@ -246,12 +246,236 @@
                         </form>
                     </div>
                 <?php
-                }elseif($do == 'edid'){
+                }elseif($do == 'edid'){?>
+                    <?php
+                        $adminId = isset($_GET['adminId'])?$_GET['adminId']:0;
+                        $checkadmin =  checkItem('adminID','tbladmin', $adminId);
+                        if($checkadmin == 0){
+                            echo '<script>location.href="manageAdmins.php"</script>';
+                        }
 
-                }elseif($do == 'block'){
+                        if (isset($_POST['btneditadmin'])) {
+                            $fName         = $_POST['fName'];
+                            $lName         = $_POST['lName'];
+                            $phoneNumber   = $_POST['phoneNumber'];
+                            $adminRole     = $_POST['adminRole'];
+                            $province      = $_POST['province'];
+                            $adminActive   = $_POST['adminActive'];
 
-                }elseif($do == 'delete'){
+                            $sql = $con->prepare("UPDATE tbladmin 
+                                                SET fName = ?, 
+                                                    lName = ?, 
+                                                    phoneNumber = ?, 
+                                                    adminRole = ?, 
+                                                    province = ?, 
+                                                    adminActive = ?
+                                                WHERE adminID = ?");
+                            $sql->execute([$fName, $lName, $phoneNumber, $adminRole, $province, $adminActive, $adminId]);
 
+                            
+                        }
+
+                        $sql = $con->prepare("SELECT * FROM tbladmin WHERE adminID = ?");
+                        $sql->execute([$adminId]);
+                        $admin = $sql->fetch();
+                    ?>
+
+                    <div class="newAdmin">
+                        <div class="title">
+                            <h4>Edit Admin</h4>
+                        </div>
+                        <form action="" method="post">
+                            <input type="hidden" name="adminId" value="<?php echo $admin['adminID']; ?>">
+
+                            <div class="double">
+                                <input type="text" name="fName" placeholder="First Name" value="<?php echo htmlspecialchars($admin['fName']); ?>" required>
+                                <input type="text" name="lName" placeholder="Last Name" value="<?php echo htmlspecialchars($admin['lName']); ?>" required>
+                            </div>
+
+                            <div class="double">
+                                <input type="text" name="phoneNumber" placeholder="Phone Number" value="<?php echo htmlspecialchars($admin['phoneNumber']); ?>">
+                                <input type="email" name="adminEmail" placeholder="Email" value="<?php echo htmlspecialchars($admin['adminEmail']); ?>" required disabled>
+                            </div>
+
+                            <div class="double">
+                                <select name="adminRole" required>
+                                    <option value="" disabled hidden>Role</option>
+                                    <?php
+                                        $sql = $con->prepare('SELECT adminRollId, adminRoll FROM tbladminroll');
+                                        $sql->execute();
+                                        $roles = $sql->fetchAll();
+                                        foreach ($roles as $role) {
+                                            $selected = ($role['adminRollId'] == $admin['adminRole']) ? 'selected' : '';
+                                            echo '<option value="'.$role['adminRollId'].'" '.$selected.'>'.$role['adminRoll'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+
+                                <select name="province" required>
+                                    <option value="" disabled hidden>Province</option>
+                                    <?php
+                                        $sql = $con->prepare('SELECT provinceID, provinceName FROM tblprovince ORDER BY provinceName');
+                                        $sql->execute();
+                                        $provinces = $sql->fetchAll();
+                                        foreach ($provinces as $province) {
+                                            $selected = ($province['provinceID'] == $admin['province']) ? 'selected' : '';
+                                            echo '<option value="'.$province['provinceID'].'" '.$selected.'>'.$province['provinceName'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="full">
+                                <select name="adminActive" required>
+                                    <option value="" disabled hidden>Select Status</option>
+                                    <option value="1" <?php echo ($admin['adminActive'] == 1 ? 'selected' : ''); ?>>Active</option>
+                                    <option value="0" <?php echo ($admin['adminActive'] == 0 ? 'selected' : ''); ?>>Inactive</option>
+                                </select>
+                            </div>
+
+                            <div class="btncontrol">
+                                <button type="reset" class="btn btn-outboder">Cancel</button>
+                                <button type="submit" class="btn btn-inboder" name="btneditadmin">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                <?php
+                }elseif($do == 'block'){?>
+                    <?php
+                        $adminId = isset($_GET['adminId']) ? $_GET['adminId'] : 0;
+                        $checkadmin = checkItem('adminID', 'tbladmin', $adminId);
+
+                        if ($checkadmin == 0) {
+                            echo '<script>location.href="manageAdmins.php"</script>';
+                            exit;
+                        }
+
+                        // Fetch admin current status
+                        $sql = $con->prepare('SELECT adminActive, admin_block, fName, lName FROM tbladmin WHERE adminID = ?');
+                        $sql->execute([$adminId]);
+                        $result = $sql->fetch();
+
+                        // Handle form submission
+                        if (isset($_POST['action'])) {
+                            $action = $_POST['action'];
+
+                            switch ($action) {
+                                case 'activate':
+                                    $sql = $con->prepare("UPDATE tbladmin SET adminActive = 1 WHERE adminID = ?");
+                                    $sql->execute([$adminId]);
+                                    $msg = "✅ Admin has been activated successfully.";
+                                    break;
+
+                                case 'deactivate':
+                                    $sql = $con->prepare("UPDATE tbladmin SET adminActive = 0 WHERE adminID = ?");
+                                    $sql->execute([$adminId]);
+                                    $msg = "⚠️ Admin has been deactivated.";
+                                    break;
+
+                                case 'block':
+                                    $sql = $con->prepare("UPDATE tbladmin SET admin_block = 1 WHERE adminID = ?");
+                                    $sql->execute([$adminId]);
+                                    $msg = "🚫 Admin has been blocked.";
+                                    break;
+
+                                case 'unblock':
+                                    $sql = $con->prepare("UPDATE tbladmin SET admin_block = 0 WHERE adminID = ?");
+                                    $sql->execute([$adminId]);
+                                    $msg = "✅ Admin has been unblocked.";
+                                    break;
+
+                                case 'cancel':
+                                    echo '<script>location.href="manageAdmins.php"</script>';
+                                    exit;
+                            }
+
+                            // Refresh to reflect changes
+                            echo '<div class="adminmsg">'.$msg.'</div>';
+                            echo '<script>
+                                    setTimeout(function(){
+                                        location.href = "manageAdmins.php";
+                                    }, 1000);
+                                </script>';
+                            $sql->execute([$adminId]);
+                            $sql = $con->prepare('SELECT adminActive, admin_block, fName, lName FROM tbladmin WHERE adminID = ?');
+                            $sql->execute([$adminId]);
+                            $result = $sql->fetch();
+                        }
+                    ?>
+
+                    <style>
+                        .admin-control-box {
+                            max-width: 500px;
+                            margin: 40px auto;
+                            background: #fff;
+                            padding: 30px;
+                            border-radius: 15px;
+                            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                            font-family: 'Arial', sans-serif;
+                            text-align: center;
+                        }
+                        .admin-control-box h3 {
+                            color: #333;
+                            margin-bottom: 20px;
+                        }
+                        .adminmsg {
+                            max-width: 500px;
+                            margin: 20px auto;
+                            background: #eafaf1;
+                            border-left: 5px solid #28a745;
+                            color: #155724;
+                            padding: 15px;
+                            border-radius: 8px;
+                            font-size: 15px;
+                            text-align: center;
+                        }
+                        .admin-control-box form button {
+                            border: none;
+                            padding: 12px 25px;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            font-size: 14px;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            margin: 10px;
+                        }
+                        .btn-green {
+                            background-color: #28a745;
+                            color: #fff;
+                        }
+                        .btn-red {
+                            background-color: #dc3545;
+                            color: #fff;
+                        }
+                        .btn-gray {
+                            background-color: #6c757d;
+                            color: #fff;
+                        }
+                        .btn-green:hover { background-color: #218838; }
+                        .btn-red:hover { background-color: #c82333; }
+                        .btn-gray:hover { background-color: #5a6268; }
+                    </style>
+
+                    <div class="admin-control-box">
+                        <h3>Manage Admin: <?php echo htmlspecialchars($result['fName'].' '.$result['lName']); ?></h3>
+
+                        <form method="post">
+                            <?php if ($result['adminActive'] == 0): ?>
+                                <button type="submit" name="action" value="activate" class="btn-green">Activate Admin</button>
+                            <?php else: ?>
+                                <button type="submit" name="action" value="deactivate" class="btn-red">Make Admin Inactive</button>
+                            <?php endif; ?>
+
+                            <?php if ($result['admin_block'] == 0): ?>
+                                <button type="submit" name="action" value="block" class="btn-red">Block Admin</button>
+                            <?php else: ?>
+                                <button type="submit" name="action" value="unblock" class="btn-green">Unblock Admin</button>
+                            <?php endif; ?>
+
+                            <button type="submit" name="action" value="cancel" class="btn-gray">Cancel</button>
+                        </form>
+                    </div>
+                <?php
                 }else{
                     echo '<script> location.href = "manageAdmins.php" </script>';
                 }
