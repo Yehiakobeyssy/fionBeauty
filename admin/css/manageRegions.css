@@ -1,0 +1,185 @@
+main{
+    display: flex;
+}
+.container_info {
+  margin: 20px;
+  width: 100%;
+}
+
+
+/* ============ Region Header ============ */
+.region-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.region-header h2 {
+  font-size: 1.25rem;
+  color: var(--color-dark);
+  font-weight: 600;
+}
+
+/* ============ Province Cards ============ */
+.province-card {
+  background: #f1f1f1; /* darker background for provinces */
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.province-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.province-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+
+.province-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+/* Province Buttons + Toggles Container */
+.province-controls {
+  display: flex;
+  align-items: center;
+  gap: 25px; /* more space between buttons and toggles */
+  flex-wrap: wrap;
+}
+
+.province-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.province-toggles {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.province-toggles div {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+/* ============ City List ============ */
+.city-list {
+  display: none;
+  margin-top: 12px;
+  padding-left: 20px;
+  border-left: 2px solid var(--color-primary);
+}
+
+/* ============ City Items ============ */
+.city-item {
+  background: var(--color-card);
+  padding: 10px 15px;
+  margin: 6px 0;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.city-item:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.city-name {
+  font-weight: 500;
+  color: var(--color-dark);
+}
+
+.city-toggles {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* ============ Buttons ============ */
+.btn-small {
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-small:hover {
+  background-color: var(--color-primary-variant);
+  transform: translateY(-1px);
+}
+
+/* ============ Toggle Switch ============ */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #d1d1d1;
+  transition: background-color 0.3s ease;
+  border-radius: 34px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.15);
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+/* Active (ON) State */
+input:checked + .slider {
+  background-color: #4cd964; /* iPhone green */
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* ============ Utility ============ */
+.no-cities {
+  padding: 8px;
+  color: var(--color-muted);
+  font-size: 14px;
+  font-style: italic;
+}
