@@ -1,41 +1,94 @@
-main{
-    display: flex;
+/* ===== Main Layout ===== */
+main {
+  display: flex;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica', sans-serif;
+  background: #f8f9fa;
 }
+
 .container_info {
-  margin: 20px;
+  margin: 30px;
   width: 100%;
 }
 
-
-/* ============ Region Header ============ */
+/* ===== Region Header ===== */
 .region-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 25px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e0e0;
 }
 
 .region-header h2 {
-  font-size: 1.25rem;
-  color: var(--color-dark);
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary); /* Dark gray */
+  font-family: Outfit;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
-/* ============ Province Cards ============ */
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 5px 10px;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-box:hover,
+.search-box:focus-within {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  background: transparent;
+  color: #111827;
+  width: 220px;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.btn-search {
+  background: var(--color-primary); /* Blue */
+  color:  var(--color-white);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-search:hover {
+  background: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+/* ===== Province Cards ===== */
 .province-card {
-  background: #f1f1f1; /* darker background for provinces */
-  border-radius: var(--radius);
-  padding: 16px 20px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 12px;
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  background: var(--color-white);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .province-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
 }
 
 .province-header {
@@ -47,96 +100,90 @@ main{
 }
 
 .province-name {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: var(--color-dark);
+  color:var(--color-dark);
 }
 
-/* Province Buttons + Toggles Container */
 .province-controls {
   display: flex;
   align-items: center;
-  gap: 25px; /* more space between buttons and toggles */
+  gap: 20px;
   flex-wrap: wrap;
 }
 
-.province-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.province-actions button {
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
+.province-actions .btn-small {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.province-actions .btn-small:hover {
+  background-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+/* ===== Province Toggles ===== */
 .province-toggles {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   align-items: center;
-  margin-top: 10px;
-}
-
-.province-toggles div {
+  margin-top: 12px;
   font-size: 14px;
-  color: var(--color-muted);
+  color: #6b7280;
 }
 
-/* ============ City List ============ */
+/* ===== City List ===== */
 .city-list {
   display: none;
-  margin-top: 12px;
-  padding-left: 20px;
+  margin-top: 15px;
+  padding-left: 24px;
   border-left: 2px solid var(--color-primary);
 }
 
-/* ============ City Items ============ */
+/* ===== City Items ===== */
 .city-item {
-  background: var(--color-card);
-  padding: 10px 15px;
-  margin: 6px 0;
+  background: #f9fafb;
+  padding: 12px 16px;
+  margin: 8px 0;
   border-radius: 10px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .city-item:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
 }
 
 .city-name {
   font-weight: 500;
-  color: var(--color-dark);
+  color: #111827;
 }
 
 .city-toggles {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
 }
 
-/* ============ Buttons ============ */
-.btn-small {
-  font-size: 13px;
-  padding: 5px 12px;
-  border-radius: 6px;
-  border: none;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn-small:hover {
-  background-color: var(--color-primary-variant);
-  transform: translateY(-1px);
-}
-
-/* ============ Toggle Switch ============ */
+/* ===== Toggle Switch ===== */
 .switch {
   position: relative;
   display: inline-block;
-  width: 46px;
-  height: 24px;
+  width: 50px;
+  height: 26px;
 }
 
 .switch input {
@@ -149,37 +196,113 @@ main{
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background-color: #d1d1d1;
-  transition: background-color 0.3s ease;
+  background-color: #d1d5db;
+  transition: 0.3s;
   border-radius: 34px;
-  box-shadow: 0 0 3px rgba(0,0,0,0.15);
 }
 
 .slider:before {
   content: "";
   position: absolute;
-  height: 18px;
-  width: 18px;
+  height: 20px;
+  width: 20px;
   left: 3px;
   bottom: 3px;
   background-color: #fff;
   border-radius: 50%;
-  transition: transform 0.3s ease;
+  transition: 0.3s;
 }
 
-/* Active (ON) State */
 input:checked + .slider {
-  background-color: #4cd964; /* iPhone green */
+  background-color: var(--color-primary); /* Modern green */
 }
 
 input:checked + .slider:before {
-  transform: translateX(22px);
+  transform: translateX(24px);
 }
 
-/* ============ Utility ============ */
+/* ===== Utility ===== */
 .no-cities {
-  padding: 8px;
-  color: var(--color-muted);
+  padding: 10px;
+  color: #6b7280;
   font-size: 14px;
   font-style: italic;
+}
+
+/* ===== Modal Styles ===== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  margin: 12% auto;
+  padding: 25px 30px;
+  border-radius: 14px;
+  width: 360px;
+  max-width: 90%;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.modal-content h3 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.modal-content input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.modal-content button:hover {
+  background-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.close {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

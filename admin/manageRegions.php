@@ -25,11 +25,25 @@
         <div class="container_info">
             <div class="region-header">
                 <h2>Manage Regions</h2>
+                <div class="search-box">
+                    <input type="text" id="searchRegion" placeholder="Search province or city..." />
+                    <button class="btn-search">
+                    <i class="fa fa-search"></i>
+                    </button>
+                </div>
                 <button class="btn btn-primary" id="addProvinceBtn">+ Add Province</button>
             </div>
             <div id="provinceList"></div>
         </div>
     </main>
+    <div id="popupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle">Title</h3>
+            <input type="text" id="modalInput" placeholder="Enter name..." />
+            <button id="modalSaveBtn" class="btn btn-primary">Save</button>
+        </div>
+    </div>
     <?php include '../common/jslinks.php'?>
     <script src="js/manageRegions.js"></script>
-</body>
+</body> 
