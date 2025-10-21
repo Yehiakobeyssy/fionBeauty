@@ -62,7 +62,23 @@ SELECT
         FROM tbldatailinvoice d
         INNER JOIN tblitems t ON d.itmID = t.itmID
         WHERE d.invoiceID = i.invoiceID
-    ) AS invoiceCommition
+    ) AS invoiceCommition,
+    (
+        SELECT t.itmName 
+        FROM tbldatailinvoice d
+        INNER JOIN tblitems t ON d.itmID = t.itmID
+        WHERE d.invoiceID = i.invoiceID
+        ORDER BY d.daitailInvoiceId  ASC
+        LIMIT 1
+    ) AS firstItemName,
+    (
+        SELECT t.mainpic 
+        FROM tbldatailinvoice d
+        INNER JOIN tblitems t ON d.itmID = t.itmID
+        WHERE d.invoiceID = i.invoiceID
+        ORDER BY d.daitailInvoiceId  ASC
+        LIMIT 1
+    ) AS firstItemPic
 FROM tblinvoice i
 INNER JOIN tblclient c ON i.clientID = c.clientID
 INNER JOIN tblstatus s ON i.invoiceStatus = s.statusID

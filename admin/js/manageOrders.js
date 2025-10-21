@@ -102,7 +102,7 @@ $(document).ready(function(){
                     <div class="product-text">
                         <div class="product-name">${order.firstItemName}</div>
                         <div class="product-count">+${order.totalItems - 1} more Items</div>
-                    </div>
+                    </div> 
                 </div>
                 `
                 : 'No products';
