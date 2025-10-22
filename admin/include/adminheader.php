@@ -195,7 +195,7 @@ letter-spacing: 0.07px;
       </svg>
       <div class="control" id="controlMenu">
         <a href="#">Change Password</a>
-        <a href="#">Logout</a>
+        <a href="ajaxadmin/logout.php">Logout</a>
       </div>
     </div>
   </div>
