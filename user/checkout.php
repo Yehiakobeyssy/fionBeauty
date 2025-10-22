@@ -96,20 +96,50 @@
                 </div>
                 <div class="cards_addresses">
                     <?php
-                        $sql= $con->prepare('SELECT addresseID ,NameAdd,phoneNumber,street,bultingNo,doorNo,poatalCode,cityName, provinceName
-                                            FROM tbladdresse
-                                            INNER JOIN tblcity ON tblcity.cityID = tbladdresse.cityID
-                                            INNER JOIN tblprovince ON tblprovince.provinceID = tbladdresse.provinceID
-                                            WHERE  userID = ? AND addActive = 1
-                                            ORDER BY mainAdd DESC');
+                        $sql = $con->prepare('
+                            SELECT 
+                                addresseID,
+                                NameAdd,
+                                phoneNumber,
+                                street,
+                                bultingNo,
+                                doorNo,
+                                poatalCode,
+                                cityName,
+                                provinceName,
+                                tblcity.is_deliverable AS city_deliverable,
+                                tblprovince.is_deliverable AS province_deliverable
+                            FROM tbladdresse
+                            INNER JOIN tblcity ON tblcity.cityID = tbladdresse.cityID
+                            INNER JOIN tblprovince ON tblprovince.provinceID = tbladdresse.provinceID
+                            WHERE userID = ? AND addActive = 1
+                            ORDER BY mainAdd DESC
+                        ');
                         $sql->execute([$user_id]);
                         $addresses = $sql->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($addresses as $i => $useradd){
-                            $checked = ($i === 0) ? 'checked' : ''; // first address = main
+
+                        foreach ($addresses as $i => $useradd) {
+                            // Check deliverability
+                            $deliverable = ($useradd['city_deliverable'] && $useradd['province_deliverable']);
+
+                            // If it's the first address and deliverable, make it checked
+                            $checked = ($i === 0 && $deliverable) ? 'checked' : '';
+
+                            // Disable selection if not deliverable
+                            $disabled = (!$deliverable) ? 'disabled' : '';
+
+                            // Message if not deliverable
+                            $message = '';
+                            if (!$deliverable) {
+                                $message = '<div class="not-deliverable">
+                                                ❌ This address cannot be shipped to..
+                                            </div>';
+                            }
+
                             echo '
-                                <div class="add">
+                                <div class="add '.(!$deliverable ? 'disabled-add' : '').'">
                                     <div class="generalinfo">
-                                        <input type="radio" name="choiceAdd" class="choiceAdd" value="'.$useradd['addresseID'].'" '.$checked.'>
+                                        <input type="radio" name="choiceAdd" class="choiceAdd" value="'.$useradd['addresseID'].'" '.$checked.' '.$disabled.'>
                                         <h5>'.$useradd['NameAdd'].'</h5>
                                         <span>'.$useradd['phoneNumber'].'</span>
                                     </div>
@@ -118,11 +148,13 @@
                                         <label>'.$useradd['cityName'].' - '.$useradd['provinceName'].'</label><br>
                                         <label>'.$useradd['poatalCode'].'</label>
                                     </div>
+                                    '.$message.'
                                 </div>
                             ';
                         }
                     ?>
                 </div>
+
                 <div class="addnewadd">
                     <div class="openformadd">
                         <h5 id="openform"><span>+</span> Add New Address</h5>
@@ -139,7 +171,7 @@
                                 <select name="provinceID" id="provinceSelect" required>
                                     <option value="0">SELECT ONE</option>
                                     <?php
-                                        $sql = $con->prepare('SELECT provinceID, provinceName FROM tblprovince WHERE provinceActive = 1');
+                                        $sql = $con->prepare('SELECT provinceID, provinceName FROM tblprovince WHERE provinceActive = 1 AND is_deliverable = 1');
                                         $sql->execute();
                                         $provinces = $sql->fetchAll(PDO::FETCH_ASSOC);
                                         foreach ($provinces as $pro) {

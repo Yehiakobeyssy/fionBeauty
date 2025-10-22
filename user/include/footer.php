@@ -126,7 +126,7 @@
 <footer>
     <div class="footer_logo">
         <img src="../images/logo_white.png" alt="" srcset="">
-        <label for="">fionBeauty</label>
+        <label for="">Fion Beauty Supplies</label>
     </div>
     <div class="support">
         <h4>Support</h4>
@@ -136,18 +136,18 @@
     </div>
     <div class="account_links">
         <h4>Account</h4>
-        <a href="">My Account</a>
-        <a href="">Login /Register</a>
-        <a href="">Cart</a>
+        <a href="dashboard.php">My Account</a>
+        <a href="../login.php">Login /Register</a>
+        <a href="../cart.php">Cart</a>
         <a href="">Wishlist</a>
-        <a href="">Shop</a>
+        <a href="../category.php">Shop</a>
     </div>
     <div class="quick_links">
         <h4>Quick Link</h4>
-        <a href="">Privacy Policy</a>
-        <a href="">Terms Of Use</a>
-        <a href="">FAQ</a>
-        <a href="">Contact</a>
+        <a href="privacy.php">Privacy Policy</a>
+        <a href="terms.php">Terms Of Use</a>
+        <a href="faq.php">FAQ</a>
+        <a href="contactus.php">Contact</a>
     </div>
     <div class="folowus">
         <h4>Follow Us</h4>

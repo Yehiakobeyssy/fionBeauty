@@ -179,3 +179,145 @@ font-weight: 400;
 line-height: normal;
 margin-left: 20px;
 }
+.not-deliverable {
+    background: #ffe6e6;
+    color: #b30000;
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+.not-deliverable a {
+    color: #b30000;
+    text-decoration: underline;
+}
+
+.disabled-add {
+    opacity: 0.6;
+    pointer-events: none; /* prevents clicking anywhere on it */
+}
+
+/* ============================= */
+/* 📱 Responsive Media Queries */
+/* ============================= */
+
+/* Tablets (max-width: 992px) */
+@media screen and (max-width: 992px) {
+    .order_information {
+        flex-direction: column;
+        width: 95%;
+        gap: 20px;
+    }
+
+    .order_summary {
+        width: 100%;
+    }
+
+    .addresses_info {
+        width: 100%;
+    }
+
+    .containerpayment {
+        width: 90%;
+    }
+
+    .cards_addresses {
+        grid-template-columns: 1fr; /* One per row */
+    }
+
+    .title_page h4 {
+        font-size: 26px;
+    }
+
+    .data_itm img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+/* Mobile devices (max-width: 768px) */
+@media screen and (max-width: 768px) {
+    .titleCatecory {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .order_information {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .addresses_info, 
+    .order_summary {
+        width: 100%;
+        margin: 0;
+    }
+
+    .cart_summary table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .data_itm {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .data_itm img {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+    }
+
+    .generalinfo h5 {
+        font-size: 16px;
+    }
+
+    .tile_summary h4 {
+        font-size: 18px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+
+/* Small phones (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    .title_page h4 {
+        font-size: 22px;
+    }
+
+    .payment_methods {
+        width: 95%;
+        margin: 30px auto;
+    }
+
+    .containerpayment {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .payment_option p {
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    .not-deliverable {
+        font-size: 12px;
+        padding: 6px;
+    }
+
+    .insite {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .double {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
