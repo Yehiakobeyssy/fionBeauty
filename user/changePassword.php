@@ -24,8 +24,29 @@
         include 'include/catecorysname.php';
     ?>
     <main>
+        <?php
+            $sql = $con->prepare('SELECT clientBlock FROM  tblclient WHERE clientID  = ?');
+            $sql->execute([$user_id]);
+            $result_block = $sql->fetch();
+            $isBlock = $result_block['clientBlock'];
+
+            if ($isBlock == 1) {
+                echo '
+                    <div class="alert alert-danger">
+                        <h2>OPPS! You are Blocked from Admin</h2>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            window.location.href = "../index.php";
+                        }, 2000);
+                    </script>
+                ';
+                exit(); // stop the rest of the page from executing
+            }
+        ?>
         <?php include 'include/aside.php' ?>
         <div class="sections_side">
+            
             <?php
                 if(isset($_POST['btnchange'])){
                     $oldPass= $_POST['txtoldPassword'];

@@ -56,6 +56,26 @@
         include 'include/clientheader.php';
         include 'include/catecorysname.php';
     ?>
+    <?php
+            $sql = $con->prepare('SELECT clientBlock FROM  tblclient WHERE clientID  = ?');
+            $sql->execute([$user_id]);
+            $result_block = $sql->fetch();
+            $isBlock = $result_block['clientBlock'];
+
+            if ($isBlock == 1) {
+                echo '
+                    <div class="alert alert-danger">
+                        <h2>OPPS! You are Blocked from Admin</h2>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            window.location.href = "../index.php";
+                        }, 2000);
+                    </script>
+                ';
+                exit(); // stop the rest of the page from executing
+            }
+    ?>
     <div class="titleCatecory">
         <div class="navbarsection">
             <h5>Home/ Cart /  <strong>Checkout</strong></h5>
