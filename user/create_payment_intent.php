@@ -9,6 +9,14 @@ $input = json_decode(file_get_contents("php://input"), true);
 $method = $input['method'] ?? 'card';
 
 // Calculate total amount (example using session cart)
+
+
+$sql=$con->prepare('SELECT taxPercent ,includeTax FROM  tblfinancesetting WHERE SettingID  = 1');
+$sql->execute();
+$fin= $sql->fetch();
+
+$includeTax =$fin['includeTax'];
+$taxper = $fin['taxPercent'];
 $total = 0;
 if(isset($_SESSION['cart'])){
     foreach($_SESSION['cart'] as $id => $qty){
@@ -18,7 +26,13 @@ if(isset($_SESSION['cart'])){
         if($item) $total += $item['sellPrice'] * $qty;
     }
 }
+if ($includeTax == 0) {
+    $total += $total * ($taxper / 100);
+}
+
+// Convert to cents for payment gateway
 $amount = (int)round($total * 100);
+
 
 $supportedMethods = ['card','klarna','afterpay_clearpay','paypal'];
 if(!in_array($method, $supportedMethods)) $method='card';

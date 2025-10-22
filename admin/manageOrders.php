@@ -147,12 +147,13 @@
                             header("Location: dashboard.php");
                             exit(); 
                         }else{
-                            $sql=$con->prepare('SELECT invoiceDate,invoiceCode FROM tblinvoice WHERE invoiceID  = ? ');
+                            $sql=$con->prepare('SELECT invoiceDate,invoiceCode,invoiceStatus	 FROM tblinvoice WHERE invoiceID  = ? ');
                             $sql->execute([$orderID]);
                             $result=$sql->fetch();
                             $dateInvoice = $result['invoiceDate'];
                             $formatdate =  date("j F, Y", strtotime($dateInvoice));
                             $invoiceCode = $result['invoiceCode'];
+                            $invStat = $result['invoiceStatus'];
 
                             $sql= $con->prepare('SELECT COUNT(daitailInvoiceId) AS items FROM tbldatailinvoice WHERE invoiceID = ?');
                             $sql->execute([$orderID]);
@@ -164,6 +165,24 @@
                     <div class="title_section">
                         <h3>Order Details</h3>
                         <span><?= $formatdate .' - ' . '('. $items .'Products )'?></span>
+                        <div class="status">
+                            <label for="">Current Status :</label>
+                            <select name="" id="updateinvoice" data-index="<?=$orderID?>" <?= ($invStat == 6) ? 'disabled' : '' ?>>
+                                <?php
+                                    $sql=$con->prepare('SELECT statusID ,statusName FROM  tblstatus ');
+                                    $sql->execute();
+                                    $statuses = $sql->fetchAll();
+                                    foreach ($statuses as $sta){
+                                        if($sta['statusID'] ==  $invStat ){
+                                            echo '<option value="'.$sta['statusID'] .'" selected>'.$sta['statusName'] .'</option>';
+                                        }else{
+                                            echo '<option value="'.$sta['statusID'] .'" >'.$sta['statusName'] .'</option>';
+                                        }
+                                        
+                                    }
+                                ?>
+                            </select>
+                        </div>
                         <a href="manageOrders.php">Back to List</a>
                     </div>
                     <div class="invoice_info">
@@ -326,7 +345,7 @@
                     </div>
                     <div class="daitail_invoice">
                         <?php
-                            $sql= $con->prepare('SELECT quantity,up,itmName,mainpic,tblitemstatus.Status AS st
+                            $sql= $con->prepare('SELECT daitailInvoiceId,quantity,up,itmName,mainpic,tblitemstatus.Status AS st
                                                 FROM tbldatailinvoice 
                                                 INNER JOIN tblitems ON tblitems.itmId  =  tbldatailinvoice.itmID
                                                 INNER JOIN tblitemstatus ON tblitemstatus.StatusID  =  tbldatailinvoice.status
@@ -342,6 +361,7 @@
                                 <th>Quantity</th>
                                 <th>Subtotal</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </thead>
                             <tbody>
                                 <?php foreach ($items as $itm): 
@@ -363,6 +383,33 @@
                                         <td>x <?= $itm['quantity'] ?></td>
                                         <td><?= number_format($itm['up']*$itm['quantity'],2) ?> $</td>
                                         <td><span class="<?= $style ?>"><?= $itm['st']?></span></td>
+                                        <td>
+                                            <?php if ($itm['st'] != 'Refound'): ?>
+                                            <button class="btn_status" data-invoice="<?= $itm['daitailInvoiceId'] ?>" data-status="1" title="In stock">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <circle cx="12" cy="12" r="11.25" stroke="#16A34A" stroke-width="1.5"/>
+                                                    <path d="M8 12l3 3 5-5" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                            <button class="btn_status" data-invoice="<?= $itm['daitailInvoiceId'] ?>" data-status="2" title="Out of stock">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <g clip-path="url(#clip0)">
+                                                    <path d="M8 16L12 12M16 8L12 12M12 12L8 8M12 12L16 16" stroke="#E01212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <circle cx="12" cy="12" r="11.25" stroke="#E01212" stroke-width="1.5"/>
+                                                    </g>
+                                                    <defs>
+                                                    <clipPath id="clip0"><rect width="24" height="24" fill="white"/></clipPath>
+                                                    </defs>
+                                                </svg>
+                                            </button>
+
+                                            <button class="btn_status" data-invoice="<?= $itm['daitailInvoiceId'] ?>" data-status="3" title="Refund">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <circle cx="12" cy="12" r="11.25" stroke="#F59E0B" stroke-width="1.5"/>
+                                                <path d="M12 8v4l3 3" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            </button>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

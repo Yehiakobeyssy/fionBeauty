@@ -423,3 +423,8 @@ td{
     border-radius: 15px;
     margin-right: 8px;
 }
+.daitail_invoice button{
+    border: transparent;
+    background-color: transparent;
+    margin: 0 6px;
+}

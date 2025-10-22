@@ -173,5 +173,84 @@ $(document).ready(function(){
             window.location.href = `manageOrders.php?do=order&orderID=${orderID}`;
         }
     });
+
+    $(document).on('click', '.btn_status', function() {
+    var id = $(this).data('invoice');
+    var status = $(this).data('status');
+
+    if (status == 3) {
+        // Ask PHP for refund amount before confirming
+        $.ajax({
+            url: 'ajaxadmin/update_status_item.php',
+            type: 'POST',
+            data: { daitailInvoiceId: id, status: status, checkOnly: 1 }, // flag to only get amount
+            success: function(response) {
+                var data = JSON.parse(response);
+                if (data.success) {
+                    var amount = parseFloat(data.amount);
+                    if (confirm('The refund amount will be $' + amount.toFixed(2) + '. Are you sure?')) {
+                        // User confirmed, now actually update status and process refund
+                        updateStatus(id, status);
+                    }
+                } else {
+                    alert('Error fetching refund amount.');
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    } else {
+        // Other statuses just update
+        updateStatus(id, status);
+    }
+});
+
+function updateStatus(id, status) {
+    $.ajax({
+        url: 'ajaxadmin/update_status_item.php',
+        type: 'POST',
+        data: { daitailInvoiceId: id, status: status },
+        success: function(response) {
+            console.log(response);
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            alert('Error: ' + error);
+        }
+    });
+}
+
+
+    //updateinvoice
+    $(document).on('change', '#updateinvoice', function() {
+        var id = $(this).data('index');
+        var status = $(this).val();
+
+        // Check if status is 6 (refund)
+        if (status == 6) {
+            var confirmRefund = confirm('This will refund the money. Are you sure?');
+            if (!confirmRefund) {
+                // If user cancels, reset the select to previous value
+                $(this).val($(this).data('prev')); // optional: store previous value in data-prev
+                return; // stop the ajax
+            }
+        }
+
+        $.ajax({
+            url: 'ajaxadmin/update_status_inv.php',
+            type: 'POST',
+            data: { InvoiceId: id, status: status },
+            success: function(response) {
+                console.log(response); // debug
+                location.reload(); // refresh page after update
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    });
+
+
 });
 
