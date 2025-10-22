@@ -136,32 +136,26 @@
                         <div class="double">
                             <div class="insite">
                                 <label for="">Province</label>
-                                <select name="provinceID" id="">
+                                <select name="provinceID" id="provinceSelect" required>
                                     <option value="0">SELECT ONE</option>
                                     <?php
-                                        $sql= $con->prepare('SELECT provinceID , provinceName FROM  tblprovince');
+                                        $sql = $con->prepare('SELECT provinceID, provinceName FROM tblprovince WHERE provinceActive = 1');
                                         $sql->execute();
-                                        $provicnces = $sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach ($provicnces as $pro){
+                                        $provinces = $sql->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($provinces as $pro) {
                                             echo '<option value="'.$pro['provinceID'].'">'.$pro['provinceName'].'</option>';
                                         }
                                     ?>
                                 </select>
                             </div>
+
                             <div class="insite">
                                 <label for="">City</label>
-                                <select name="cityID" id="" required>
+                                <select name="cityID" id="citySelect" required>
                                     <option value="">SELECT ONE</option>
-                                    <?php 
-                                        $sql= $con->prepare('SELECT cityID ,cityName FROM tblcity');
-                                        $sql->execute();
-                                        $citys =$sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach($citys as $city){
-                                            echo '<option value="'.$city['cityID'].'">'.$city['cityName'].'</option>';
-                                        }
-                                    ?>
                                 </select>
                             </div>
+
                             <div class="insite">
                                 <label for="">Postal Code</label>
                                 <input type="text" name="poatalCode" id="" required>
@@ -433,5 +427,50 @@
             });
         }
 
+
+        $('#provinceSelect').on('change', function() {
+            const provinceID = $(this).val();
+
+            if (provinceID == 0) {
+                $('#citySelect').html('<option value="">SELECT ONE</option>');
+                return;
+            }
+
+            $.ajax({
+                url: 'ajaxuser/getCities.php',
+                type: 'POST',
+                data: { provinceID },
+                dataType: 'json',
+                success: function(response) {
+                    let options = '<option value="">SELECT ONE</option>';
+                    if (response.length > 0) {
+                        $.each(response, function(index, city) {
+                            options += `<option value="${city.cityID}">${city.cityName}</option>`;
+                        });
+                    } else {
+                        options += '<option value="">No cities available</option>';
+                    }
+                    $('#citySelect').html(options);
+                }
+            });
+        });
+
+        // 🔹 (Optional) When City changes → auto-select its province
+        $('#citySelect').on('change', function() {
+            const cityID = $(this).val();
+            if (cityID === "") return;
+
+            $.ajax({
+                url: 'ajaxuser/getProvinceByCity.php',
+                type: 'POST',
+                data: { cityID },
+                dataType: 'json',
+                success: function(response) {
+                    if (response && response.provinceID) {
+                        $('#provinceSelect').val(response.provinceID);
+                    }
+                }
+            });
+        });
     </script>
 </body>

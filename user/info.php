@@ -262,31 +262,24 @@
                         </div>
                         <div class="double">
                             <div class="insite">
-                                <label for="">Province</label>
-                                <select name="provinceID" id="">
+                                <label>Province</label>
+                                <select name="provinceID" id="provinceSelect">
                                     <option value="0">SELECT ONE</option>
                                     <?php
-                                        $sql= $con->prepare('SELECT provinceID , provinceName FROM  tblprovince');
+                                        $sql = $con->prepare('SELECT provinceID , provinceName FROM tblprovince WHERE provinceActive = 1');
                                         $sql->execute();
-                                        $provicnces = $sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach ($provicnces as $pro){
+                                        $provinces = $sql->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($provinces as $pro) {
                                             echo '<option value="'.$pro['provinceID'].'">'.$pro['provinceName'].'</option>';
                                         }
                                     ?>
                                 </select>
                             </div>
+
                             <div class="insite">
-                                <label for="">City</label>
-                                <select name="cityID" id="" required>
+                                <label>City</label>
+                                <select name="cityID" id="citySelect" required>
                                     <option value="">SELECT ONE</option>
-                                    <?php 
-                                        $sql= $con->prepare('SELECT cityID ,cityName FROM tblcity');
-                                        $sql->execute();
-                                        $citys =$sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach($citys as $city){
-                                            echo '<option value="'.$city['cityID'].'">'.$city['cityName'].'</option>';
-                                        }
-                                    ?>
                                 </select>
                             </div>
                             <div class="insite">
@@ -357,6 +350,7 @@
                             echo '<div class="alert alert-success"> The address save successfuly</div>';
                         }
                     ?>
+                    <script src="js/info.js"></script>
                 <?php
                 }elseif($do=='edidAdd'){?>
                     <?php
@@ -391,34 +385,42 @@
                         <div class="double">
                             <div class="insite">
                                 <label for="">Province</label>
-                                <select name="provinceID" required>
+                                <select name="provinceID" id="provinceSelect" required>
                                     <option value="0">SELECT ONE</option>
                                     <?php
-                                        $sql= $con->prepare('SELECT provinceID , provinceName FROM  tblprovince');
+                                        $sql = $con->prepare('SELECT provinceID , provinceName FROM tblprovince WHERE provinceActive = 1');
                                         $sql->execute();
-                                        $provicnces = $sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach ($provicnces as $pro){
-                                            $sel = (isset($result_add) && $result_add['provinceID']==$pro['provinceID'])?"selected":"";
+                                        $provinces = $sql->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($provinces as $pro) {
+                                            $sel = (isset($result_add) && $result_add['provinceID'] == $pro['provinceID']) ? "selected" : "";
                                             echo '<option value="'.$pro['provinceID'].'" '.$sel.'>'.$pro['provinceName'].'</option>';
                                         }
                                     ?>
                                 </select>
                             </div>
+
                             <div class="insite">
                                 <label for="">City</label>
-                                <select name="cityID" required>
+                                <select name="cityID" id="citySelect" required>
                                     <option value="">SELECT ONE</option>
-                                    <?php 
-                                        $sql= $con->prepare('SELECT cityID ,cityName FROM tblcity');
-                                        $sql->execute();
-                                        $citys =$sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach($citys as $city){
-                                            $sel = (isset($result_add) && $result_add['cityID']==$city['cityID'])?"selected":"";
+                                    <?php
+                                        // If it's edit mode, load cities from the selected province only
+                                        if (isset($result_add)) {
+                                            $sql = $con->prepare('SELECT cityID, cityName FROM tblcity WHERE cityactive = 1 AND provinceID = ?');
+                                            $sql->execute([$result_add['provinceID']]);
+                                        } else {
+                                            $sql = $con->prepare('SELECT cityID, cityName FROM tblcity WHERE cityactive = 1 LIMIT 0');
+                                            $sql->execute();
+                                        }
+                                        $cities = $sql->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($cities as $city) {
+                                            $sel = (isset($result_add) && $result_add['cityID'] == $city['cityID']) ? "selected" : "";
                                             echo '<option value="'.$city['cityID'].'" '.$sel.'>'.$city['cityName'].'</option>';
                                         }
                                     ?>
                                 </select>
                             </div>
+
                             <div class="insite">
                                 <label for="">Postal Code</label>
                                 <input type="text" name="poatalCode" value="<?=isset($result_add)?$result_add['poatalCode']:''?>" required>
@@ -490,8 +492,62 @@
                             }
                         }
                     ?>
+                    <script>
+                    $(document).ready(function() {
+                        // 🔹 Province change → load related cities
+                        $('#provinceSelect').on('change', function() {
+                            const provinceID = $(this).val();
 
-                <?php
+                            if (provinceID == 0) {
+                                $('#citySelect').html('<option value="">SELECT ONE</option>');
+                                return;
+                            }
+
+                            $.ajax({
+                                url: 'ajaxuser/getCities.php',
+                                type: 'POST',
+                                data: { provinceID },
+                                dataType: 'json',
+                                success: function(response) {
+                                    let options = '<option value="">SELECT ONE</option>';
+                                    if (response.length > 0) {
+                                        $.each(response, function(index, city) {
+                                            options += `<option value="${city.cityID}">${city.cityName}</option>`;
+                                        });
+                                    } else {
+                                        options += '<option value="">No cities found</option>';
+                                    }
+                                    $('#citySelect').html(options);
+                                }
+                            });
+                        });
+
+                        // 🔹 Auto-load correct cities on page load (Edit Mode)
+                        const selectedProvince = $('#provinceSelect').val();
+                        const selectedCity = "<?= isset($result_add) ? $result_add['cityID'] : '' ?>";
+
+                        if (selectedProvince && selectedProvince != "0") {
+                            $.ajax({
+                                url: 'ajaxuser/getCities.php',
+                                type: 'POST',
+                                data: { provinceID: selectedProvince },
+                                dataType: 'json',
+                                success: function(response) {
+                                    let options = '<option value="">SELECT ONE</option>';
+                                    if (response.length > 0) {
+                                        $.each(response, function(index, city) {
+                                            const sel = (city.cityID == selectedCity) ? "selected" : "";
+                                            options += `<option value="${city.cityID}" ${sel}>${city.cityName}</option>`;
+                                        });
+                                    }
+                                    $('#citySelect').html(options);
+                                }
+                            });
+                        }
+                    });
+                    </script>
+
+                <?php   
                 }elseif($do=='deleteAdd'){
                     if (!isset($_GET['idadd'])) {
                         echo '<script>location.href="info.php"</script>';
