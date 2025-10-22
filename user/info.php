@@ -149,6 +149,7 @@
                     <div class="personal_info">
                         <div class="title">
                             <h4>Account Settings</h4>
+                            <a href="changePassword.php">Change Password</a>
                         </div>
                         <?php
                             $sql= $con->prepare('SELECT clientFname,clientLname,clientPhoneNumber,clientEmail,profession,certificate 
