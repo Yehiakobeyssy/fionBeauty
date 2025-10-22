@@ -58,19 +58,28 @@ $(document).ready(function() {
     }
 
     function drawChart() {
-        console.log("📊 Loading chart for", timeinterval, "days");
+    console.log("📊 Loading chart for", timeinterval, "days");
 
-        $.ajax({
-            url: 'ajaxadmin/overvieworders.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { days: timeinterval },
-            success: function(data) {
-                console.log("✅ Chart data received:", data);
+    $.ajax({
+        url: 'ajaxadmin/overvieworders.php',
+        type: 'POST',
+        dataType: 'json',
+        data: { days: timeinterval },
+        success: function (data) {
+            console.log("✅ Chart data received:", data);
 
-                if (!Array.isArray(data) || data.length === 0) {
-                    $('#chart_div').html('<div style="text-align:center;padding:20px;">No data available</div>');
-                    return;
+            // Check if valid array
+            if (!Array.isArray(data) || data.length < 2) {
+                $('#chart_div').html('<div style="text-align:center;padding:20px;">No data available</div>');
+                return;
+            }
+
+            try {
+                // Ensure numeric conversion (skip header row)
+                for (let i = 1; i < data.length; i++) {
+                    for (let j = 1; j < data[i].length; j++) {
+                        data[i][j] = parseFloat(data[i][j]) || 0;
+                    }
                 }
 
                 var dataTable = google.visualization.arrayToDataTable(data);
@@ -86,13 +95,19 @@ $(document).ready(function() {
 
                 var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
                 chart.draw(dataTable, options);
-            },
-            error: function(xhr, status, error) {
-                console.error("❌ AJAX error:", error);
-                console.log("Response:", xhr.responseText);
+            } catch (err) {
+                console.error("⚠️ Chart drawing error:", err);
+                $('#chart_div').html('<div style="text-align:center;padding:20px;">Invalid data format for chart</div>');
             }
-        });
-    }
+        },
+        error: function (xhr, status, error) {
+            console.error("❌ AJAX error:", error);
+            console.log("Response:", xhr.responseText);
+            $('#chart_div').html('<div style="text-align:center;padding:20px;">Error loading chart data</div>');
+        }
+    });
+}
+
 
     function drawChart1() {
         console.log("📦 Loading top categories for", timeinterval, "days");
