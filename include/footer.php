@@ -174,5 +174,5 @@
     </div>
 </footer>
 <div class="footer1">
-     &copy; Copyright Fion Beauty 2025. All right reserved
+     &copy; Copyright Fion Beauty Supplies 2025. All right reserved
 </div>

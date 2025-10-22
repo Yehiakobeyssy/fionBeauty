@@ -165,7 +165,7 @@ letter-spacing: 0.07px;
 <header>
   <div class="logo">
     <img src="../images/logo.png" alt="">
-    <label>Fion Beauty</label>
+    <label>Fion Beauty Supplies</label>
   </div>
   <div class="notification">
     <!-- Notification Icon -->

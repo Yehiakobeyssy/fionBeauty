@@ -133,7 +133,7 @@
 
                                     include '../mail.php';
 
-                                    $mail->setFrom($applicationemail, 'Fion Beauty'); // Sender
+                                    $mail->setFrom($applicationemail, 'Fion Beauty Supplies'); // Sender
                                     $mail->addAddress($adminEmail);                    // Receiver
                                     $mail->Subject = 'You’ve Been Added as an Admin at Fion Beauty Supplies 💚';
 

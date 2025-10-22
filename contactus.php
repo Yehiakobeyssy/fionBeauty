@@ -30,7 +30,7 @@
 
 
                 //Recipients
-                $mail->setFrom($applicationemail, 'Fion Beauty'); // Sender
+                $mail->setFrom($applicationemail, 'Fion Beauty Supplies'); // Sender
                 $mail->addAddress($sendetto);              // Receiver
 
                 //Content

@@ -296,7 +296,7 @@
 <div class="navbarcompany">
     <div class="companylogo">
         <img src="../images/logo.png" alt="" srcset="">
-        <label for="">Fion Beauty</label>
+        <label for="">Fion Beauty Supplies</label>
     </div>
     <div class="nav_user">
         <ul>
@@ -409,7 +409,7 @@
 <div class="popupnavbar">
     <div class="title">
         <img src="../images/logo.png" alt="" srcset="">
-        <label for="">Fion Beauty</label>
+        <label for="">Fion Beauty Supplies</label>
     </div>
     <div class="nav_user_pop">
         <ul>

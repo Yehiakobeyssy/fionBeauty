@@ -120,7 +120,7 @@ foreach ($_SESSION['cart'] as $id => $qty) {
 }
 
 // Send email
-$mail->setFrom($applicationemail, 'Fion Beauty');
+$mail->setFrom($applicationemail, 'Fion Beauty Supplies');
 $mail->addAddress($user_email);
 $mail->Subject = "Order Confirmation - {$invoiceCode}";
 $mail->isHTML(true);
@@ -131,7 +131,7 @@ $mail->Body = "
     <!-- Header -->
     <div style='background-color: #009245; color: #fff; padding: 20px; text-align: center;'>
         <img src='".$websiteaddresse."images/logo_white.png' alt='Fion Beauty' style='max-height: 50px; margin-bottom: 10px;'>
-        <h1 style='margin: 0; font-size: 24px;'>Fion Beauty</h1>
+        <h1 style='margin: 0; font-size: 24px;'>Fion Beauty Supplies</h1>
     </div>
 
     <!-- Greeting -->
@@ -174,7 +174,7 @@ $mail->Body = "
             <hr style='margin: 30px 0; border: none; border-top: 1px solid #eee;'>
 
             <p style='font-size: 13px; color: #999; text-align: center; margin: 0;'>
-                © " . date('Y') . " Fion Beauty. All rights reserved.<br>
+                © " . date('Y') . " Fion Beauty Supplies. All rights reserved.<br>
                 This is an automated message — please do not reply directly.
             </p>
         </div>

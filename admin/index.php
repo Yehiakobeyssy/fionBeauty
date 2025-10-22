@@ -15,7 +15,7 @@
 <body>
     <header>
         <img src="../images/logo.png" alt="">
-        <h3>Fion Beauty</h3>
+        <h3>Fion Beauty Supplies</h3>
     </header>
     <main>
         <div class="container_frm">

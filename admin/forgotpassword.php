@@ -14,7 +14,7 @@
 <body>
     <header>
         <img src="../images/logo.png" alt="">
-        <h3>Fion Beauty</h3>
+        <h3>Fion Beauty Supplies</h3>
     </header>
     <main>
     <?php
@@ -45,7 +45,7 @@
 
                             include '../mail.php';
 
-                            $mail->setFrom($applicationemail, 'Fion Beauty'); // Sender
+                            $mail->setFrom($applicationemail, 'Fion Beauty Supplies'); // Sender
                             $mail->addAddress($emailsend);                    // Receiver
                             $mail->Subject = '🔒 Password Reset Request';
 
@@ -55,13 +55,13 @@
                             $resetLink = $websiteaddresse.'admin/forgotpassword.php?do=newPassword&token='.$token;
                             $mail->Body = "
                                 <p>Hello,</p>
-                                <p>We received a request to reset your Fion Beauty admin account password.</p>
+                                <p>We received a request to reset your Fion Beauty Supplies admin account password.</p>
                                 <p>If you made this request, please click the link below to create a new password:</p>
                                 <p><a href='$resetLink' target='_blank' style='color:#007bff;'>Reset Your Password</a></p>
                                 <p>This link will expire in 30 minutes for your security.</p>
                                 <p>If you didn’t request a password reset, please ignore this message — your account will remain secure.</p>
                                 <br>
-                                <p>Best regards,<br>Fion Beauty Security Team</p>
+                                <p>Best regards,<br>Fion Beauty Supplies Security Team</p>
                             ";
 
                             if($mail->send()){

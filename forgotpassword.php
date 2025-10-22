@@ -54,7 +54,7 @@
                                 
                                 include 'mail.php';
 
-                                $mail->setFrom($applicationemail, 'Fion Beauty'); // Sender
+                                $mail->setFrom($applicationemail, 'Fion Beauty Supplies'); // Sender
                                 $mail->addAddress($email);              // Receiver
                                 $mail->Subject = 'Reset Password';
 
