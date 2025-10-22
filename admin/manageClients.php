@@ -24,6 +24,26 @@
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
+    <?php
+            $sql = $con->prepare('SELECT admin_block FROM  tbladmin WHERE adminID   = ?');
+            $sql->execute([$admin_id]);
+            $result_block = $sql->fetch();
+            $isBlock = $result_block['admin_block'];
+
+            if ($isBlock == 1) {
+                echo '
+                    <div class="alert alert-danger">
+                        <h2>OPPS! You are Blocked from Admin</h2>
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            window.location.href = "../index.php";
+                        }, 2000);
+                    </script>
+                ';
+                exit(); // stop the rest of the page from executing
+            }
+        ?>
     <main>
         <?php include 'include/adminaside.php'?>
         <div class="container_info">
