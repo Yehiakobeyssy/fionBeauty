@@ -483,5 +483,5 @@
         </div>
     </main>
     <?php include '../common/jslinks.php'?>
-    <script src="js/manageAdmins.js"></script>
+    <script src="js/manageAdmins.js?v=1.1"></script>
 </body>

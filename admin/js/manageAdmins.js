@@ -31,6 +31,15 @@ $(document).ready(function(){
             html = `<tr><td colspan="5" style="text-align:center;">No admins found</td></tr>`;
         } else {
             admins.forEach(a => {
+                let adminstatus = '';
+                if (a.statusText === 'Active') {
+                    adminstatus = 'alert alert-success';
+                } else if (a.statusText === 'Inactive') {
+                    adminstatus = 'alert alert-danger';
+                } else {
+                    adminstatus = 'alert alert-warning';
+                }
+
                 html += `
                     <tr>
                         <td>
@@ -41,10 +50,9 @@ $(document).ready(function(){
                         <td>${a.formattedDate}</td>
                         <td>${a.adminRoll ?? '-'}</td>
                         <td>
-                            <div class="${a.statusClass}" style="padding:3px 6px;border-radius:5px;display:inline-block;">
+                            <span class="${adminstatus}">
                                 ${a.statusText}
-                            </div>
-                            ${a.blockText ? `<div class="${a.blockClass}" style="padding:3px 6px;border-radius:5px;display:inline-block;margin-top:3px;">${a.blockText}</div>` : ''}
+                            </span>
                         </td>
                         <td>
                             <button class="btnedid" data-id="${a.adminID}">
@@ -62,9 +70,12 @@ $(document).ready(function(){
                         </td>
                     </tr>
                 `;
+
+
             });
         }
         $('#tblmanageAdmin').html(html);
+        
     }
 
     function renderAdminsPagination(totalRecords, currentPage) {
