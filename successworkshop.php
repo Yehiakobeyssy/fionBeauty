@@ -66,8 +66,8 @@ if ($status === 'succeeded') {
     $invoiceCode = "WSINV" . str_pad($count, 4, '0', STR_PAD_LEFT) . '-' . $user_id . $year;
 
     // Insert invoice record
-    $stmt = $con->prepare('INSERT INTO tblinvoiceworkshop (clientID, invoiceDate, totalAmount, transactionID, method, status) VALUES (?, NOW(), ?, ?, ?, ?)');
-    $stmt->execute([$user_id, $amount, $intent_id, $paymentMethod, 1]);
+    $stmt = $con->prepare('INSERT INTO tblinvoiceworkshop (invoiceCode,clientID, invoiceDate, totalAmount, transactionID, method, status) VALUES (?,?, NOW(), ?, ?, ?, ?)');
+    $stmt->execute([$invoiceCode,$user_id, $amount, $intent_id, $paymentMethod, 1]);
     $invoiceID = $con->lastInsertId();
 
     $itemsHtml = '';
@@ -127,7 +127,7 @@ if ($status === 'succeeded') {
             </table>
             <p style='font-weight:bold; font-size:18px; margin-top:20px;'>Grand Total: \${$amount}</p>
             <p>Invoice Number: {$invoiceCode}</p>
-            <p>If you have questions, contact <a href='mailto:info@yourdomain.com'>info@yourdomain.com</a>.</p>
+            <p>If you have questions, contact <a href='mailto:info@fionbeautysupplies.ca'>info@fionbeautysupplies.ca</a>.</p>
         </div>
     </div>
     ";

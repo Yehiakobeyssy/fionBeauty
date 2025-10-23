@@ -121,6 +121,28 @@ aside ul li.active a svg {
         Order History
       </a>
     </li>
+    <li data-page="traininghistory.php">
+        <a href="traininghistory.php">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#CCCCCC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <!-- Makeup Brush -->
+              <path d="M2 22l2-2 6-6 2 2-6 6-2 2z"/>
+              <path d="M14.5 5.5l4 4"/>
+              <path d="M16 2c1.333 1.333 2 3 2 3s-1.667.667-3 2"/>
+                                
+              <!-- Palette -->
+              <circle cx="17" cy="17" r="3"/>
+              <circle cx="19" cy="14" r="1"/>
+              <circle cx="15" cy="16" r="1"/>
+              <circle cx="18" cy="19" r="1"/>
+                                
+                                <!-- Lipstick -->
+              <rect x="7" y="4" width="2" height="6" rx="0.5"/>
+              <path d="M7 4l1-2 1 2"/>
+          </svg>
+          <span>Training</span>
+      </a>
+
+  </li>
     <li data-page="wishlist.php">
       <a href="">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20">
