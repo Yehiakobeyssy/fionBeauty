@@ -7,6 +7,7 @@ require '../vendor/autoload.php';
 
 $input = json_decode(file_get_contents("php://input"), true);
 $method = $input['method'] ?? 'card';
+$shipfee = isset($_SESSION['order_info']['shipfee']) ? floatval($_SESSION['order_info']['shipfee']) : 0;
 
 // Calculate total amount (example using session cart)
 
@@ -29,7 +30,7 @@ if(isset($_SESSION['cart'])){
 if ($includeTax == 0) {
     $total += $total * ($taxper / 100);
 }
-
+$total+=$shipfee;
 // Convert to cents for payment gateway
 $amount = (int)round($total * 100);
 

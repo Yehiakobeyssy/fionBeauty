@@ -11,6 +11,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $code = htmlspecialchars($row['provinceCode']);
     $is_deliverable = (int)$row['is_deliverable'];
     $active = (int)$row['provinceActive'];
+    $shippingFee = number_format((float)$row['shippingFee'], 2);
 
     $deliverLabel = $is_deliverable 
         ? "<span style='color:green;font-size:12px;'>Deliverable</span>" 
@@ -23,12 +24,13 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     <div class='province-card'>
       <div class='province-header' data-id='{$id}'>
         <div>
-          <strong class='province-name'>{$name}</strong> <small>({$code})</small>
+          <strong class='province-name'>{$name}</strong> 
+          &nbsp; Shipping Fee: <strong>\${$shippingFee}</strong>
           &nbsp; {$deliverLabel} &nbsp; {$activeLabel}
         </div>
         <div>
           <button class='btn btn-small addCityBtn' data-provinceid='{$id}'>+ City</button>
-          <button class='btn btn-small editProvinceBtn' data-id='{$id}' data-name='{$name}'>Edit</button>
+          <button class='btn btn-small editProvinceBtn' data-id='{$id}' data-name='{$name}' data-fee='{$shippingFee}'>Edit</button>
           <div class='province-toggles'>
             <div>Delivery: 
               <label class='switch'>
@@ -58,3 +60,4 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
     echo "</div></div>";
 }
+?>

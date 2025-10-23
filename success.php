@@ -52,6 +52,16 @@ if($order) {
     $totaltax      = $order['tax'];
     $grandOrder    = $order['grandtotal'];
 }
+
+$stmt = $con->prepare("
+        SELECT tblprovince.shippingFee
+        FROM tbladdresse
+        INNER JOIN tblprovince ON tblprovince.provinceID = tbladdresse.provinceID
+        WHERE addresseID = ?
+    ");
+$stmt->execute([$shipping_add]);
+$shippfee = $stmt->fetchColumn();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,9 +96,9 @@ $invoiceNumber = str_pad($count, 3, '0', STR_PAD_LEFT);
 $invoiceCode = "INV" . $invoiceNumber . $year;
 
 // Insert invoice
-$sql= $con->prepare('INSERT INTO tblinvoice (invoiceCode,clientID,addresseId,Amount,discount,tax,invoiceAmount,invoicePaid,paymentMethod,transactionNO,invoiceStatus,invoiceNote)
-                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');
-$sql->execute([$invoiceCode,$user_id,$shipping_add,$subtotal,$totalDiscount,$totaltax,$grandOrder,1,$paymentMethod,$intent_id,1,$order_note]);
+$sql= $con->prepare('INSERT INTO tblinvoice (invoiceCode,clientID,addresseId,Amount,discount,tax,shippfee,invoiceAmount,invoicePaid,paymentMethod,transactionNO,invoiceStatus,invoiceNote)
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
+$sql->execute([$invoiceCode,$user_id,$shipping_add,$subtotal,$totalDiscount,$totaltax,$shippfee,$grandOrder,1,$paymentMethod,$intent_id,1,$order_note]);
 $invoiceID = $con->lastInsertId();
 
 // Insert invoice items
@@ -159,6 +169,7 @@ $mail->Body = "
             <p><strong>Subtotal:</strong> {$subtotal} $</p>
             <p><strong>Discount:</strong> {$totalDiscount} $</p>
             <p><strong>Tax:</strong> {$totaltax} $</p>
+            <p><strong>Shipping Fee:</strong> {$shippfee} $</p>
             <p style='font-weight: bold; font-size: 18px;'>Grand Total: {$grandOrder} $</p>
         </div>
 

@@ -117,40 +117,36 @@
                         ');
                         $sql->execute([$user_id]);
                         $addresses = $sql->fetchAll(PDO::FETCH_ASSOC);
-
+                        $selectedAddress = isset($_GET['addressID']) ? (int)$_GET['addressID'] : null;
                         foreach ($addresses as $i => $useradd) {
-                            // Check deliverability
                             $deliverable = ($useradd['city_deliverable'] && $useradd['province_deliverable']);
-
-                            // If it's the first address and deliverable, make it checked
-                            $checked = ($i === 0 && $deliverable) ? 'checked' : '';
-
-                            // Disable selection if not deliverable
-                            $disabled = (!$deliverable) ? 'disabled' : '';
-
-                            // Message if not deliverable
-                            $message = '';
-                            if (!$deliverable) {
-                                $message = '<div class="not-deliverable">
-                                                ❌ This address cannot be shipped to..
-                                            </div>';
+                            
+                            // Check if this address should be checked
+                            $checked = '';
+                            if ($selectedAddress && $selectedAddress == $useradd['addresseID'] && $deliverable) {
+                                $checked = 'checked';
+                            } elseif (!$selectedAddress && $i === 0 && $deliverable) {
+                                $checked = 'checked'; // default first address
                             }
 
+                            $disabled = (!$deliverable) ? 'disabled' : '';
+                            $message = '';
+                            if (!$deliverable) $message = '<div class="not-deliverable">❌ This address cannot be shipped to..</div>';
+
                             echo '
-                                <div class="add '.(!$deliverable ? 'disabled-add' : '').'">
-                                    <div class="generalinfo">
-                                        <input type="radio" name="choiceAdd" class="choiceAdd" value="'.$useradd['addresseID'].'" '.$checked.' '.$disabled.'>
-                                        <h5>'.$useradd['NameAdd'].'</h5>
-                                        <span>'.$useradd['phoneNumber'].'</span>
-                                    </div>
-                                    <div class="addinformation">
-                                        <label>'.$useradd['street'].' '.$useradd['bultingNo'].' '.$useradd['doorNo'].'</label><br>
-                                        <label>'.$useradd['cityName'].' - '.$useradd['provinceName'].'</label><br>
-                                        <label>'.$useradd['poatalCode'].'</label>
-                                    </div>
-                                    '.$message.'
+                            <div class="add '.(!$deliverable ? 'disabled-add' : '').'">
+                                <div class="generalinfo">
+                                    <input type="radio" name="choiceAdd" class="choiceAdd" value="'.$useradd['addresseID'].'" '.$checked.' '.$disabled.'>
+                                    <h5>'.$useradd['NameAdd'].'</h5>
+                                    <span>'.$useradd['phoneNumber'].'</span>
                                 </div>
-                            ';
+                                <div class="addinformation">
+                                    <label>'.$useradd['street'].' '.$useradd['bultingNo'].' '.$useradd['doorNo'].'</label><br>
+                                    <label>'.$useradd['cityName'].' - '.$useradd['provinceName'].'</label><br>
+                                    <label>'.$useradd['poatalCode'].'</label>
+                                </div>
+                                '.$message.'
+                            </div>';
                         }
                     ?>
                 </div>
@@ -332,8 +328,12 @@
                         <td class="lblnumbers">$<?= number_format($totalTax, 2) ?></td>
                     </tr>
                     <tr>
+                        <th>Shipping Fee</th>
+                        <td class="lblnumbers" id="lblShippingfee"></td>
+                    </tr>
+                    <tr>
                         <th><strong>Grand Total</strong></th>
-                        <th class="lblnumbers"><strong>$<?= number_format($grandTotal, 2) ?></strong></th>
+                        <th class="lblnumbers" id="lblGrandTotal"><strong>$<?= number_format($grandTotal, 2) ?></strong></th>
                     </tr>
                 </table>
             </div>
@@ -347,6 +347,7 @@
         <input type="number" name="" id="txtTax" value="<?=$totalTax?>" hidden>
         <input type="number" name="" id="txtdiscount" value="<?=$totalDiscount?>" hidden>
         <input type="number" name="" id="txtgrandtotal" value="<?=$grandTotal?>" hidden>
+        <input type="number" name="" id="txtship" value="0"  hidden>
     </form>
     <div class="payment_methods">
         <h4>Choose Payment Method</h4>
@@ -382,127 +383,168 @@
     <script src="js/checkout.js"></script>
         
     <script>
-        const addressRadios = document.querySelectorAll(".choiceAdd");
-    const addressField = document.getElementById("txtaddress");
+document.addEventListener("DOMContentLoaded", function() {
 
-    // Fill hidden field when a radio is clicked
+    // ---------- ELEMENTS ----------
+    const addressRadios = document.querySelectorAll(".choiceAdd");
+    const addressField = document.getElementById("txtaddress");
+    const lblShippingFee = document.getElementById("lblShippingfee");
+    const lblGrandTotal = document.getElementById("lblGrandTotal");
+    const txtShip = document.getElementById("txtship");
+    const txtGrandTotal = document.getElementById("txtgrandtotal");
+    const txtSubtotal = document.getElementById("txtsubtotal");
+    const txtTax = document.getElementById("txtTax");
+    const txtDiscount = document.getElementById("txtdiscount");
+
+    // Helper: Update grand total display
+    function updateGrandTotalDisplay() {
+        const subtotal = parseFloat(txtSubtotal.value) || 0;
+        const tax = parseFloat(txtTax.value) || 0;
+        const discount = parseFloat(txtDiscount.value) || 0;
+        const shipping = parseFloat(txtShip.value) || 0;
+        const grandTotal = subtotal + tax - discount + shipping;
+
+        txtGrandTotal.value = grandTotal.toFixed(2);
+        lblGrandTotal.innerHTML = `<strong>$${grandTotal.toFixed(2)}</strong>`;
+    }
+
+    // ---------- SHIPPING FEE ----------
+    async function updateShippingFee(addressID) {
+        try {
+            const resp = await fetch('ajaxuser/getShippingFee.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ addressID })
+            });
+            const data = await resp.json();
+            const fee = parseFloat(data.shippingFee) || 0;
+
+            txtShip.value = fee.toFixed(2);
+            lblShippingFee.textContent = fee.toFixed(2) + ' $';
+
+            updateGrandTotalDisplay();
+            saveOrderInfo();
+        } catch (err) {
+            console.error('Error fetching shipping fee:', err);
+            txtShip.value = 0;
+            lblShippingFee.textContent = '0 $';
+            updateGrandTotalDisplay();
+        }
+    }
+
+    // ---------- ADDRESS HANDLING ----------
+    // On page load, check default selected
+    const checkedRadio = document.querySelector(".choiceAdd:checked");
+    if (checkedRadio) {
+        addressField.value = checkedRadio.value;
+        updateShippingFee(checkedRadio.value);
+    }
+
+    // When user changes address
     addressRadios.forEach(radio => {
-        radio.addEventListener("change", function(){
-            addressField.value = this.value;
+        radio.addEventListener("change", function() {
+            const addressID = this.value;
+            // Reload the page with the selected address ID
+            window.location.href = window.location.pathname + '?addressID=' + addressID;
         });
     });
 
-    // Auto-fill hidden field with the checked radio on page load
-    const checkedRadio = document.querySelector(".choiceAdd:checked");
-    if(checkedRadio) {
-        addressField.value = checkedRadio.value;
-    }
 
-        document.addEventListener("DOMContentLoaded", function(){
-            const radios = document.querySelectorAll("input[name='paymentMethod']");
-            const containers = document.querySelectorAll(".method_container");
-
-            async function loadPayment(method) {
-                // Check if an address is selected
-                const addressField = document.getElementById("txtaddress");
-                if (!addressField.value) {
-                    alert("Please select a billing/shipping address before paying.");
-                    // Optionally, scroll to the addresses section
-                    document.querySelector(".addresses_info").scrollIntoView({behavior: "smooth"});
-                    return; // stop further execution
-                }
-
-                // Hide other containers
-                const containers = document.querySelectorAll(".method_container");
-                containers.forEach(c => c.style.display = "none");
-
-                // Show selected container
-                const container = document.getElementById("method_" + method);
-                container.style.display = "block";
-                container.innerHTML = "<div style='text-align:center;color:#009245;'>Loading...</div>";
-
-                // Load via AJAX
-                const resp = await fetch("ajax_payment_section.php?method=" + method);
-                const html = await resp.text();
-                container.innerHTML = html;
-
-                // Execute inline scripts
-                container.querySelectorAll("script").forEach(scr => eval(scr.innerText));
-            }
-            
-            radios.forEach(radio => {
-                radio.addEventListener("change", function(){
-                    loadPayment(this.value);
-                });
-            });
-
-            // Load the default checked radio on page load
-            const defaultRadio = document.querySelector("input[name='paymentMethod']:checked");
-            if(defaultRadio) loadPayment(defaultRadio.value);
-        });
-
-        function saveOrderInfo() {
-            const orderData = {
-                address: document.getElementById("txtaddress").value,
-                note: document.getElementById("txtnote").value,
-                subtotal: document.getElementById("txtsubtotal").value,
-                discount: document.getElementById("txtdiscount").value,
-                tax:document.getElementById('txtTax').value,
-                grandtotal: document.getElementById("txtgrandtotal").value
-            };
-
-            // Send to server to store in session
-            fetch("ajaxuser/save_order_session.php", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(orderData)
-            });
+    // ---------- PAYMENT METHOD HANDLING ----------
+    const radios = document.querySelectorAll("input[name='paymentMethod']");
+    
+    async function loadPayment(method) {
+        if (!addressField.value) {
+            alert("Please select a billing/shipping address before paying.");
+            document.querySelector(".addresses_info").scrollIntoView({behavior: "smooth"});
+            return;
         }
 
+        const containers = document.querySelectorAll(".method_container");
+        containers.forEach(c => c.style.display = "none");
 
-        $('#provinceSelect').on('change', function() {
-            const provinceID = $(this).val();
+        const container = document.getElementById("method_" + method);
+        container.style.display = "block";
+        container.innerHTML = "<div style='text-align:center;color:#009245;'>Loading...</div>";
 
-            if (provinceID == 0) {
-                $('#citySelect').html('<option value="">SELECT ONE</option>');
-                return;
+        const resp = await fetch("ajax_payment_section.php?method=" + method );
+        const html = await resp.text();
+        container.innerHTML = html;
+
+        container.querySelectorAll("script").forEach(scr => eval(scr.innerText));
+    }
+
+    radios.forEach(radio => {
+        radio.addEventListener("change", function() {
+            loadPayment(this.value);
+        });
+    });
+
+    const defaultRadio = document.querySelector("input[name='paymentMethod']:checked");
+    if(defaultRadio) loadPayment(defaultRadio.value);
+
+    // ---------- PROVINCE & CITY HANDLING ----------
+    $('#provinceSelect').on('change', function() {
+        const provinceID = $(this).val();
+        if (provinceID == 0) {
+            $('#citySelect').html('<option value="">SELECT ONE</option>');
+            return;
+        }
+        $.ajax({
+            url: 'ajaxuser/getCities.php',
+            type: 'POST',
+            data: { provinceID },
+            dataType: 'json',
+            success: function(response) {
+                let options = '<option value="">SELECT ONE</option>';
+                if (response.length > 0) {
+                    $.each(response, function(index, city) {
+                        options += `<option value="${city.cityID}">${city.cityName}</option>`;
+                    });
+                } else {
+                    options += '<option value="">No cities available</option>';
+                }
+                $('#citySelect').html(options);
             }
-
-            $.ajax({
-                url: 'ajaxuser/getCities.php',
-                type: 'POST',
-                data: { provinceID },
-                dataType: 'json',
-                success: function(response) {
-                    let options = '<option value="">SELECT ONE</option>';
-                    if (response.length > 0) {
-                        $.each(response, function(index, city) {
-                            options += `<option value="${city.cityID}">${city.cityName}</option>`;
-                        });
-                    } else {
-                        options += '<option value="">No cities available</option>';
-                    }
-                    $('#citySelect').html(options);
-                }
-            });
         });
+    });
 
-        // 🔹 (Optional) When City changes → auto-select its province
-        $('#citySelect').on('change', function() {
-            const cityID = $(this).val();
-            if (cityID === "") return;
-
-            $.ajax({
-                url: 'ajaxuser/getProvinceByCity.php',
-                type: 'POST',
-                data: { cityID },
-                dataType: 'json',
-                success: function(response) {
-                    if (response && response.provinceID) {
-                        $('#provinceSelect').val(response.provinceID);
-                    }
+    $('#citySelect').on('change', function() {
+        const cityID = $(this).val();
+        if (cityID === "") return;
+        $.ajax({
+            url: 'ajaxuser/getProvinceByCity.php',
+            type: 'POST',
+            data: { cityID },
+            dataType: 'json',
+            success: function(response) {
+                if (response && response.provinceID) {
+                    $('#provinceSelect').val(response.provinceID);
                 }
-            });
+            }
         });
-    </script>
+    });
+});
+
+// ---------- SAVE ORDER FUNCTION ----------
+function saveOrderInfo() {
+    const orderData = {
+        address: document.getElementById("txtaddress").value,
+        note: document.getElementById("txtnote").value,
+        subtotal: document.getElementById("txtsubtotal").value,
+        discount: document.getElementById("txtdiscount").value,
+        tax: document.getElementById('txtTax').value,
+        grandtotal: document.getElementById("txtgrandtotal").value,
+        shipfee: document.getElementById('txtship').value
+    };
+
+    fetch("ajaxuser/save_order_session.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData)
+    });
+}
+</script>
+
+
 </body>

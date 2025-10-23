@@ -55,12 +55,13 @@
             </div>
             <div id="provinceList"></div>
         </div>
-    </main>
+    </main> 
     <div id="popupModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h3 id="modalTitle">Title</h3>
             <input type="text" id="modalInput" placeholder="Enter name..." />
+            <input type="number" step="0.01" id="modalShippingFee" placeholder="Enter shipping fee..." />
             <button id="modalSaveBtn" class="btn btn-primary">Save</button>
         </div>
     </div>

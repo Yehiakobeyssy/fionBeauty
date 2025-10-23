@@ -264,7 +264,7 @@
                             </div>
                             <div class="amount">
                                 <?php
-                                    $sql =$con->prepare('SELECT Amount,discount,tax,invoiceAmount FROM tblinvoice WHERE invoiceID = ?');
+                                    $sql =$con->prepare('SELECT Amount,discount,tax,invoiceAmount,shippfee FROM tblinvoice WHERE invoiceID = ?');
                                     $sql->execute([$orderID]);
                                     $amounts = $sql->fetch(PDO::FETCH_ASSOC);
                                 ?>
@@ -280,6 +280,10 @@
                                     <tr>
                                         <td class="lbltitle">Tax</td>
                                         <td class="txttable"><?= number_format($amounts['tax'],2)?> $</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="lbltitle">Shipping Fee</td>
+                                        <td class="txttable"><?= number_format($amounts['shippfee'],2)?> $</td>
                                     </tr>
                                     <tr>
                                         <th>Total</th>
