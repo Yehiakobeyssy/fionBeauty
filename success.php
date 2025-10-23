@@ -51,16 +51,18 @@ if($order) {
     $totalDiscount = $order['discount'];
     $totaltax      = $order['tax'];
     $grandOrder    = $order['grandtotal'];
-}
 
-$stmt = $con->prepare("
+    $stmt = $con->prepare("
         SELECT tblprovince.shippingFee
         FROM tbladdresse
         INNER JOIN tblprovince ON tblprovince.provinceID = tbladdresse.provinceID
         WHERE addresseID = ?
     ");
-$stmt->execute([$shipping_add]);
-$shippfee = $stmt->fetchColumn();
+    $stmt->execute([$shipping_add]);
+    $shippfee = $stmt->fetchColumn();
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -86,14 +88,27 @@ include 'include/catecorysname.php';
 <?php if($status === 'succeeded' && isset($_SESSION['cart'])): ?>
 
 <?php
+$check = $con->prepare("SELECT invoiceID  FROM tblinvoice WHERE transactionNO = ?");
+$check->execute([$intent_id]);
+$exists = $check->fetchColumn();
+
+if ($exists) {
+    echo '<h1 class="text-success"><i class="fas fa-check-circle"></i> Payment Already Processed</h1>';
+    echo '<p>Your payment was already recorded. Thank you!</p>';
+    echo '<a href="index.php" class="btn">Show Invoice</a>';
+    // Clear cart (if still set)
+    unset($_SESSION['cart']);
+    unset($_SESSION['order_info']);
+    exit();
+}
 // Generate invoice
-$sql = $con->prepare("SELECT COUNT(*) AS total FROM tblinvoice WHERE clientID = ?");
+$sql = $con->prepare("SELECT COUNT(*) AS total FROM tblinvoice WHERE clientID = ? AND YEAR(invoiceDate) = YEAR(CURDATE())");
 $sql->execute([$user_id]);
 $row = $sql->fetch(PDO::FETCH_ASSOC);
 $count = (int)$row['total'] + 1;
 $year = date('y');
-$invoiceNumber = str_pad($count, 3, '0', STR_PAD_LEFT);
-$invoiceCode = "INV" . $invoiceNumber . $year;
+$invoiceNumber = str_pad($count, 4, '0', STR_PAD_LEFT);
+$invoiceCode = "INV" . $invoiceNumber . $year.'/'.$user_id;
 
 // Insert invoice
 $sql= $con->prepare('INSERT INTO tblinvoice (invoiceCode,clientID,addresseId,Amount,discount,tax,shippfee,invoiceAmount,invoicePaid,paymentMethod,transactionNO,invoiceStatus,invoiceNote)

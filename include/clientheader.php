@@ -72,7 +72,7 @@
 .nav_user a {
     display: block;
     padding: var(--space-2);
-    color: var(--color-primary);
+    color: var(--color-black);
     text-decoration: none;
     font-family: 'Outfit', sans-serif;
     font-size: 16px;
@@ -415,8 +415,8 @@
     </div>
     <div class="nav_user_pop">
         <ul>
-            <li ><a href="index.php" >Home</a></li>
-            <li><a href="contactus.php" >Contact</a></li>
+            <li ><a href="index.php">Home</a></li>
+            <li><a href="contactus.php">Contact</a></li>
             <li><a href="aboutus.php">About</a></li>
             <li><a href="login.php" >Sign Up</a></li>
         </ul>
@@ -528,6 +528,15 @@
         }else{
             $('#frmcontact').css({color: '#000'});
             $('#frmcontact').css({'text-decoration': 'none'});
+        }
+
+        //frmabout
+        if(window.location.href.indexOf("aboutus.php")>0){
+            $('#frmabout').css({color: 'var(--color-primary)'});
+            $('#frmabout').css({'text-decoration': 'underline'});
+        }else{
+            $('#frmabout').css({color: '#000'});
+            $('#frmabout').css({'text-decoration': 'none'});
         }
 //smart search         
         $('.input_select input').keyup(function(){

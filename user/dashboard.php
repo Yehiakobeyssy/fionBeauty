@@ -184,7 +184,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            $sql = $con->prepare('SELECT invoiceID, invoiceCode, invoiceDate, statusName
+                            $sql = $con->prepare('SELECT invoiceID, invoiceCode, invoiceDate, statusName,invoiceAmount
                                                 FROM tblinvoice 
                                                 INNER JOIN tblstatus ON tblstatus.statusID = tblinvoice.invoiceStatus
                                                 WHERE clientID = ?
@@ -235,7 +235,7 @@
                                     <tr>
                                         <td>{$order['invoiceCode']}</td>
                                         <td>{$formattedDate}</td>
-                                        <td><strong>\${$total}</strong> ({$count_item} items)</td>
+                                        <td><strong>\${$order['invoiceAmount']}</strong> ({$count_item} items)</td>
                                         <td><div class='{$statusClass}'>{$order['statusName']}</div></td>
                                         <td><a href='orderhistory.php?do=detail&id={$order['invoiceID']}'>View -></a></td>
                                     </tr>

@@ -104,7 +104,7 @@ main{
 .title_addresse h4{
     color: var(--color-muted);
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: var(--color-muted);
+    -webkit-text-stroke-color: var(--color-text);
     font-family: Poppins;
     font-size: 14px;
     font-style: normal;
@@ -126,7 +126,7 @@ main{
 address{
     color: var(--Gray-Scale-Gray-600, #666);
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: var(--color-muted);
+    -webkit-text-stroke-color: var(--color-dark);
     font-family: Poppins;
     font-size: 16px;
     font-style: normal;

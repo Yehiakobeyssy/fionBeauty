@@ -42,9 +42,9 @@ aside ul li a {
 
 aside ul li a svg {
   width: 18px;
-  height: 18px;
-  fill: var(--color-icon);
-  stroke: var(--color-icon);
+  height: 18px; 
+  fill: var(--color-text);
+  stroke: var(--color-text);
   transition: all 0.3s;
 }
 
@@ -122,7 +122,7 @@ aside ul li.active a svg {
       </a>
     </li>
     <li data-page="wishlist.php">
-      <a href="wishlist.php">
+      <a href="">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="20" viewBox="0 0 24 20">
           <path d="M11.9997 19.0538C-7.99987 7.99967 6.00011 -4.00033 11.9997 3.58772C18.0001 -4.00034 32.0001 7.99967 11.9997 19.0538Z" stroke-width="1.5"/>
         </svg>
