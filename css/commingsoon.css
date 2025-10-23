@@ -1,0 +1,62 @@
+ .container_comming {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50vh;
+      flex-direction: column;
+      text-align: center;
+      width: 100%;
+    }
+
+    img {
+      width: 200px;
+      animation: zoomFade 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes zoomFade {
+      from {
+        opacity: 0.7;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 20px 0 10px;
+    }
+
+    p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
+    }
+
+    input[type="email"] {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 250px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: var(--main-white);
+      color: var(--main-green);
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }

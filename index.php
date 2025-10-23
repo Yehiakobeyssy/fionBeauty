@@ -11,6 +11,15 @@
     } else {
         $user_id = 0; // if neither session nor cookie exist
     };
+
+
+    $stat = $con->prepare('SELECT COUNT(*) AS totalitem FROM  tblitems WHERE itmActive = 1');
+    $stat->execute();
+    $result = $stat->fetch(PDO::FETCH_ASSOC);
+    if ($result['totalitem'] < 6) {
+        header('Location: commingsoon.php');
+        exit(); // Always call exit after redirect
+    }
 ?>    
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <link href="common/css/bootstrap.min.css" rel="stylesheet">
