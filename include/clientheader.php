@@ -305,6 +305,7 @@
             <li ><a href="index.php" id="frmhome">Home</a></li>
             <li><a href="contactus.php" id="frmcontact">Contact</a></li>
             <li><a href="aboutus.php" id="frmabout">About</a></li>
+            <li><a href="workshops.php" id="frmtraining">Training</a></li>
             <li><a href="login.php" id="frmlogin">Sign Up</a></li>
         </ul>
     </div>
@@ -418,6 +419,7 @@
             <li ><a href="index.php">Home</a></li>
             <li><a href="contactus.php">Contact</a></li>
             <li><a href="aboutus.php">About</a></li>
+            <li><a href="workshops.php">Training</a></li>
             <li><a href="login.php" >Sign Up</a></li>
         </ul>
     </div>
@@ -461,7 +463,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="user/wishlist.php">
+                        <a href="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path d="M11.9997 21.0542C-7.99987 10.0001 6.00011 -1.99991 11.9997 5.58815C18.0001 -1.99991 32.0001 10.0001 11.9997 21.0542Z" stroke="#CCCCCC" stroke-width="1.5"/>
                             </svg>
@@ -537,6 +539,15 @@
         }else{
             $('#frmabout').css({color: '#000'});
             $('#frmabout').css({'text-decoration': 'none'});
+        }
+
+        //<li><a href="workshops.php" id="frmtraining">Training</a></li>
+        if(window.location.href.indexOf("workshops.php")>0){
+            $('#frmtraining').css({color: 'var(--color-primary)'});
+            $('#frmtraining').css({'text-decoration': 'underline'});
+        }else{
+            $('#frmtraining').css({color: '#000'});
+            $('#frmtraining').css({'text-decoration': 'none'});
         }
 //smart search         
         $('.input_select input').keyup(function(){
