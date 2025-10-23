@@ -56,8 +56,19 @@
                             $client = $clientStmt->fetch(PDO::FETCH_ASSOC);
 
                             if ($client && $client['clientActive'] == 1 && $client['clientBlock'] == 0) {
-                                echo '<button class="btn btn-primary book-workshop" data-id="' . $row['id'] . '">Book Workshop</button>';
-                                echo '<span class="booking-msg ml-2"></span>';
+                                // تحقق مما إذا كان المستخدم قد حجز هذه الورشة بالفعل
+                                $bookingStmt = $con->prepare("SELECT COUNT(*) FROM workshop_bookings WHERE user_id = :user_id AND workshop_id = :workshop_id");
+                                $bookingStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                                $bookingStmt->bindParam(':workshop_id', $row['id'], PDO::PARAM_INT);
+                                $bookingStmt->execute();
+                                $alreadyBooked = $bookingStmt->fetchColumn();
+
+                                if ($alreadyBooked > 0) {
+                                    echo '<p class="text-success">You have already booked this workshop.</p>';
+                                } else {
+                                    echo '<button class="btn btn-primary book-workshop" data-id="' . $row['id'] . '">Book Workshop</button>';
+                                    echo '<span class="booking-msg ml-2"></span>';
+                                }
                             } else {
                                 echo '<p class="text-danger">Your account is inactive or blocked. Contact support.</p>';
                             }
