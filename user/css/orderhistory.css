@@ -263,7 +263,85 @@ td{
     border-radius: 15px;
     margin-right: 8px;
 }
+.daitail_invoice button{
+  border: transparent;
+  background-color: transparent;
+}
 
+/* Popup styling */
+/* Popup styling */
+#reviewPopup .popup-overlay {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+#reviewPopup .popup-content {
+    position: fixed;
+    top:50%; left:50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    z-index: 1000;
+}
+#reviewPopup .form-group {
+    margin-bottom: 15px;
+}
+#reviewPopup .form-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Star rating */
+.star-rating {
+    font-size: 25px;
+    color: #ccc;
+    cursor: pointer;
+}
+.star-rating .fa-star {
+    margin-right: 5px;
+}
+.star-rating .fa-star.hover,
+.star-rating .fa-star.selected {
+    color: #FFD700; /* Gold */
+}
+
+
+.popup-content h3{
+    color: var(--color-primary);
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; 
+}
+.popup-content label{
+    text-align: right;
+    color: var(--color-dark);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+}
+.btn-outboder{
+    padding: 16px 20px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    background-color: transparent;
+    margin-right: 20px;
+}
+.btn-inboder{
+    padding: 16px 20px;
+    border: transparent;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+}
 /* للأجهزة الصغيرة جداً (موبايل أقل من 576px) */
 @media (max-width: 575.98px) {
 

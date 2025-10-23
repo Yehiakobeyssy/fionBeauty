@@ -80,4 +80,83 @@ $(document).on("click", ".page-btn", function() {
         loadOrders(currentPage, $("#txtsearchorder").val());
     }
 });
+
+
+    // Open the review popup
+    $('.btn_toreview').on('click', function() {
+        const itemID = $(this).data('index');
+        $('#itemID').val(itemID);
+        $('#rateScore').val(0); // reset rating
+        $('#reviewPopup').fadeIn();
+        $('.star-rating .fa-star').removeClass('selected hover');
+    });
+
+    // Close popup
+    $('#closeReview, #reviewPopup .popup-overlay').on('click', function() {
+        $('#reviewPopup').fadeOut();
+        $('#reviewForm')[0].reset();
+        $('#reviewMessage').html('');
+        $('.star-rating .fa-star').removeClass('selected hover');
+    });
+
+    // Hover effect
+    $('.star-rating .fa-star').hover(
+        function() {
+            const val = $(this).data('value');
+            $('.star-rating .fa-star').each(function(){
+                $(this).toggleClass('hover', $(this).data('value') <= val);
+            });
+        },
+        function() {
+            $('.star-rating .fa-star').removeClass('hover');
+        }
+    );
+
+    // Click to select rating
+    $('.star-rating .fa-star').on('click', function(){
+        const val = $(this).data('value');
+        $('#rateScore').val(val);
+        $('.star-rating .fa-star').each(function(){
+            $(this).toggleClass('selected', $(this).data('value') <= val);
+        });
+    });
+
+    // Submit form via AJAX
+$('#reviewForm').on('submit', function(e) {
+    e.preventDefault();
+
+    const rate = $('#rateScore').val();
+    if(rate == 0) {
+        alert('Please select a star rating before submitting.');
+        return; // stop submission
+    }
+
+    const formData = $(this).serialize();
+
+    $.ajax({
+        url: 'ajaxuser/submitReview.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function(response) {
+            if(response.success) {
+                $('#reviewMessage').html('<span style="color:green">'+response.message+'</span>');
+                setTimeout(function(){
+                    $('#reviewPopup').fadeOut();
+                    $('#reviewForm')[0].reset();
+                    $('#reviewMessage').html('');
+                    $('.star-rating .fa-star').removeClass('selected hover');
+                }, 1500);
+            } else {
+                $('#reviewMessage').html('<span style="color:red">'+response.message+'</span>');
+            }
+        },
+        error: function() {
+            $('#reviewMessage').html('<span style="color:red">Something went wrong, try again!</span>');
+        }
+    });
+});
+
+
+
 })
