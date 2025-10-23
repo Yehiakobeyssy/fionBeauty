@@ -7,6 +7,7 @@ $(document).ready(function() {
         $(this).find(".choiceAdd").prop("checked", true);
         var addID = $(this).find(".choiceAdd").val();
         $("#txtaddress").val(addID);
+        window.location.href = window.location.pathname + '?addressID=' + addID;
     });
 
     $('#openform').click(function(){

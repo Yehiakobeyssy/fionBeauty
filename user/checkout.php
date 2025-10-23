@@ -446,7 +446,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const addressID = this.value;
             // Reload the page with the selected address ID
             window.location.href = window.location.pathname + '?addressID=' + addressID;
-        });
+        }); 
     });
 
 
