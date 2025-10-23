@@ -144,10 +144,10 @@
     </div>
     <div class="quick_links">
         <h4>Quick Link</h4>
-        <a href="privacy.php">Privacy Policy</a>
-        <a href="terms.php">Terms Of Use</a>
-        <a href="faq.php">FAQ</a>
-        <a href="contactus.php">Contact</a>
+        <a href="../privacy.php">Privacy Policy</a>
+        <a href="../terms.php">Terms Of Use</a>
+        <a href="../faq.php">FAQ</a>
+        <a href="../contactus.php">Contact</a>
     </div>
     <div class="folowus">
         <h4>Follow Us</h4>

@@ -108,7 +108,7 @@ $row = $sql->fetch(PDO::FETCH_ASSOC);
 $count = (int)$row['total'] + 1;
 $year = date('y');
 $invoiceNumber = str_pad($count, 4, '0', STR_PAD_LEFT);
-$invoiceCode = "INV" . $invoiceNumber . $year.'/'.$user_id;
+$invoiceCode = "INV" . $invoiceNumber .'-'.$user_id . $year;
 
 // Insert invoice
 $sql= $con->prepare('INSERT INTO tblinvoice (invoiceCode,clientID,addresseId,Amount,discount,tax,shippfee,invoiceAmount,invoicePaid,paymentMethod,transactionNO,invoiceStatus,invoiceNote)

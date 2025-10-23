@@ -12,12 +12,12 @@
         $user_id = 0; // if neither session nor cookie exist
     };
 ?>    
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <link href="common/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="common/fcss/all.min.css">
-    <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
-    <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/pages.css">
+<link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+<link href="common/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="common/fcss/all.min.css">
+<link rel="stylesheet" href="common/fcss/fontawesome.min.css">
+<link rel="stylesheet" href="common/root.css">
+<link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
     <?php 
@@ -25,29 +25,33 @@
         include 'include/clientheader.php'; 
         include 'include/catecorysname.php';
     ?>
+
     <main>
         <section class="card mt-3 mb-3">
-    <h1 class="h1">About Us</h1>
-    <p class="p">
-        FION BEAUTY SUPPLIES is a professional-only wholesale supplier dedicated to serving spas, salons, and med spas across the nation. 
-        We provide licensed beauty professionals with premium-quality products, advanced equipment, and educational resources to help them deliver exceptional services to their clients.
-    </p>
-    <h2 class="h2">Our Mission</h2>
-    <p class="p">
-        To empower beauty professionals with access to the highest-quality products, reliable shipping, and industry-leading training, so they can thrive in their business.
-    </p>
-    <h2 class="h2">Why Choose FION BEAUTY SUPPLIES</h2>
-    <ul class="p">
-        <li>Exclusive access to top brands like ThermaCEUTICAL.</li>
-        <li>Professional-only wholesale pricing and promotions.</li>
-        <li>Nationwide shipping and fast delivery.</li>
-        <li>Educational resources including protocols, MSDS sheets, and training courses.</li>
-    </ul>
-</section>
+            <h1 class="h1">About Us</h1>
+            <p class="p">
+                Founded in 2018, <strong>Fion Beauty Supplies</strong> has proudly served professionals across Canada as a trusted source for premium spa supplies, advanced equipment, and high-quality salon furniture.
+            </p>
+
+            <p class="p">
+                We are dedicated to supporting beauty and wellness professionals with exceptional products that combine innovation, performance, and reliability.
+            </p>
+
+            <p class="p">
+                As the sole distributor of <strong>ThermoCEUTICAL</strong> in Canada, Fion Beauty Supplies brings cutting-edge Korean skincare technology to Canadian spas and clinics—offering a full line of professional-grade skincare solutions designed to deliver visible, lasting results.
+            </p>
+
+            <p class="p">
+                Our mission is to empower aestheticians, spas, and wellness centers with the tools and expertise they need to create transformative experiences for their clients.
+            </p>
+
+            <p class="p">
+                With years of industry knowledge and a deep passion for beauty and care, Fion Beauty Supplies continues to set the standard for quality, trust, and professional excellence across Canada.
+            </p>
+        </section>
     </main>
 
-    <?php include  'include/footer.php' ?>
-    <?php include 'common/jslinks.php'?>
-    <!-- <script src="js/contactus.js"></script> -->
-
+    <?php include 'include/footer.php' ?>
+    <?php include 'common/jslinks.php' ?>
 </body>
+</html>

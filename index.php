@@ -208,8 +208,8 @@
                     </g>
                 </svg>
                 <div class="disription_card_willget">
-                    <h4>FREE AND FAST DELIVERY</h4>
-                    <label for="">Free delivery for all orders</label>
+                    <h4> FAST DELIVERY</h4>
+                    <label for="">Delivery for all orders</label>
                 </div>    
             </div>
             <div class="card_service">
