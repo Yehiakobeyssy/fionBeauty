@@ -18,7 +18,7 @@ function applyFilterManageCat(page = 1) {
             if(data.error) {
                 tbody.append('<tr><td colspan="5">Error: '+data.error+'</td></tr>');
                 return;
-            }
+            } 
 
             if(data.categories.length === 0) {
                 tbody.append('<tr><td colspan="5">No categories found.</td></tr>');
@@ -45,6 +45,11 @@ function applyFilterManageCat(page = 1) {
                         ${categoryTd}
                         <td>${cat.totalOrders}</td>
                         <td>${cat.totalItems}</td>
+                        <td>
+                        ${cat.shippingfree_accepted == 1 
+                            ? '<span style="color:green;">&#10003;</span>' 
+                            : '<span style="color:red;">&#10007;</span>'}
+                        </td>
                         <td>${formattedDate}</td>
                         <td>
                             <button class="view-btn" data-id="${cat.categoryId}">

@@ -341,7 +341,16 @@ table tbody td{
     font-weight: 500;
     line-height: normal;
 }
+.form-section label{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
 .form-section input[type="text"],
+.form-section select,
 .form-section textarea {
     width: 100%;
     padding: 12px;

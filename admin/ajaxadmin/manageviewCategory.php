@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             c.carImg,
             c.catInputDate,
             COUNT(DISTINCT i.itmId) AS totalItems,
+            shippingfree_accepted,
             COUNT(DISTINCT di.daitailInvoiceId) AS totalOrders
         FROM tblcategory c
         LEFT JOIN tblitems i ON i.catId = c.categoryId AND i.itmActive = 1
