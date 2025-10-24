@@ -1,0 +1,167 @@
+main{
+    display: flex;
+}
+.container_info{
+    margin: 20px;
+    width: 100% ;
+}
+.btnadd{
+    margin: 30px 50px;
+    text-align: right;
+}
+.statistic_cat{
+    width: 50%;
+    margin: 50px auto;
+    border-radius: 8px;
+    border: 1px solid  #E0E2E7;
+    background: #FFF;
+    box-shadow: 0 1.5px 2px 0 rgba(16, 24, 40, 0.10);
+    display: flex;
+    flex-direction: column;
+    padding: 17px 25px;
+}
+.statistic_cat{
+    display: flex;
+    flex-direction: column;
+}
+.allstatistic{
+    display: flex;
+    justify-content: space-between;
+}
+.totalbalance{
+    text-align: center;
+}
+.totalbalance label,.cardstatistic label{
+    color: var(--color-icon);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.totalbalance h5{
+    color: var(--color-primary);
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.allstatistic{
+    margin-top: 16px;
+}
+.cardstatistic h5{
+    color: var(--color-dark);
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.filter_section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 15px;
+    
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+.searchbar input{
+    width: 750px;
+}
+.paid select{
+    width: 250px;
+}
+table{
+    width: 100%;
+}
+table thead{
+    background-color: var(--color-primary-variant);
+    color: var(--color-white);
+}
+table thead th{
+    padding: 18px 22px;
+}
+table tbody td{
+    padding: 18px 22px;
+    border-bottom: 1px solid #eee;
+}
+.btnedit,.btnview{
+    border: transparent ;
+    background-color: transparent ;
+    margin: 0 6px ;
+}
+
+.client-details {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.client-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.client-table th, 
+.client-table td {
+    border: 1px solid #ddd;
+    padding: 6px 8px;
+    text-align: left;
+}
+
+.client-table th {
+    background-color:var(--color-primary-variant);
+    font-weight: bold;
+}
+
+.client-row td {
+    background-color: #fafafa;
+}
+
+.client-row:hover {
+    background-color: #f1f1f1;
+}
+
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+.pagination-info  {
+    font-size: 14px;
+    color: #555;
+}
+.pagination {
+    display: flex;
+    gap: 5px;
+}
+.pagination button{
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.pagination button.active  {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+}
+.pagination button:hover {
+    background: #e1e1e1;
+}
+

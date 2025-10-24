@@ -189,7 +189,7 @@ a:hover, a:focus { color: var(--color-primary-variant); text-decoration: underli
 /* ============================
    Form elements
    ============================ */
-.input, input[type="text"], input[type="email"],input[type="password"],input[type="file"],input[type="number"], textarea, select {
+.input, input[type="text"], input[type="email"],input[type="password"],input[type="file"],input[type="number"], textarea, select,input[type="date"] {
     width: 100%;
     padding: calc(var(--space-2) + 4px);
     border-radius: 6px;

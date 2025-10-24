@@ -82,6 +82,20 @@ aside a.active svg path {
         </svg>
         Customers
     </a>
+    <a href="manageWorkshops.php">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 22l2-2 6-6 2 2-6 6-2 2z"/>
+            <path d="M14.5 5.5l4 4"/>
+            <path d="M16 2c1.333 1.333 2 3 2 3s-1.667.667-3 2"/>
+            <circle cx="17" cy="17" r="3"/>
+            <circle cx="19" cy="14" r="1"/>
+            <circle cx="15" cy="16" r="1"/>
+            <circle cx="18" cy="19" r="1"/>
+            <rect x="7" y="4" width="2" height="6" rx="0.5"/>
+            <path d="M7 4l1-2 1 2"/>
+        </svg>
+        Training & Education
+    </a>
     <!-- <a href="">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z" fill="#667085"/>
