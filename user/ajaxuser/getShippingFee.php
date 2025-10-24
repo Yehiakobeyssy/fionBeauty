@@ -32,11 +32,12 @@ if ($addressID > 0 && !empty($_SESSION['cart'])) {
     $totalAmount = 0;
     $allFreeCategory = true;
     $hasDiscount = false;
+    $extrafee = 0;
 
     if (!empty($itemIds)) {
         $inQuery = implode(',', array_fill(0, count($itemIds), '?'));
         $stmtItems = $con->prepare("
-            SELECT i.itmId, i.sellPrice, c.shippingfree_accepted
+            SELECT i.itmId, i.sellPrice,i.extra_shipfee, c.shippingfree_accepted
             FROM tblitems i
             JOIN tblcategory c ON c.categoryId = i.catId
             WHERE i.itmId IN ($inQuery)
@@ -48,6 +49,7 @@ if ($addressID > 0 && !empty($_SESSION['cart'])) {
             $itemId = $item['itmId'];
             $qty = $_SESSION['cart'][$itemId] ?? 0;
             $totalAmount += $item['sellPrice'] * $qty;
+            $extrafee +=$item['extra_shipfee'];
 
             // تحقق إذا كل العناصر من فئة تقبل الشحن المجاني
             if ((int)$item['shippingfree_accepted'] !== 1) {
@@ -73,9 +75,9 @@ if ($addressID > 0 && !empty($_SESSION['cart'])) {
 
     // تطبيق قواعد الشحن
     if (!$hasDiscount && $allFreeCategory && $totalAmount >= $amountOver) {
-        $shippingFee = 0; // تحقق الشرط → شحن مجاني
+        $shippingFee = 0 +  $extrafee; // تحقق الشرط → شحن مجاني
     } else {
-        $shippingFee = $provinceFee; // غير ذلك → شحن عادي
+        $shippingFee = $provinceFee + $extrafee; // غير ذلك → شحن عادي
     }
 }
 
