@@ -46,7 +46,11 @@
                                 <strong>Duration:</strong> ' . $row['duration_hours'] . ' hours
                               </p>';
                         echo '<p><strong>Location:</strong> ' . htmlspecialchars($row['location']) . '</p>';
-                        echo '<label class="txtprice"><strong>Price:</strong> $' . number_format($row['cost'], 2) . '</label>';
+                        if ($row['cost'] == 0) {
+                            echo '<label class="txtprice"><strong>Price:</strong> <span style="color: var(--color-primary); font-weight: bold;">Free</span></label>';
+                        } else {
+                            echo '<label class="txtprice"><strong>Price:</strong> $' . number_format($row['cost'], 2) . '</label>';
+                        }
 
                         // التحقق من تسجيل الدخول و حالة العميل
                         if ($user_id > 0) {
@@ -66,9 +70,16 @@
                                 if ($alreadyBooked > 0) {
                                     echo '<p class="text-success">You have already booked this workshop.</p>';
                                 } else {
-                                    echo '<button class="btn btn-primary book-workshop" data-id="' . $row['id'] . '">Book Workshop</button>';
-                                    echo '<span class="booking-msg ml-2"></span>';
+                                    if ($row['cost'] == 0) {
+                                        // Free workshop – direct booking
+                                        echo '<a href="booking.php?id=' . $row['id'] . '" class="btn btn-primary">Book Workshop</a>';
+                                    } else {
+                                        // Paid workshop – add to cart flow
+                                        echo '<button class="btn btn-primary book-workshop" data-id="' . $row['id'] . '">Book Workshop</button>';
+                                        echo '<span class="booking-msg ml-2"></span>'; 
+                                    }
                                 }
+
                             } else {
                                 echo '<p class="text-danger">Your account is inactive or blocked. Contact support.</p>';
                             }

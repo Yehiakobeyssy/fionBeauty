@@ -36,13 +36,16 @@ function loadTrainings(page = 1, search = "") {
                 const isPast = new Date(row.Date) < new Date();
                 const rowClass = isPast ? "past" : "";
 
+                let costText = row.Cost == 0 
+                                ? `<span style="color: var(--color-primary); font-weight:bold;">Free</span>` 
+                                : `$${row.Cost}`;
                 html += `
                     <tr class="${rowClass}">
                         <td>${row.workshop}</td>
                         <td>${dateDisplay}</td>
                         <td>${row.Time}</td>
                         <td>${row.Duration} hrs</td>
-                        <td>$${row.Cost}</td>
+                        <td>${costText}</td>
                         <td>${isOnlineText}</td>
                         <td>${bookingDisplay}</td>
                         <td><a href="traininghistory.php?do=detail&id=${row.id}" class="btn btn-sm btn-primary">View</a></td>

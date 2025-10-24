@@ -44,3 +44,7 @@
     letter-spacing: 0.1px;
     margin: 20px 0;
 }
+.txtprice span {
+    color: var(--color-primary);
+    font-weight: 600;
+}

@@ -140,7 +140,7 @@
                     <table>
                         <thead>
                             <th>Workshop</th>
-                            <th>Date</th>
+                            <th>Date</th> 
                             <th>Time</th>
                             <th>Duration</th>
                             <th>Cost</th>
@@ -194,7 +194,7 @@
                                 <p><strong>Date:</strong> <?= $workshopDate ?></p>
                                 <p><strong>Time:</strong> <?= $startTime ?></p>
                                 <p><strong>Duration:</strong> <?= $duration ?> hours</p>
-                                <p><strong>Cost:</strong> <?= $cost ?> $</p>
+                                <p><strong>Cost:</strong> <?= $cost==0?'Free':$cost.' $' ?> </p>
                                 <p><strong>Type:</strong> <?= $isOnline ?></p>
 
                                 <?php if (!empty($onlineLink) && $workshop['is_online'] == 1): ?>
@@ -222,13 +222,17 @@
                         <div class="invoice_related">
                             <?php
                             // Check if user booked this workshop
-                            $stmt = $con->prepare('SELECT b.booking_date,i.invoiceCode, i.invoiceDate, i.totalAmount, i.method, i.status 
-                                                FROM workshop_bookings b
-                                                LEFT JOIN tblinvoiceworkshop i 
-                                                ON i.clientID = b.user_id 
-                                                WHERE b.user_id = ? AND b.workshop_id = ?
-                                                ORDER BY b.booking_date DESC LIMIT 1');
-                            $stmt->execute([$user_id, $workshopID]);
+                            $stmt = $con->prepare(
+                                            'SELECT b.booking_date, d.invoiceID, i.invoiceCode, i.invoiceDate, i.totalAmount, i.method, i.status
+                                            FROM tbldetailinvoiceworkshop d
+                                            JOIN tblinvoiceworkshop i ON i.invoiceID = d.invoiceID
+                                            LEFT JOIN workshop_bookings b ON b.user_id = i.clientID AND b.workshop_id = d.workshopID
+                                            WHERE d.workshopID = ? AND i.clientID = ?
+                                            ORDER BY i.invoiceDate DESC, b.booking_date DESC
+                                            LIMIT 1'
+                                        );
+                            $stmt->execute([$workshopID, $user_id]);
+                            
                             $booking = $stmt->fetch(PDO::FETCH_ASSOC);
 
                             if ($booking) {
