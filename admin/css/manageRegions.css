@@ -302,6 +302,80 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+/* ===== Professional Table Styles ===== */
+.feetable table {
+  width: 100%;
+  
+  border-spacing: 0 8px; /* space between rows */
+  font-family: 'Inter', sans-serif;
+  background: transparent;
+}
+
+.feetable th, .feetable td {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.feetable th {
+  background-color: var(--color-primary); /* dark blue header */
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.feetable td {
+  background-color: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  border: none;
+  vertical-align: middle;
+}
+
+.feetable tr td:first-child {
+  font-weight: 500;
+}
+
+.feetable tr {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feetable tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.feetable input[type="number"] {
+  width: 120px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feetable input[type="number"]:focus {
+  border-color: #1e40af;
+  box-shadow: 0 0 5px rgba(30,64,175,0.3);
+  outline: none;
+}
+
+.feetable th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.feetable th:last-child {
+  border-top-right-radius: 8px;
+}
+
+/* Optional: alternating row colors */
+.feetable tr:nth-child(even) td {
+  background-color: #f9fafb;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
