@@ -80,7 +80,7 @@
                     <div class="alert alert-danger">
                         <h2>OPPS! You are Blocked from Admin</h2>
                     </div>
-                    <script>
+                    <script> 
                         setTimeout(function() {
                             window.location.href = "../index.php";
                         }, 2000);
@@ -486,12 +486,13 @@
                                 $mainpic        = $filename;
                                 $sellPrice      = $_POST['sellPrice'];
                                 $commtion       = $_POST['commtion'];
+                                $extra_shipfee  = isset($_POST['extra_shipfee'])?$_POST['extra_shipfee']:0;
                                 $itmActive      = 1;
                                 $getDiscount    = isset($_POST['getDiscount']) ? 1 : 0;
                                 $minQuantity    = $_POST['minQuantity'];
 
-                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,mainpic,sellPrice,commtion,itmActive,getDiscount,minQuantity)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?)');
+                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,mainpic,sellPrice,commtion,extra_shipfee,itmActive,getDiscount,minQuantity)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?)');
                                 $sql->execute([
                                     $catId,         
                                     $brandId,       
@@ -499,7 +500,8 @@
                                     $itmDesc,        
                                     $mainpic,        
                                     $sellPrice,      
-                                    $commtion,       
+                                    $commtion,
+                                    $extra_shipfee,      
                                     $itmActive,      
                                     $getDiscount,   
                                     $minQuantity,   
@@ -588,6 +590,9 @@
                                         <div class="price">
                                             <input type="number" name="sellPrice" id="" step="0.01" placeholder="Sell price" required>
                                             <input type="number" name="commtion" id="" step="0.01" placeholder="Commition (%)">
+                                        </div>
+                                        <div class="price">
+                                            <input type="number" name="extra_shipfee" id="" step="0.01" placeholder="Extra Shipping Fee">
                                         </div>
                                         <div class="quantity">
                                             <label for="">Minimum Quantity</label>
@@ -701,17 +706,18 @@
                             $itmDesc     = trim(strip_tags($_POST['itmDesc']));
                             $sellPrice   = $_POST['sellPrice'];
                             $commtion    = $_POST['commtion'];
+                            $extra_shipfee = isset($_POST['extra_shipfee']) ? $_POST['extra_shipfee'] : 0;
                             $itmActive   = 1;
                             $getDiscount = isset($_POST['getDiscount']) ? 1 : 0;
                             $minQuantity = $_POST['minQuantity'];
 
                             // Update item
                             $sql = $con->prepare("UPDATE tblitems 
-                                SET catId=?, brandId=?, itmName=?, itmDesc=?, mainpic=?, sellPrice=?, commtion=?, itmActive=?, getDiscount=?, minQuantity=? 
+                                SET catId=?, brandId=?, itmName=?, itmDesc=?, mainpic=?, sellPrice=?, commtion=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
                                 WHERE itmId=?");
                             $sql->execute([
                                 $catId, $brandId, $itmName, $itmDesc, $filename,
-                                $sellPrice, $commtion, $itmActive, $getDiscount, $minQuantity,
+                                $sellPrice, $commtion,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,
                                 $itmId
                             ]);
 
@@ -791,7 +797,9 @@
                                         <input type="number" name="sellPrice" step="0.01" placeholder="Sell price" required value="<?php echo $item['sellPrice']; ?>">
                                         <input type="number" name="commtion" step="0.01" placeholder="Commission (%)" value="<?php echo $item['commtion']; ?>">
                                     </div>
-
+                                    <div class="price">
+                                        <input type="number" name="extra_shipfee" id="" step="0.01" placeholder="Extra Shipping Fee" value="<?php echo $item['extra_shipfee']; ?>">
+                                    </div>
                                     <div class="quantity">
                                         <label>Minimum Quantity</label>
                                         <input type="number" name="minQuantity" required value="<?php echo $item['minQuantity']; ?>">
