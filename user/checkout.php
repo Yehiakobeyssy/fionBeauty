@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const fee = parseFloat(data.shippingFee) || 0;
 
             txtShip.value = fee.toFixed(2);
-            lblShippingFee.textContent = fee.toFixed(2) + ' $';
+            lblShippingFee.textContent = (fee === 0 ? 'Free' : '$' + fee.toFixed(2));
 
             updateGrandTotalDisplay();
             saveOrderInfo();

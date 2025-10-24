@@ -21,12 +21,27 @@ $taxper = $fin['taxPercent'];
 $total = 0;
 if(isset($_SESSION['cart'])){
     foreach($_SESSION['cart'] as $id => $qty){
+        // Get item price
         $stmt = $con->prepare("SELECT sellPrice FROM tblitems WHERE itmId=?");
         $stmt->execute([$id]);
         $item = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($item) $total += $item['sellPrice'] * $qty;
-    }
+
+        if(!$item) continue; // skip if item not found
+
+        $price = $item['sellPrice'];
+
+        // Get discount percent if exists
+        $stmt = $con->prepare("SELECT precent FROM tbldiscountitem WHERE itemID = ? AND quatity <= ? ORDER BY quatity DESC LIMIT 1");
+        $stmt->execute([$id, $qty]);
+        $discountPercent = $stmt->fetchColumn() ?: 0;
+
+        // Calculate subtotal
+        $subtotal = $price * $qty * (1 - $discountPercent / 100);
+
+        $total += $subtotal;
+    } 
 }
+
 if ($includeTax == 0) {
     $total += $total * ($taxper / 100);
 }
