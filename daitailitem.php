@@ -95,15 +95,55 @@
                 ?>
             </div>
             <div class="price">
-                <?php
-                    if($isActive == 1){
-                        echo '<h1>'. number_format($itemInfo['sellPrice'],2).' $</h1>';
-                    }else{
-                        echo '<h1>???</h1>';
-                    }
-                ?>
+            <?php
+            if($isActive == 1){
+                // Check if item has a promotional percent
+                $promoPercent = $itemInfo['promotional'] ?? 0; // e.g., 20 for 20%
                 
+                if($promoPercent > 0){
+                    // Calculate new price
+                    $newPrice = $itemInfo['sellPrice'] - ($itemInfo['sellPrice'] * $promoPercent / 100);
+                    
+                    // Show crossed original price and new discounted price
+                    echo '<h1 style="display: inline-block; margin-right: 10px;">
+                            <span style="text-decoration: line-through; color: #888;">' . number_format($itemInfo['sellPrice'],2) . ' $</span> 
+                            <span style="color: #e74c3c; margin-left:5px;">' . number_format($newPrice,2) . ' $</span>
+                        </h1>';
+                } else {
+                    echo '<h1 style="display: inline-block; margin-right: 10px;">'. number_format($itemInfo['sellPrice'],2) .' $</h1>';
+                }
+
+                // Fetch up to 3 quantity discounts from tbldiscountitem
+                $stmtDisc = $con->prepare("
+                    SELECT quatity, precent 
+                    FROM tbldiscountitem 
+                    WHERE itemID = ? 
+                    ORDER BY quatity ASC 
+                    LIMIT 3
+                ");
+                $stmtDisc->execute([$item_ID]);
+                $discounts = $stmtDisc->fetchAll(PDO::FETCH_ASSOC);
+
+                if(!empty($discounts)){
+                    // Array of different alert classes
+                    $alertClasses = ['alert-success', 'alert-info', 'alert-warning', 'alert-danger'];
+                    $i = 0; // Counter to rotate classes
+
+                    foreach($discounts as $disc){
+                        $class = $alertClasses[$i % count($alertClasses)]; // Rotate classes
+                        echo '<div class="alert ' . $class . ' p-1 mb-0" role="alert" style="font-size:14px; display: inline-block; margin-left: 5px;">';
+                        echo 'Buy ' . $disc['quatity'] . ', save ' . $disc['precent'] . '%';
+                        echo '</div>';
+                        $i++;
+                    }
+                }
+            }else{
+                echo '<h1>???</h1>';
+            }
+            ?>
             </div>
+
+
             <div class="shortdiscription">
                 <p><?= nl2br(substr($itemInfo['itmDesc'], 0, 150)) . (strlen($itemInfo['itmDesc']) > 150 ? '...' : '') ?></p>
             </div>

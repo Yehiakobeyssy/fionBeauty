@@ -52,16 +52,25 @@
             </div>
         <?php endforeach; ?>
     </div>
-    <div class="flashsale section_index">
-        <div class="title_flash">
-            <h5>Flash Sales</h5>
-        </div>
-        <div class="items_cards"></div>
-        <div class="pagination">
-            <button id="btnBack_pro">Back</button>
-            <button id="btnNext_pro">Next</button>
-        </div>
-    </div>
+    <?php
+        $totalStmt = $con->query("SELECT COUNT(*) FROM tblitems WHERE itmActive=1 AND promotional > 0");
+        $totalItems = $totalStmt->fetchColumn();
+        if($totalItems > 0){
+            echo '
+                <div class="flashsale section_index">
+                    <div class="title_flash">
+                        <h5>Flash Sales</h5>
+                    </div>
+                    <div class="items_cards"></div>
+                    <div class="pagination">
+                        <button id="btnBack_pro">Back</button>
+                        <button id="btnNext_pro">Next</button>
+                    </div>
+                </div>
+            ';
+        }
+    ?>
+    
     <div class="newArrvals section_index">
         <div class="sectiontitle">
             <h4>Featured</h4>

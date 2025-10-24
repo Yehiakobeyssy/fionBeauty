@@ -33,7 +33,7 @@ function applyFilterManageCat(page = 1) {
     let catId = getCatIdFromUrl();
 
     $.ajax({
-        url: "ajaxadmin/viewproduct_cat.php",
+        url: "ajaxadmin/viewproduct_cat.php", 
         type: "POST",
         dataType: "json",
         data: {

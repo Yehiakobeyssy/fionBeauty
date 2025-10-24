@@ -809,7 +809,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="barnd">
+                                    <div class="barnd"> 
                                         <div class="selectoption">
                                             <label for="">Sell Price</label>
                                             <input type="number" name="sellPrice" id="" step="0.01" placeholder="Sell price" value="<?php echo $item['sellPrice']; ?>" required>

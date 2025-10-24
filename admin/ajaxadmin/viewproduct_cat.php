@@ -56,8 +56,29 @@ $stmt->execute();
 
 $html = '';
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    // --- Handle Promotional Price ---
+    $promoPercent = $row['promotional'] ?? 0; // e.g., 20 for 20%
+    
+    // Prepare the price HTML
+    if ($promoPercent > 0) {
+        $newPrice = $row['sellPrice'] - ($row['sellPrice'] * $promoPercent / 100);
+        
+        $priceHTML = '
+        
+            <span style="position: absolute; top: 0px; left: 0px; 
+                         background: #e74c3c; color: #fff; font-size: 12px; padding: 2px 5px; border-radius: 3px;">
+                ' . $promoPercent . '% OFF
+            </span>
+        ';
+        $displayPrice = $newPrice;
+    } else {
+        $priceHTML = '';
+        $displayPrice = $row['sellPrice'];
+    }
+
     $html .= '
-    <div class="card_product">
+    <div class="card_product" style="position: relative;">
+        ' . $priceHTML . '
         <div class="img_product">
             <img src="../images/items/' . htmlspecialchars($row['mainpic']) . '" alt="">
         </div>
@@ -65,7 +86,15 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <h5>' . htmlspecialchars($row['itmName']) . '</h5>
             <label><small>' . htmlspecialchars($row['brandName']) . '</small></label><br>
             <label>' . htmlspecialchars(substr($row["itmDesc"], 0, 75)) . '...</label>
-            <h6>$' . number_format($row['sellPrice'], 2) . '</h6>
+           <h6>';
+            if ($promoPercent > 0) {
+                $newPrice = $row['sellPrice'] - ($row['sellPrice'] * $promoPercent / 100);
+               $html .= '<span style="text-decoration: line-through; color:#888;">$' . number_format($row['sellPrice'], 2) . '</span>';
+                $html .= ' <span style="color:#e74c3c; margin-left:5px;">$' . number_format($newPrice, 2) . '</span>';
+            } else {
+                $html .= '$' . number_format($row['sellPrice'], 2);
+            }
+             $html .= '</h6>
         </div>
         <div class="controlitem">
             <button class="btn btn-primary" onclick="window.location.href=\'manageproducts.php?do=edititm&itmId=' . $row['itmId'] . '\'">Edit</button>
@@ -73,7 +102,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         </div>
     </div>';
 }
-
 
 echo json_encode([
     'html' => $html ?: '<p>No products found.</p>',
