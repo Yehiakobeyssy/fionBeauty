@@ -17,6 +17,15 @@
 .mySlide {
     display: none; /* all hidden by default */
 }
+.title_flash{
+  background-color: var(--color-primary);
+  padding: 30px 20px;
+  border-radius: 18px;
+  font-family: Outfit;
+  font-size: 36px;
+  color: var(--color-white);
+  margin-bottom: 20px;
+}
 
 .section_index{
     width: 80%;
@@ -140,7 +149,7 @@
 .right-images > div, .bottom-right > div {
     position: relative;
     overflow: hidden;
-}
+} 
 
 .items_cards {
   display: grid;
@@ -155,6 +164,20 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative; 
+}
+
+.card .promotional {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    z-index: 10;
 }
 
 .card img {

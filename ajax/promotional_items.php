@@ -20,16 +20,17 @@ $stmtClient->execute([$user_id]);
 $clientActive = $stmtClient->fetchColumn() ?: 0;
 
 // total pages
-$totalStmt = $con->query("SELECT COUNT(*) FROM tblitems WHERE itmActive=1");
+$totalStmt = $con->query("SELECT COUNT(*) FROM tblitems WHERE itmActive=1 AND promotional > 0");
 $totalItems = $totalStmt->fetchColumn();
 $totalPages = ceil($totalItems / $limit);
+
 
 // fetch items
 $stmt = $con->prepare("
     SELECT itmId,itmName,sellPrice,dateAdd,mainpic,promotional,
            SUBSTRING(itmDesc,1,40) as itmDesc
     FROM tblitems
-    WHERE itmActive=1
+    WHERE itmActive=1 AND promotional > 0
     ORDER BY dateAdd DESC
     LIMIT :limit OFFSET :offset
 ");

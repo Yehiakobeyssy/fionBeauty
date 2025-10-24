@@ -48,14 +48,27 @@ $(document).ready(function() {
                 : item.itmDesc;
 
             let priceHtml = '';
+
             if (item.sellPrice !== undefined) {
-                priceHtml = `<div class="price">$${item.sellPrice}</div>`;
+                if (item.promotional && item.promotional > 0) {
+                    const discountedPrice = (item.sellPrice * (1 - item.promotional / 100)).toFixed(2);
+                    priceHtml = `
+                        <div class="price">
+                            <span class="original-price">$${parseFloat(item.sellPrice).toFixed(2)}</span>
+                            <span class="discounted-price">$${discountedPrice}</span>
+                        </div>
+                    `;
+                } else {
+                    priceHtml = `<div class="price">$${parseFloat(item.sellPrice).toFixed(2)}</div>`;
+                }
             } else {
                 priceHtml = `<div class="price login-required">Login to see price</div>`;
             }
 
+
             html += `
                 <div class="card itm_daitail" data-index="${item.itmId}">
+                    ${item.promotional > 0 ? `<div class="promotional">${item.promotional}%</div>` : ''}
                     <div class="card-image">
                         <img src="images/items/${item.mainpic}" alt="${item.itmName}">
                     </div>

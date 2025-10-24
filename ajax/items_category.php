@@ -23,7 +23,7 @@ $clientActive = $stmtClient->fetchColumn() ?: 0;
 
 // الأساسيات
 $sql = "
-    SELECT i.itmId, i.itmName, i.itmDesc, i.mainpic, i.sellPrice,
+    SELECT i.itmId, i.itmName, i.itmDesc, i.mainpic, i.sellPrice,i.promotional,
            c.catName, b.brandName,
            COALESCE(AVG(r.rateScore),0) AS avgRating
     FROM tblitems i

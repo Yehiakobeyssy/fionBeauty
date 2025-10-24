@@ -28,7 +28,7 @@ $totalPages = ceil($totalItems / $limit);
 
 // fetch items
 $stmt = $con->prepare("
-    SELECT itmId,itmName,sellPrice,dateAdd,mainpic,
+    SELECT itmId,itmName,sellPrice,dateAdd,mainpic,promotional,
            SUBSTRING(itmDesc,1,40) as itmDesc
     FROM tblitems
     WHERE itmActive=1 AND catId=?

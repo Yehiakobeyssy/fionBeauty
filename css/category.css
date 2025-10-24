@@ -98,6 +98,19 @@ aside {
     cursor: pointer;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+.card .promotional {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: red;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    z-index: 10;
 }
 
 .card:hover {
@@ -176,6 +189,18 @@ aside {
     color: #ff4d4f;
     font-weight: 600;
 }
+
+.price .original-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 8px;
+}
+
+.price .discounted-price {
+    color: red;
+    font-weight: bold;
+}
+
 
 .btn-cart {
     padding: 10px;

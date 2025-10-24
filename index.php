@@ -52,6 +52,16 @@
             </div>
         <?php endforeach; ?>
     </div>
+    <div class="flashsale section_index">
+        <div class="title_flash">
+            <h5>Flash Sales</h5>
+        </div>
+        <div class="items_cards"></div>
+        <div class="pagination">
+            <button id="btnBack_pro">Back</button>
+            <button id="btnNext_pro">Next</button>
+        </div>
+    </div>
     <div class="newArrvals section_index">
         <div class="sectiontitle">
             <h4>Featured</h4>
@@ -69,7 +79,7 @@
             $stmt->execute();
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
-
+        
         <div class="container_new">
             <?php if(count($categories) >= 4): ?>
                 <!-- Left Image -->
