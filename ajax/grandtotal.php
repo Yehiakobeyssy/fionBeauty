@@ -22,13 +22,15 @@ $totalTax = 0;
 // Loop over cart
 foreach ($_SESSION['cart'] as $itemId => $qty) {
     // Get item details
-    $stmt = $con->prepare("SELECT itmId, itmName, sellPrice, minQuantity FROM tblitems WHERE itmId = ?");
+    $stmt = $con->prepare("SELECT itmId, itmName, sellPrice, minQuantity ,promotional FROM tblitems WHERE itmId = ?");
     $stmt->execute([$itemId]);
     $item = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$item) continue;
 
     $price = $item['sellPrice'];
     $subtotal = $price * $qty;
+
+    $subdiscount = ($price * $qty * $item['promotional'] ) / 100;
 
     // Get discount percent (if any)
     $stmt = $con->prepare("SELECT precent FROM tbldiscountitem WHERE itemID = ? AND quatity <= ? ORDER BY quatity DESC LIMIT 1");
@@ -38,7 +40,7 @@ foreach ($_SESSION['cart'] as $itemId => $qty) {
 
     // Accumulate totals
     $totalSubtotal += $subtotal;
-    $totalDiscount += $discountAmount;
+    $totalDiscount += $discountAmount + $subdiscount;
 }
 
 // --- Apply tax logic ---

@@ -6,6 +6,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 $addressID = (int)($data['addressID'] ?? 0);
 
 $shippingFee = 0;
+$hasPromotional = false;
+
 
 if ($addressID > 0 && !empty($_SESSION['cart'])) {
 
@@ -37,7 +39,7 @@ if ($addressID > 0 && !empty($_SESSION['cart'])) {
     if (!empty($itemIds)) {
         $inQuery = implode(',', array_fill(0, count($itemIds), '?'));
         $stmtItems = $con->prepare("
-            SELECT i.itmId, i.sellPrice,i.extra_shipfee, c.shippingfree_accepted
+            SELECT i.itmId, i.sellPrice,i.extra_shipfee, i.promotional, c.shippingfree_accepted
             FROM tblitems i
             JOIN tblcategory c ON c.categoryId = i.catId
             WHERE i.itmId IN ($inQuery)
@@ -70,11 +72,15 @@ if ($addressID > 0 && !empty($_SESSION['cart'])) {
             if ($discountPercent > 0) {
                 $hasDiscount = true;
             }
+
+            if ((float)$item['promotional'] > 0) {
+                $hasPromotional = true;
+            }
         }
     }
 
     // تطبيق قواعد الشحن
-    if (!$hasDiscount && $allFreeCategory && $totalAmount >= $amountOver) {
+    if (!$hasPromotional && !$hasDiscount && $allFreeCategory && $totalAmount >= $amountOver) {
         $shippingFee = 0 +  $extrafee; // تحقق الشرط → شحن مجاني
     } else {
         $shippingFee = $provinceFee + $extrafee; // غير ذلك → شحن عادي

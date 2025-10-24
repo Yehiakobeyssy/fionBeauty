@@ -387,7 +387,7 @@ table tbody td{
     font-weight: 400;
     line-height: 130%; /* 18.2px */
 }
-.selectoption select,.quantity input{
+.selectoption select,.quantity input,.selectoption input{
     padding: 12px;
     border-radius: 5px;
     border: 1px solid #555;

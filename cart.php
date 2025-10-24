@@ -29,7 +29,7 @@
     <?php
         $sql= $con->prepare('SELECT clientActive FROM tblclient WHERE clientID  = ?');
         $sql->execute([$user_id]);
-        $result= $sql->fetch(PDO::FETCH_ASSOC);
+        $result= $sql->fetch(PDO::FETCH_ASSOC); 
         
         if ($result && isset($result['clientActive'])) {
             $isAcctive = $result['clientActive'];

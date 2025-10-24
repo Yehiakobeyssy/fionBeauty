@@ -486,13 +486,14 @@
                                 $mainpic        = $filename;
                                 $sellPrice      = $_POST['sellPrice'];
                                 $commtion       = $_POST['commtion'];
+                                $promotional    = $_POST['promotional']??0;
                                 $extra_shipfee  = isset($_POST['extra_shipfee'])?$_POST['extra_shipfee']:0;
                                 $itmActive      = 1;
                                 $getDiscount    = isset($_POST['getDiscount']) ? 1 : 0;
                                 $minQuantity    = $_POST['minQuantity'];
 
-                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,mainpic,sellPrice,commtion,extra_shipfee,itmActive,getDiscount,minQuantity)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?)');
+                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,mainpic,sellPrice,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');
                                 $sql->execute([
                                     $catId,         
                                     $brandId,       
@@ -501,6 +502,7 @@
                                     $mainpic,        
                                     $sellPrice,      
                                     $commtion,
+                                    $promotional,
                                     $extra_shipfee,      
                                     $itmActive,      
                                     $getDiscount,   
@@ -587,12 +589,25 @@
                                             </div>
                                             
                                         </div>
-                                        <div class="price">
-                                            <input type="number" name="sellPrice" id="" step="0.01" placeholder="Sell price" required>
-                                            <input type="number" name="commtion" id="" step="0.01" placeholder="Commition (%)">
+                                        <div class="barnd">
+                                            <div class="selectoption">
+                                                <label for="">Sell Price</label>
+                                                <input type="number" name="sellPrice" id="" step="0.01" placeholder="Sell price" required>
+                                            </div>
+                                            <div class="selectoption">
+                                                <label for="">Promotional discount (%)</label>
+                                                <input type="number" name="promotional" id="" step="0.01" placeholder="Promotional discount"  min="0" max="100" >
+                                            </div>
                                         </div>
-                                        <div class="price">
-                                            <input type="number" name="extra_shipfee" id="" step="0.01" placeholder="Extra Shipping Fee">
+                                        <div class="barnd">
+                                            <div class="selectoption">
+                                                <label for="">Extra Shipping Fee</label>
+                                                <input type="number" name="extra_shipfee" id="" step="0.01" placeholder="Extra Shipping Fee">
+                                            </div>
+                                            <div class="selectoption">
+                                                <label for="">Commition (%)</label>
+                                                <input type="number" name="commtion" id="" step="0.01" placeholder="Commition (%)"  min="0" max="100">
+                                            </div>
                                         </div>
                                         <div class="quantity">
                                             <label for="">Minimum Quantity</label>
@@ -706,6 +721,7 @@
                             $itmDesc     = trim(strip_tags($_POST['itmDesc']));
                             $sellPrice   = $_POST['sellPrice'];
                             $commtion    = $_POST['commtion'];
+                            $promotional = $_POST['promotional']??0;
                             $extra_shipfee = isset($_POST['extra_shipfee']) ? $_POST['extra_shipfee'] : 0;
                             $itmActive   = 1;
                             $getDiscount = isset($_POST['getDiscount']) ? 1 : 0;
@@ -713,11 +729,11 @@
 
                             // Update item
                             $sql = $con->prepare("UPDATE tblitems 
-                                SET catId=?, brandId=?, itmName=?, itmDesc=?, mainpic=?, sellPrice=?, commtion=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
+                                SET catId=?, brandId=?, itmName=?, itmDesc=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
                                 WHERE itmId=?");
                             $sql->execute([
                                 $catId, $brandId, $itmName, $itmDesc, $filename,
-                                $sellPrice, $commtion,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,
+                                $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,
                                 $itmId
                             ]);
 
@@ -793,13 +809,27 @@
                                         </div>
                                     </div>
 
-                                    <div class="price">
-                                        <input type="number" name="sellPrice" step="0.01" placeholder="Sell price" required value="<?php echo $item['sellPrice']; ?>">
-                                        <input type="number" name="commtion" step="0.01" placeholder="Commission (%)" value="<?php echo $item['commtion']; ?>">
+                                    <div class="barnd">
+                                        <div class="selectoption">
+                                            <label for="">Sell Price</label>
+                                            <input type="number" name="sellPrice" id="" step="0.01" placeholder="Sell price" value="<?php echo $item['sellPrice']; ?>" required>
+                                        </div>
+                                        <div class="selectoption">
+                                            <label for="">Promotional discount (%)</label>
+                                            <input type="number" name="promotional" id="" step="0.01" placeholder="Promotional discount" value="<?php echo $item['promotional']; ?>"  min="0" max="100">
+                                        </div>
                                     </div>
-                                    <div class="price">
-                                        <input type="number" name="extra_shipfee" id="" step="0.01" placeholder="Extra Shipping Fee" value="<?php echo $item['extra_shipfee']; ?>">
+                                    <div class="barnd">
+                                        <div class="selectoption">
+                                            <label for="">Extra Shipping Fee</label>
+                                            <input type="number" name="extra_shipfee" id="" step="0.01" placeholder="Extra Shipping Fee" value="<?php echo $item['extra_shipfee']; ?>"  min="0" max="100">
+                                        </div>
+                                        <div class="selectoption">
+                                            <label for="">Commition (%)</label>
+                                            <input type="number" name="commtion" id="" step="0.01" placeholder="Commition (%)" value="<?php echo $item['commtion']; ?>">
+                                        </div>
                                     </div>
+
                                     <div class="quantity">
                                         <label>Minimum Quantity</label>
                                         <input type="number" name="minQuantity" required value="<?php echo $item['minQuantity']; ?>">
