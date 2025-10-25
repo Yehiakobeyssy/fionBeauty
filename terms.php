@@ -118,12 +118,12 @@
             <h3>10. Contact Information</h3>
             <p class="p">
                 <?php
-                    $sql=$con->prepare('SELECT companyPhone,companyAdd FROM  tblsetting WHERE seetingID = 1');
+                    $sql=$con->prepare('SELECT companyPhone,companyAdd,companyEmail FROM  tblsetting WHERE seetingID = 1');
                     $sql->execute();
                     $info = $sql->fetch();
                 ?>
                 For any inquiries regarding our Terms and Conditions or policies, please contact:<br>
-                📧 <strong>info@fionbeautysupplies.ca</strong><br>
+                📧 <strong><?= $info['companyEmail'] ?></strong><br>
                 📞 <em><?= $info['companyPhone'] ?></em><br>
                 📍 <em><?= $info['companyAdd'] ?></em>
             </p>

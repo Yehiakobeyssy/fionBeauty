@@ -73,6 +73,17 @@ table{
     width: 100%;
     margin-top: 20px;
 }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+.table-wrapper table {
+  width: 100%;
+  min-width: 600px; /* prevent text collapse */
+  border-collapse: collapse;
+}
 thead{
     background-color: var(--color-primary-variant);
     color: var(--color-bg);
@@ -234,16 +245,124 @@ td{
 }
 
 /* Responsive layout */
-@media (max-width: 768px) {
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablets (max-width: 992px) */
+@media (max-width: 992px) {
+
+  main {
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .sections_side {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .workshop_content {
     flex-direction: column;
   }
-  .workshop_info, .workshop_side {
-    width: 100%;
-    border: none;
-    padding: 0;
+
+  .workshop_info {
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 25px;
   }
+
   .workshop_side {
-    margin-top: 20px;
+    padding-left: 0;
+  }
+
+  .title_section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sereachdiv {
+    width: 100%;
+  }
+
+}
+
+/* Phones (max-width: 768px) */
+@media (max-width: 768px) {
+
+  .titleCatecory {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .welcome_note h2 {
+    font-size: 28px;
+  }
+
+  .welcome_note span {
+    font-size: 30px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .workshop_header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .workshop_header h2 {
+    font-size: 20px;
+  }
+
+  .workshop_header span {
+    font-size: 13px;
+  }
+
+  .side_box {
+    text-align: center;
+  }
+
+}
+
+/* Small phones (max-width: 480px) */
+@media (max-width: 480px) {
+
+  .welcome_note h2 {
+    font-size: 22px;
+  }
+
+  .welcome_note span {
+    font-size: 24px;
+  }
+
+  .btn-back {
+    width: 100%;
+    text-align: center;
+  }
+
+  #pagination button {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .workshop_details {
+    padding: 18px;
+  }
+
+  .side_box h4 {
+    font-size: 13px;
+  }
+
+  .side_box span {
+    font-size: 12px;
   }
 }

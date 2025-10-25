@@ -137,7 +137,8 @@
                             <input type="text" name="" id="txtsearchtraining" placeholder="Search">
                         </div>
                     </div>
-                    <table>
+                    <div class="table-wrapper">
+                        <table>
                         <thead>
                             <th>Workshop</th>
                             <th>Date</th> 
@@ -151,6 +152,8 @@
                         <tbody id="reultfetch"></tbody>
                     </table>
                     <div id="pagination" class="pagination"></div>
+                    </div>
+                    
 
                 <?php
                 }elseif ($do == 'detail') {

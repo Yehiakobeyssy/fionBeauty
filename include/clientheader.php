@@ -594,150 +594,124 @@
             $('#frmtraining').css({'text-decoration': 'none'});
         }
 //smart search         
-        $('.input_select input').keyup(function(){
-            $('.dropdownsmartsearch').show();
-        })
+        // ===== Smart Search Autocomplete =====
 
+// Load history from localStorage
+var historyItems = JSON.parse(localStorage.getItem('smartsearch')) || [];
 
-        $('.dropdownsmartsearch').on('mouseleave', function() {
-            $('.dropdownsmartsearch').hide();
-        })
+// Show dropdown on typing
+$('.input_select input').on('keyup', function () {
+    var searchTerm = $(this).val().trim().toLowerCase();
+    $('#searchButton').val(searchTerm);
 
-
-
-        $(".popupnavbar").on("click", function(event) {
-            event.stopPropagation();
-        });
-
-        $(document).on("click", function() {
-            $(".popupnavbar").hide();
-        });
-
-
-        $('#openBtn').click(function(event){
-            event.stopPropagation(); 
-            $(".popupnavbar").show({ right: "0" });
-        });
-
-
-var items = JSON.parse(localStorage.getItem('smartsearch')) || [];
-displayItemsInDropdown(items);
-
-$('#txtsearch').on('blur', function () {
-    var newItem = $(this).val().trim();
-    
-    // Check if the item already exists in the array
-    if (newItem !== '' && !items.includes(newItem)) {
-        // Item doesn't exist, add it to the array
-        items.push(newItem);
-        localStorage.setItem('smartsearch', JSON.stringify(items));
-        $(this).val('');
+    if (!searchTerm) {
+        displayDropdown([]);
+        return;
     }
 
-    displayItemsInDropdown(items);
-});
-
-
-$('#txtsearch').on('keyup', function () {
-    var searchTerm = $(this).val().toLowerCase();
-
-    // Search in the historical items
-    var filteredItems = items.filter(function (item) {
-        return item.toLowerCase().includes(searchTerm);
-    });
-
-    // Make an asynchronous request to the API
+    // Fetch DB items via AJAX
     $.ajax({
         url: 'ajax/displayitems.php',
         method: 'GET',
         data: { keyword: searchTerm },
         dataType: 'json',
-        success: function (apiItems) {
-            // Check if the API response is an array
-            if (Array.isArray(apiItems)) {
-                // Filter the API items based on the search term
-                var filteredApiItems = apiItems.filter(function (apiItem) {
-                    // Adjust this based on the actual structure of your API response
-                    return apiItem.itemName.toLowerCase().includes(searchTerm);
-                });
+        success: function (resp) {
+            // Adjust if your PHP returns { success: true, data: [...] }
+            var apiItems = resp.data || resp || [];
 
-                // Combine the filtered historical items and API items
-                var combinedItems = filteredItems.concat(filteredApiItems);
+            // Filter DB items to only those starting with searchTerm
+            var dbItems = apiItems
+                .map(item => item.itmName)
+                .filter(name => name.toLowerCase().startsWith(searchTerm));
 
-                // Remove duplicates from the combined array
-                var uniqueCombinedItems = Array.from(new Set(combinedItems));
+            // Filter history items to only those starting with searchTerm
+            var filteredHistory = historyItems
+                .filter(item => item.toLowerCase().startsWith(searchTerm));
 
-                // Display the combined results
-                displayItemsInDropdown(uniqueCombinedItems);
-            } else {
-                console.error('Invalid API response format:', apiItems);
-            }
+            // Combine DB first, then history, remove duplicates
+            var combined = Array.from(new Set(dbItems.concat(filteredHistory)));
+
+            // Display in dropdown (max 10)
+            displayDropdown(combined);
         },
-        error: function (error) {
-            console.error('Error fetching API:', error);
+        error: function (err) {
+            console.error('API error', err);
+            displayDropdown([]);
         }
     });
-
-    // Set the search term to the value of the search button
-    $('#searchButton').val(searchTerm);
 });
 
-function displayItemsInDropdown(items) {
-    var itemsContainer = document.getElementById('itemsContainer');
-
-    // Clear existing content in the container
-    itemsContainer.innerHTML = '';
-
-    // Display only the last 10 items
-    var itemsToDisplay = items.slice(Math.max(items.length - 10, 0));
-
-    itemsToDisplay.forEach(function (item) {
-        var link = document.createElement('a');
-        link.href = 'category.php?keyword=' + (typeof item === 'object' ? item.itemName : item);
-
-        var icon = document.createElement('i');
-        icon.className = 'fa-solid fa-clock-rotate-left';
-        link.appendChild(icon);
-
-        
-
-        // Check if the item is an object (API response) and extract the itemName property
-        if (typeof item === 'object') {
-            // Add the magnifying glass icon before the API item
-            
-            icon.className = 'fa-solid fa-magnifying-glass';
-            link.appendChild(icon);
-
-            link.appendChild(document.createTextNode(' ' + item.itemName));
-        } else {
-            link.appendChild(document.createTextNode(' ' + item));
+// Save typed item to history on blur
+$('#txtsearch').on('blur', function () {
+    var newItem = $(this).val().trim();
+    if (newItem && !historyItems.includes(newItem)) {
+        historyItems.unshift(newItem);       // Add to front
+        if (historyItems.length > 20) {      // Limit to 20 items
+            historyItems = historyItems.slice(0, 20);
         }
-
-        itemsContainer.appendChild(link);
-    });
-}
-
-
-
-
-// Add a click event listener to the container for delegation
-document.getElementById('itemsContainer').addEventListener('mousedown', function (event) {
-    var target = event.target;
-
-    // Check if the clicked element is an 'a' tag
-    if (target.tagName.toLowerCase() === 'a') {
-        event.preventDefault();
-        navigateToHref(target.href);
+        localStorage.setItem('smartsearch', JSON.stringify(historyItems));
     }
 });
 
+// Display the dropdown items
+function displayDropdown(items) {
+    var container = document.getElementById('itemsContainer');
+    container.innerHTML = '';
 
+    if (!items.length) {
+        $('.dropdownsmartsearch').hide();
+        return;
+    }
 
-// Function to navigate to the specified href
-function navigateToHref(href) {
-    window.location.href = href;
+    items.slice(0, 10).forEach(function (item) {
+        var link = document.createElement('a');
+        link.href = 'category.php?keyword=' + encodeURIComponent(item);
+        link.className = 'result-item';
+
+        // Use different icon: DB vs history
+        var icon = document.createElement('i');
+        if (historyItems.includes(item)) {
+            icon.className = 'fa-solid fa-clock-rotate-left'; // history
+        } else {
+            icon.className = 'fa-solid fa-magnifying-glass';   // DB item
+        }
+
+        link.appendChild(icon);
+        link.appendChild(document.createTextNode(' ' + item));
+        container.appendChild(link);
+    });
+
+    $('.dropdownsmartsearch').show();
 }
+$('#txtsearch').on('keydown', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        var firstItem = document.querySelector('#itemsContainer a');
+        if (firstItem) {
+            window.location.href = firstItem.href;
+        }
+        e.preventDefault(); // prevent form submission if inside a form
+    }
+});
 
+// Navigate to category page on click
+document.getElementById('itemsContainer').addEventListener('mousedown', function (event) {
+    var target = event.target.closest('a');
+    if (!target) return;
+    event.preventDefault();
+    window.location.href = target.href;
+});
+
+// Hide dropdown when mouse leaves
+$('.dropdownsmartsearch').on('mouseleave', function() {
+    $(this).hide();
+});
+
+// Optional: show dropdown on focus
+$('.input_select input').on('focus', function() {
+    if ($('#txtsearch').val().trim() !== '') {
+        $('.dropdownsmartsearch').show();
+    }
+});
 
 // stop smart search 
 

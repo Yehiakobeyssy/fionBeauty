@@ -1,28 +1,29 @@
 <?php
-// Include the database connection file
-include '../settings/connect.php';
+// ajax/displayitems.php
+header('Content-Type: application/json; charset=utf-8');
+
+include '../settings/connect.php'; // make sure this path is correct and $con is a PDO instance
 
 try {
-    // Get the search term from the query string
-    $searchTerm = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+    $searchTerm = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 
-    // Fetch item names and descriptions with optional search filter
-    $query = "SELECT 
-        i.itmId,
-        i.itmName,
-    FROM tblitem i
-    WHERE LOWER(i.itmName) LIKE :searchTerm
-    ORDER BY i.itmId ASC";
+    // Provide a fallback so empty search returns some rows (optional)
+    $like = '%' . strtolower($searchTerm) . '%';
+
+    $query = "SELECT i.itmId, i.itmName
+              FROM tblitems i
+              WHERE LOWER(i.itmName) LIKE :searchTerm
+              ORDER BY i.itmName ASC
+              LIMIT 50"; // limit for performance
 
     $stmt = $con->prepare($query);
-    $stmt->bindValue(':searchTerm', '%' . strtolower($searchTerm) . '%', PDO::PARAM_STR);
+    $stmt->bindValue(':searchTerm', $like, PDO::PARAM_STR);
     $stmt->execute();
+
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    header('Content-Type: application/json');
-    echo json_encode($result);
+    echo json_encode(['success' => true, 'data' => $result]);
 } catch (PDOException $e) {
-    // Handle database errors
-    echo "Error: " . $e->getMessage();
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
-?>
