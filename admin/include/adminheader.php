@@ -293,12 +293,14 @@ async function loadNotifications() {
       const newData = data.filter(item => !displayedDropdownIds.has(item.notificationId));
 
       newData.forEach(item => {
-        // Add to dropdown list
+        // Add to dropdown list — append newest on top
         const div = document.createElement('div');
         div.classList.add('message');
         if (item.seen == 1) div.classList.add('read');
         div.textContent = item.text;
-        notificationList.prepend(div);
+
+        // ✅ FIX: Use append instead of prepend (since SQL is DESC)
+        notificationList.append(div);
 
         displayedDropdownIds.add(item.notificationId);
 
@@ -368,7 +370,6 @@ async function markNotificationsSeen() {
 // Bottom Popup Notification
 // ------------------------
 function showBottomNotification(notification) {
-  // Prevent showing the same notification twice
   if (displayedBottomIds.has(notification.notificationId)) return;
 
   const div = document.createElement('div');
@@ -386,10 +387,6 @@ function showBottomNotification(notification) {
   div.appendChild(content);
 
   bottomList.appendChild(div);
-
-  // Play sound only once per new notification
-  notifSound.play();
-
   displayedBottomIds.add(notification.notificationId);
 
   // Show panel
@@ -416,13 +413,12 @@ notIcon.addEventListener('click', async e => {
   notificationBox.classList.toggle('show');
   controlMenu.classList.remove('show');
 
-  if (!notificationBox.classList.contains('loaded')) {
-    await loadNotifications();
-    notificationBox.classList.add('loaded');
-  }
+  // ✅ FIX: Always reload notifications when opening
+  await loadNotifications();
 
   // Mark all as seen when opened
   await markNotificationsSeen();
+
   document.querySelectorAll('#notificationList .message').forEach(msg => {
     msg.classList.add('read');
   });
@@ -448,5 +444,6 @@ setInterval(loadNotifications, 1000);
 // Initial load
 // ------------------------
 loadNotifications();
+
 
 </script>
