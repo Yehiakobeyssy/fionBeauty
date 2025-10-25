@@ -38,7 +38,7 @@
                             window.location.href = "../index.php";
                         }, 2000);
                     </script>
-                ';
+                '; 
                 exit(); // stop the rest of the page from executing
             }
         ?>
@@ -154,11 +154,409 @@
                         </table>
                     </div>
                 <?php
+                }elseif($do =='add'){?>
+                    
+                    <?php
+                        if(isset($_POST['btnaddWorkshop'])){
+                            $title = $_POST['title'];
+                            $description = $_POST['description'];
+                            $workshop_date = $_POST['date'];
+                            $start_time = $_POST['time'];
+                            $duration_hours  =$_POST['duration'];
+                            $cost =$_POST['cost'];
+                            $location =$_POST['location'];
+                            $is_online =isset($_POST['isonline'])?1:0;
+                            $meeting_link =$_POST['meetinlink'];
+
+                            $sql= $con->prepare('INSERT INTO workshops (title,description,workshop_date,start_time,duration_hours,cost,location,is_online,meeting_link)
+                                                VALUES (?,?,?,?,?,?,?,?,?)');
+                            $sql->execute([
+                                    $title,
+                                    $description,
+                                    $workshop_date,
+                                    $start_time,
+                                    $duration_hours,
+                                    $cost,
+                                    $location,
+                                    $is_online,
+                                    $meeting_link,
+                                ]);
+
+                            echo '
+                                <div class="conformnewWorkshop ">
+                                    You Added new Workshop Successfully
+                                </div>
+                            ';
+                        }
+                    ?>
+                    <div class="container_new">
+                        <div class="title_form">New Workshop</div>
+                        <form action="" method="post">
+                            <label for="">Titel</label>
+                            <input type="text" name="title" required>
+
+                            <label for="">Description</label>
+                            <textarea name="description" rows="3"></textarea>
+
+                            <div class="specific">
+                            <div class="time">
+                                <label>Date</label>
+                                <input type="date" name="date" required>
+                            </div>
+                            <div class="time">
+                                <label>Time</label>
+                                <input type="time" name="time" required>
+                            </div>
+                            </div>
+
+                            <div class="specific">
+                            <div class="time">
+                                <label>Duration</label>
+                                <input type="number" name="duration">
+                            </div>
+                            <div class="time">
+                                <label>Cost</label>
+                                <input type="number" name="cost" required>
+                            </div>
+                            </div>
+
+                            <div class="location">
+                            <label>is online</label>
+                            <label class="switch">
+                                <input type="checkbox" id="isOnline" name="isonline">
+                                <span class="slider"></span>
+                            </label>
+
+                            <input type="text" id="adresse" placeholder="Adresse" name="location">
+                            <input type="text" id="link" placeholder="Link" name="meetinlink">
+                            </div>
+                            <div class="btncontrol">
+                                <button type="reset" class="btn btn-outboder">Cancel</button>
+                                <button type="submit" class="btn btn-inboder"  name="btnaddWorkshop">Add Workshop</button>
+                            </div>
+                        </form>
+                        </div>
+                        <script>
+                        const checkbox = document.getElementById('isOnline');
+                        const adresse = document.getElementById('adresse');
+                        const link = document.getElementById('link');
+
+                        // Default state
+                        adresse.classList.add('show');
+
+                        checkbox.addEventListener('change', () => {
+                            if (checkbox.checked) {
+                            adresse.classList.remove('show');
+                            link.classList.add('show');
+                            } else {
+                            link.classList.remove('show');
+                            adresse.classList.add('show');
+                            }
+                        });
+                        </script>
+                <?php
+                }elseif($do=='edit'){
+                    // Get workshop ID from URL
+                    $wid = isset($_GET['wid']) ? (int)$_GET['wid'] : 0;
+
+                    // Fetch the existing data
+                    $stmt = $con->prepare("SELECT * FROM workshops WHERE id = ?");
+                    $stmt->execute([$wid]);
+                    $workshop = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if (!$workshop) {
+                        echo "<div class='error'>Workshop not found!</div>";
+                        exit;
+                    }
+
+                    // If form submitted, update data
+                    if (isset($_POST['btneditWorkshop'])) {
+                        $title = $_POST['title'];
+                        $description = $_POST['description'];
+                        $workshop_date = $_POST['date'];
+                        $start_time = $_POST['time'];
+                        $duration_hours = $_POST['duration'];
+                        $cost = $_POST['cost'];
+                        $location = $_POST['location'];
+                        $is_online = isset($_POST['isonline']) ? 1 : 0;
+                        $meeting_link = $_POST['meetinlink'];
+
+                        $sql = $con->prepare("UPDATE workshops 
+                                            SET title=?, description=?, workshop_date=?, start_time=?, duration_hours=?, cost=?, location=?, is_online=?, meeting_link=? 
+                                            WHERE id=?");
+                        $sql->execute([
+                            $title,
+                            $description,
+                            $workshop_date,
+                            $start_time,
+                            $duration_hours,
+                            $cost,
+                            $location,
+                            $is_online,
+                            $meeting_link,
+                            $wid
+                        ]);
+
+                        echo '
+                            <div class="conformnewWorkshop">
+                                Workshop Updated Successfully
+                            </div>
+                        ';
+
+                        // Refresh data
+                        $stmt = $con->prepare("SELECT * FROM workshops WHERE id = ?");
+                        $stmt->execute([$wid]);
+                        $workshop = $stmt->fetch(PDO::FETCH_ASSOC);
+                    }
+                    ?>
+
+                    <div class="container_new">
+                        <div class="title_form">Edit Workshop</div>
+                        <form action="" method="post">
+                            <label>Titel</label>
+                            <input type="text" name="title" required value="<?= htmlspecialchars($workshop['title']) ?>">
+
+                            <label>Description</label>
+                            <textarea name="description" rows="3"><?= htmlspecialchars($workshop['description']) ?></textarea>
+
+                            <div class="specific">
+                                <div class="time">
+                                    <label>Date</label>
+                                    <input type="date" name="date" required value="<?= htmlspecialchars($workshop['workshop_date']) ?>">
+                                </div>
+                                <div class="time">
+                                    <label>Time</label>
+                                    <input type="time" name="time" required value="<?= htmlspecialchars($workshop['start_time']) ?>">
+                                </div>
+                            </div>
+
+                            <div class="specific">
+                                <div class="time">
+                                    <label>Duration</label>
+                                    <input type="number" name="duration" value="<?= htmlspecialchars($workshop['duration_hours']) ?>">
+                                </div>
+                                <div class="time">
+                                    <label>Cost</label>
+                                    <input type="number" name="cost" required value="<?= htmlspecialchars($workshop['cost']) ?>">
+                                </div>
+                            </div>
+
+                            <div class="location">
+                                <label>is online</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="isOnline_edid" name="isonline" <?= $workshop['is_online'] ? 'checked' : '' ?>>
+                                    <span class="slider"></span>
+                                </label>
+
+                                <input type="text" id="adresse_edid" placeholder="Adresse" name="location" value="<?= htmlspecialchars($workshop['location']) ?>">
+                                <input type="text" id="link_edid" placeholder="Link" name="meetinlink" value="<?= htmlspecialchars($workshop['meeting_link']) ?>">
+                            </div>
+
+                            <div class="btncontrol">
+                                <button type="reset" class="btn btn-outboder">Cancel</button>
+                                <button type="submit" class="btn btn-inboder" name="btneditWorkshop">Update Workshop</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script>
+                    const checkbox_edit = document.getElementById('isOnline_edid');
+                    const adresse_edit = document.getElementById('adresse_edid');
+                    const link_edit = document.getElementById('link_edid');
+
+                    // Set initial visibility based on DB value
+                    if (checkbox_edit.checked) {
+                        adresse_edit.classList.remove('show');
+                        link_edit.classList.add('show');
+                    } else {
+                        link_edit.classList.remove('show');
+                        adresse_edit.classList.add('show');
+                    }
+
+                    // Change event listener
+                    checkbox_edit.addEventListener('change', () => {
+                        if (checkbox_edit.checked) {
+                            adresse_edit.classList.remove('show');
+                            link_edit.classList.add('show');
+                        } else {
+                            link_edit.classList.remove('show');
+                            adresse_edit.classList.add('show');
+                        }
+                    });
+                    </script>
+                <?php
+                } elseif ($do == 'view') {
+                    $wid = isset($_GET['wid']) ? (int)$_GET['wid'] : 0;
+
+                    // 1️⃣ Get workshop info
+                    $stmt = $con->prepare("SELECT * FROM workshops WHERE id = ?");
+                    $stmt->execute([$wid]);
+                    $workshop = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if (!$workshop) {
+                        echo "<div class='alert alert-danger'>Workshop not found.</div>";
+                    } else {
+                        // 2️⃣ Get workshop statistics
+                        $stmt2 = $con->prepare("
+                            SELECT 
+                                COUNT(DISTINCT wb.user_id) AS total_clients,
+                                COALESCE(SUM(i.totalAmount), 0) AS total_revenue
+                            FROM workshop_bookings wb
+                            LEFT JOIN tbldetailinvoiceworkshop di ON wb.workshop_id = di.workshopID
+                            LEFT JOIN tblinvoiceworkshop i ON di.invoiceID = i.invoiceID
+                            WHERE wb.workshop_id = ?
+                        ");
+                        $stmt2->execute([$wid]);
+                        $stats = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+                        $total_clients = $stats['total_clients'] ?? 0;
+                        $total_revenue = $stats['total_revenue'] ?? 0;
+
+                        // 3️⃣ Calculate time left until workshop
+                        $workshop_datetime = strtotime($workshop['workshop_date'] . ' ' . $workshop['start_time']);
+                        $now = time();
+                        $time_left = $workshop_datetime - $now;
+                        $show_timer = $time_left > 0;
+                        ?>
+
+                        <!-- START WORKSHOP VIEW -->
+                        <section class="workshop-view">
+
+                            <!-- 🟦 TOP INFO + STATISTICS -->
+                            <div class="workshop-header">
+                                <div class="workshop-info">
+                                    <h2><?= htmlspecialchars($workshop['title']) ?></h2>
+                                    <div class="workshop-meta">
+                                        <span><i class="fa fa-calendar"></i> <?= date('d M Y', strtotime($workshop['workshop_date'])) ?></span><br>
+                                        <span><i class="fa fa-clock"></i> <?= date('H:i', strtotime($workshop['start_time'])) ?></span><br>
+                                        <span><i class="fa fa-hourglass-half"></i> <?= htmlspecialchars($workshop['duration_hours']) ?> hours</span><br>
+                                        <span>
+                                            <?php if ($workshop['is_online']): ?>
+                                                <i class="fa fa-globe"></i> Online (<a href="<?= htmlspecialchars($workshop['meeting_link']) ?>" target="_blank">Join Link</a>)
+                                            <?php else: ?>
+                                                <i class="fa fa-map-marker-alt"></i> <?= htmlspecialchars($workshop['location']) ?>
+                                            <?php endif; ?>
+                                        </span><br>
+                                    </div>
+                                </div>
+
+                                <div class="workshop-statistics">
+                                    <div class="stat-item">
+                                        <label>Total Revenue</label>
+                                        <h4>$<?= number_format($total_revenue, 2) ?></h4>
+                                    </div>
+                                    <div class="stat-item">
+                                        <label>Booked Participants</label>
+                                        <h4><?= $total_clients ?></h4>
+                                    </div>
+
+                                    <?php if ($show_timer): ?>
+                                        <div class="timer-box" id="workshop-timer"
+                                            data-timestamp="<?= $workshop_datetime ?>">
+                                            Starts in: <span id="time-remaining"></span>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <!-- 🟩 BOOKINGS TABLE -->
+                            <div class="workshop-bookings">
+                                <h3>Client Bookings</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Client Name</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                            <th>Invoice Code</th>
+                                            <th>Invoice Date</th>
+                                            <th>Amount</th>
+                                            <th>Transaction ID</th>
+                                            <th>Method</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $stmt3 = $con->prepare("
+                                            SELECT 
+                                                c.clientFname, c.clientLname, c.clientPhoneNumber, c.clientEmail,
+                                                i.invoiceCode, i.invoiceDate, i.totalAmount, i.transactionID, i.method
+                                            FROM tblclient c
+                                            JOIN tblinvoiceworkshop i ON c.clientID = i.clientID
+                                            JOIN tbldetailinvoiceworkshop di ON i.invoiceID = di.invoiceID
+                                            WHERE di.workshopID = ?
+                                            ORDER BY i.invoiceDate DESC
+                                        ");
+                                        $stmt3->execute([$wid]);
+                                        $rows = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
+                                        if ($stmt3->rowCount() > 0) {
+                                            foreach ($rows as $row) {
+                                                echo "
+                                                <tr>
+                                                    <td>{$row['clientFname']} {$row['clientLname']}</td>
+                                                    <td>{$row['clientPhoneNumber']}</td>
+                                                    <td>{$row['clientEmail']}</td>
+                                                    <td>{$row['invoiceCode']}</td>
+                                                    <td>" . date('d. M Y H:i', strtotime($row['invoiceDate'])) . "</td>
+                                                    <td>\${$row['totalAmount']}</td>
+                                                    <td>{$row['transactionID']}</td>
+                                                    <td><span class='payment-badge'>{$row['method']}</span></td>
+                                                </tr>";
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='8' style='text-align:center;color:#888;'>No bookings yet.</td></tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </section>
+
+                        <!-- TIMER SCRIPT -->
+                        <?php if ($show_timer): ?>
+                        <script>
+                            const timerBox = document.getElementById('workshop-timer');
+                            const display = document.getElementById('time-remaining');
+                            const targetTime = parseInt(timerBox.dataset.timestamp) * 1000;
+
+                            function updateTimer() {
+                                const now = new Date().getTime();
+                                const diff = targetTime - now;
+
+                                if (diff <= 0) {
+                                    timerBox.style.display = 'none';
+                                    clearInterval(interval);
+                                    return;
+                                }
+
+                                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                                // Always format with leading zeros for better look
+                                const pad = n => n.toString().padStart(2, '0');
+
+                                display.textContent = `${pad(days)}d ${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+                            }
+
+                            updateTimer();
+                            const interval = setInterval(updateTimer, 1000); // Update every second
+                        </script>
+                        <?php endif; ?>
+
+
+                        <?php
+                    }
                 }
+
             ?>
             
         </div>
     </main>
     <?php include '../common/jslinks.php'?>
     <script src="js/manageWorkshops.js"></script>
+
 </body>
