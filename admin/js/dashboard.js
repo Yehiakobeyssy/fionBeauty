@@ -90,8 +90,9 @@ $(document).ready(function() {
                     legend: { position: 'top', alignment: 'center' },
                     hAxis: { title: data[0][0] },
                     vAxis: { title: 'Revenue ($)' },
-                    colors: ['#28a745']
+                    colors: ['#28a745', '#007bff'] // Green = Invoices, Blue = Workshop
                 };
+
 
                 var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
                 chart.draw(dataTable, options);

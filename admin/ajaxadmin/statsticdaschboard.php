@@ -15,13 +15,28 @@ $dateLimit = date('Y-m-d', strtotime("-$days days"));
 // -----------------------------
 // 1. Total Revenue
 // -----------------------------
-$sqlRevenue = "SELECT SUM(invoiceAmount) AS totalRevenue 
-               FROM tblinvoice 
-               WHERE invoiceStatus < 5 
+// --- Calculate total from tblinvoice ---
+$sqlInvoice = "SELECT SUM(invoiceAmount) AS totalRevenue
+               FROM tblinvoice
+               WHERE invoiceStatus < 5
                AND invoiceDate >= :dateLimit";
-$stmtRevenue = $con->prepare($sqlRevenue);
-$stmtRevenue->execute([':dateLimit' => $dateLimit]);
-$totalRevenue = $stmtRevenue->fetchColumn() ?? 0;
+$stmtInvoice = $con->prepare($sqlInvoice);
+$stmtInvoice->execute([':dateLimit' => $dateLimit]);
+$totalInvoice = $stmtInvoice->fetchColumn() ?? 0;
+
+
+// --- Calculate total from tblinvoiceworkshop ---
+$sqlWorkshop = "SELECT SUM(totalAmount) AS totalRevenue
+                FROM tblinvoiceworkshop
+                WHERE invoiceDate >= :dateLimit";
+$stmtWorkshop = $con->prepare($sqlWorkshop);
+$stmtWorkshop->execute([':dateLimit' => $dateLimit]);
+$totalWorkshop = $stmtWorkshop->fetchColumn() ?? 0;
+
+
+// --- Sum both totals ---
+$totalRevenue = $totalInvoice + $totalWorkshop;
+
 
 // -----------------------------
 // 2. Total Commission

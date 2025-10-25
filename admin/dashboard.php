@@ -14,7 +14,7 @@
         $admin_name = $result['fName'].' ' . $result['lName'];
     }
     include '../common/head.php';
-?>
+?> 
     <link rel="stylesheet" href="../common/root.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
