@@ -164,7 +164,7 @@ if (!$invoice) {
     </div>
 
     <!-- Sender -->
-    <h3>From:</h3>
+    <h3>Sender:</h3>
     <div class="box">
         <?= htmlspecialchars($company['companyName']) ?><br>
         <?= htmlspecialchars($company['companyAdd']) ?><br>
@@ -173,7 +173,7 @@ if (!$invoice) {
     </div>
 
     <!-- Recipient -->
-    <h3>To:</h3>
+    <h3>Recipient:</h3>
     <div class="box">
         <strong><?= htmlspecialchars($invoice['NameAdd']) ?></strong><br>
         <?= htmlspecialchars($invoice['street']) ?>, 
