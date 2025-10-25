@@ -77,8 +77,8 @@
                         foreach ($provinces as $prov) {
                             $id = $prov['provinceID'];
                             $name = htmlspecialchars($prov['provinceName']);
-                            $fee = number_format((float)$prov['shippingFee'], 2);
-                            $amountOver = number_format((float)$prov['amount_over'], 2);
+                            $fee = number_format((float)$prov['shippingFee'], 2, '.', '');
+                            $amountOver = number_format((float)$prov['amount_over'], 2, '.', '');
 
                             echo "<tr>
                                     <td>{$name}</td>

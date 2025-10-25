@@ -33,7 +33,7 @@ $(document).ready(function () {
 
         if (cityContainer.is(":visible")) {
             cityContainer.slideUp();
-        } else {
+        } else { 
             $.ajax({
                 url: "ajaxadmin/cities.php",
                 method: "POST",

@@ -166,7 +166,7 @@
                 <div class="recentOrders">
                     <div class="title">
                         <h5>Recent Order</h5>
-                        <a href="">View All -></a>
+                        <a href="manageOrders.php">View All -></a>
                     </div>
                     <div class="container_orders">
                         <?php
@@ -258,7 +258,7 @@
                 <div class="topProducts">
                     <div class="title">
                         <h5>Top Selling Product</h5>
-                        <a href="">View All</a>
+                        <a href="manageproducts.php">View All</a>
                     </div>
                     <table>
                         <thead>
@@ -317,6 +317,7 @@
                 <div class="topClients">
                     <div class="title">
                         <h6>Active Customers</h6>
+                        <a href="manageClients.php">View All</a>
                     </div>
                     <table>
                         <thead>
