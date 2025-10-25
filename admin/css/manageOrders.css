@@ -362,7 +362,10 @@ td{
     font-weight: 500;
     line-height: 150%;
 }
-
+.atags{
+    margin: 25px ;
+    text-align: right;
+}
 /**/
 .progressbar {
   display: flex;

@@ -258,6 +258,7 @@
                                 ?>
                             </div>
                         </div>
+                        
                         <div class="invoiceinfo">
                             <div class="no_pay">
                                 <div class="invoice_no">
@@ -325,6 +326,10 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="atags">
+                        <a href="viewLabel.php?inv=<?=$orderID?>" class="btn btn-success">Print Label</a>
+                        <a href="viewinvoice.php?inv=<?=$orderID?>" class="btn btn-success">Print Invoice</a>
                     </div>
                     <div class="progressbar">
                         <?php
