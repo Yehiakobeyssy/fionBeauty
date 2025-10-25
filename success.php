@@ -211,6 +211,15 @@ $mail->Body = "
 
 $mail->send();
 
+$notificationText = "New order created: Order No #$invoiceCode by $user_name";
+$stmt = $con->prepare("INSERT INTO tblNotification (text) VALUES (?)");
+$stmt->execute([$notificationText]);
+$notificationId = $con->lastInsertId();
+$admins = $con->query("SELECT adminID  FROM  tbladmin WHERE admin_block = 0")->fetchAll(PDO::FETCH_COLUMN);
+$stmtSeen = $con->prepare("INSERT INTO tblseennotification (notificationId, adminID, seen) VALUES (?, ?, 0)");
+foreach ($admins as $adminId) {
+    $stmtSeen->execute([$notificationId, $adminId]);
+}
 // Clear cart
 unset($_SESSION['cart']);
 unset($_SESSION['order_info']);

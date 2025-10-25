@@ -94,6 +94,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $response['success'] = true;
         $response['message'] = "Account created successfully.";
+
+
+        $notificationText = "New client signed up: $clientFname $clientLname";
+        $stmt = $con->prepare("INSERT INTO tblNotification (text) VALUES (?)");
+        $stmt->execute([$notificationText]);
+        $notificationId = $con->lastInsertId();
+        $admins = $con->query("SELECT adminID  FROM  tbladmin WHERE admin_block = 0")->fetchAll(PDO::FETCH_COLUMN);
+        $stmtSeen = $con->prepare("INSERT INTO tblseennotification (notificationId, adminID, seen) VALUES (?, ?, 0)");
+        foreach ($admins as $adminId) {
+            $stmtSeen->execute([$notificationId, $adminId]);
+        }
+
+
     } catch (Exception $e) {
         $response['message'] = "Error creating account: " . $e->getMessage();
     }

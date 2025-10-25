@@ -5,7 +5,7 @@
 
     if (!isset($_SESSION['admin_id'])) {
         header("Location: index.php");
-        exit();  
+        exit();
     }else{
         $admin_id = $_SESSION['admin_id'];
         $sql=$con->prepare('SELECT fName, lName FROM  tbladmin WHERE adminID  = ?');
