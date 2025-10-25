@@ -267,6 +267,7 @@
     color: var(--color-dark);
 }
 
+
 /* ============================
    Responsive Adjustments
    ============================ */
@@ -277,20 +278,26 @@
 @media (max-width: 1279px) {
     .nav_user, .useracountnav { display: none; }
     .navbarcompany { flex-direction: column; align-items: flex-start; }
-    .popup { display: block; position: absolute; top: 138px; right: 20px; }
+    .popup { display: block; position: absolute; top: 75px; right: 20px; }
     .companylogo { width: 100%; margin-left: 20px; margin-bottom: 5px; text-align: left; }
     .search_component { width: 100%; margin-left: 0; justify-content: center; }
     .input_select { width: 80%; }
     .input_select input { width: 100%; }
     .flash_download,.flash_downloader { top:200px !important}
-    
+
 }
 @media  (max-width: 785px){
     .flash_download,.flash_downloader { top:250px !important}
+    .popup { display: block; position: absolute; top: 110px; right: 20px; }
+}
+@media (max-width: 580px) {
+    .popup { display: block; position: absolute; top: 140px; right: 20px; }
+    
 }
 @media (max-width: 480px) {
     .popupnavbar { width: 60%; }
     .navbarcompany { padding: 12px 5%; }
+    .popup { display: block; position: absolute; top: 170px; right: 20px; }
     
 }
 
@@ -747,5 +754,29 @@ $('.cart').click(function(){
 })
 
    
+});
+const openBtn = document.getElementById('openBtn');
+const popupNavbar = document.querySelector('.popupnavbar');
+
+openBtn.addEventListener('click', (e) => {
+    // لمنع انتشار الحدث إلى document
+    e.stopPropagation(); 
+    if (popupNavbar.style.display === 'block') {
+        popupNavbar.style.display = 'none';
+    } else {
+        popupNavbar.style.display = 'block';
+    }
+});
+
+// إخفاء الـ popup عند النقر خارجها
+document.addEventListener('click', (e) => {
+    if (!popupNavbar.contains(e.target) && e.target !== openBtn) {
+        popupNavbar.style.display = 'none';
+    }
+});
+
+// لمنع النقر داخل الـ popup من إخفائه
+popupNavbar.addEventListener('click', (e) => {
+    e.stopPropagation();
 });
 </script>
