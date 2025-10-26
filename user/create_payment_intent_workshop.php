@@ -28,8 +28,13 @@ $stmt->execute($workshopIds);
 $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 $amount = intval($total * 100); // amount in cents
 
-$success_url = "http://localhost/work/fionBeauty/successworkshop.php?session_id={CHECKOUT_SESSION_ID}";
-$cancel_url = "http://localhost/work/fionBeauty/checkoutworkshop.php";
+
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$basePath = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // e.g., /work/fionBeauty
+$success_url = $protocol . $host .  "/successworkshop.php?session_id={CHECKOUT_SESSION_ID}";
+$cancel_url  = $protocol . $host .  "/checkoutworkshop.php";
+
 
 // Setup Stripe Checkout Session for non-card payments
 if ($method !== 'card') {
@@ -55,7 +60,7 @@ if ($method !== 'card') {
             'customer_email' => $_SESSION['user_email'] ?? '',
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => 'cad', 
                     'product_data' => [
                         'name' => 'Workshop Purchase',
                     ],

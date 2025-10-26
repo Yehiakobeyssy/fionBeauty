@@ -26,10 +26,17 @@ $sql->execute([$user_id]);
 $clientInfo = $sql->fetch();
 $username = $clientInfo['clientFname'].' '.$clientInfo['clientLname'];
 $usermail = $clientInfo['clientEmail'];
-$country = "CA"; // default
+$country = "CA"; // default country
 
-$success_url = "http://localhost/work/fionBeauty/successworkshop.php";
+// ======= DYNAMIC URLS =======
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$basePath = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 
+$success_url = $protocol . $host . "/successworkshop.php";
+$cancel_url  = $protocol . $host . "/successworkshop.php";
+
+// ======= HTML GENERATOR =======
 $html = '';
 
 switch($method){
@@ -70,73 +77,40 @@ switch($method){
 })();
 </script>
 HTML;
-    break;
+        break;
 
     case 'paypal':
-        $html .= <<<HTML
-<div style="text-align:center;">
-    <p>You will be redirected to PayPal to complete your payment.</p>
-    <button class="paybtn" id="paypal-btn">Pay with PayPal</button>
-    <div id="paypal-message" style="color:red;margin-top:5px;"></div>
-</div>
-<script>
-document.getElementById("paypal-btn").addEventListener("click", async ()=>{
-    const stripe = Stripe("{$PK}");
-    const resp = await fetch("create_payment_intent_workshop.php", {
-        method:"POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({method:"paypal"})
-    });
-    const data = await resp.json();
-    await stripe.redirectToCheckout({ sessionId: data.clientSecret });
-});
-</script>
-HTML;
-    break;
-
     case 'klarna':
-        $html .= <<<HTML
-<div style="text-align:center;">
-    <p>You will be redirected to Klarna to complete your payment.</p>
-    <button class="paybtn" id="klarna-pay">Pay with Klarna</button>
-    <div id="klarna-message" style="color:red;margin-top:5px;"></div>
-</div>
-<script>
-document.getElementById("klarna-pay").addEventListener("click", async ()=>{
-    const stripe = Stripe("{$PK}");
-    const resp = await fetch("create_payment_intent_workshop.php", {
-        method:"POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({method:"klarna"})
-    });
-    const data = await resp.json();
-    await stripe.redirectToCheckout({ sessionId: data.clientSecret });
-});
-</script>
-HTML;
-    break;
-
     case 'afterpay_clearpay':
+        $methodName = $method; // keep method name for clarity
+        $displayName = strtoupper(str_replace('_', '/', $methodName));
+        $btnId = $methodName . "-btn";
+        $msgId = $methodName . "-message";
+
         $html .= <<<HTML
 <div style="text-align:center;">
-    <p>You will be redirected to Afterpay / Clearpay to complete your payment in installments.</p>
-    <button class="paybtn" id="afterpay-btn">Pay with Afterpay</button>
-    <div id="afterpay-message" style="color:red;margin-top:5px;"></div>
+    <p>You will be redirected to {$displayName} to complete your payment.</p>
+    <button class="paybtn" id="{$btnId}">Pay with {$displayName}</button>
+    <div id="{$msgId}" style="color:red;margin-top:5px;"></div>
 </div>
 <script>
-document.getElementById("afterpay-btn").addEventListener("click", async ()=>{
+document.getElementById("{$btnId}").addEventListener("click", async ()=>{
     const stripe = Stripe("{$PK}");
     const resp = await fetch("create_payment_intent_workshop.php", {
         method:"POST",
         headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({method:"afterpay_clearpay"})
+        body: JSON.stringify({method:"{$methodName}"})
     });
     const data = await resp.json();
-    await stripe.redirectToCheckout({ sessionId: data.clientSecret });
+    await stripe.redirectToCheckout({ 
+        sessionId: data.clientSecret,
+        successUrl: "{$success_url}",
+        cancelUrl: "{$cancel_url}"
+    });
 });
 </script>
 HTML;
-    break;
+        break;
 
     default:
         $html .= "<p>Unknown payment method.</p>";

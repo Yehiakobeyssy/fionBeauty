@@ -59,7 +59,7 @@ if(!in_array($method, $supportedMethods)) $method='card';
 try {
     $intent = \Stripe\PaymentIntent::create([
         'amount'=>$amount,
-        'currency'=>'eur',
+        'currency'=>'cad', 
         'payment_method_types'=>[$method],
         'metadata'=>['method'=>$method,'user_id'=>$_SESSION['user_id'] ?? 'guest']
     ]);

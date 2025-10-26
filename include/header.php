@@ -130,7 +130,7 @@
         <div class="langugeuses small">
             <select name="" id="">
                 <option value="">English</option>
-                <option  value="">Arabic</option>
+                
             </select>
         </div>
     </div>
@@ -141,7 +141,7 @@
     <div class="langugeuse big" >
         <select name="" id="">
             <option value="">English</option>
-            <option  value="">Arabic</option>
+            
         </select>
     </div>
 </header>
