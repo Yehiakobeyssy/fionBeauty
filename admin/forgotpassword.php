@@ -54,15 +54,44 @@
                             $mail->CharSet = 'UTF-8';   
                             $resetLink = $websiteaddresse.'admin/forgotpassword.php?do=newPassword&token='.$token;
                             $mail->Body = "
-                                <p>Hello,</p>
-                                <p>We received a request to reset your Fion Beauty Supplies admin account password.</p>
-                                <p>If you made this request, please click the link below to create a new password:</p>
-                                <p><a href='$resetLink' target='_blank' style='color:#007bff;'>Reset Your Password</a></p>
-                                <p>This link will expire in 30 minutes for your security.</p>
-                                <p>If you didn’t request a password reset, please ignore this message — your account will remain secure.</p>
-                                <br>
-                                <p>Best regards,<br>Fion Beauty Supplies Security Team</p>
-                            ";
+                                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; background: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;'>
+
+                                        <!-- Header -->
+                                        <div style='background-color: #009245; color: #fff; padding: 20px; text-align: center;'>
+                                            <img src='" . $websiteaddresse . "images/logo_white.png' alt='Fion Beauty' style='max-height: 50px; margin-bottom: 10px;'>
+                                            <h1 style='margin: 0; font-size: 24px;'>Fion Beauty Supplies</h1>
+                                        </div>
+
+                                        <!-- Body -->
+                                        <div style='padding: 25px; color: #333;'>
+                                            <h2 style='color: #009245; margin-top: 0;'>Password Reset Request</h2>
+                                            <p>Hello,</p>
+                                            <p>We received a request to reset your <strong>Fion Beauty Supplies admin account</strong> password.</p>
+                                            <p>If you made this request, please click the button below to create a new password:</p>
+
+                                            <p style='text-align: center; margin: 30px 0;'>
+                                                <a href='$resetLink' target='_blank' style='background-color: #009245; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;'>Reset Your Password</a>
+                                            </p>
+
+                                            <p style='color: #555;'>This link will expire in <strong>30 minutes</strong> for your security.</p>
+                                            <p>If you didn’t request a password reset, please ignore this message — your account will remain secure.</p>
+
+                                            <br>
+                                            <p style='margin: 0;'>Best regards,<br><strong>Fion Beauty Supplies Security Team</strong></p>
+                                        </div>
+
+                                        <!-- Footer -->
+                                        <div style='margin-top: 20px; padding: 20px; font-family: Arial, sans-serif; color: #6B6B6B;'>
+                                            <hr style='margin: 20px 0; border: none; border-top: 1px solid #eee;'>
+                                            <p style='font-size: 13px; color: #999; text-align: center; margin: 0;'>
+                                                © " . date('Y') . " Fion Beauty Supplies. All rights reserved.<br>
+                                                This is an automated message — please do not reply directly.
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                    ";
+
 
                             if($mail->send()){
                                 echo '<div class="alert alert-success">✅ A secure password reset link has been sent to your email. Please check your inbox (and spam folder) to continue.</div>';
@@ -73,7 +102,7 @@
                         } else {
                             echo '<div class="alert alert-danger">❌ The email address you entered is not registered in our system. Please verify and try again.</div>';
                         }
-                    }
+                    } 
 
                 ?>
             </div>
