@@ -168,18 +168,38 @@ if (!$invoice) {
     <div class="box">
         <?= htmlspecialchars($company['companyName']) ?><br>
         <?= htmlspecialchars($company['companyAdd']) ?><br>
-        <?= htmlspecialchars($company['companyPhone']) ?><br>
-        <?= htmlspecialchars($company['companyEmail']) ?><br>
+        <?php
+        // Province abbreviation
+        $provinceAbbr = '';
+        if (!empty($company['province'])) {
+            $stmt = $con->prepare("SELECT provinceName FROM tblprovince WHERE provinceID = ?");
+            $stmt->execute([$company['province']]);
+            $provinceAbbr = $stmt->fetchColumn();
+        }
+        // City
+        $cityName = '';
+        if (!empty($company['city'])) {
+            $stmt = $con->prepare("SELECT cityName FROM tblcity WHERE cityID = ?");
+            $stmt->execute([$company['city']]);
+            $cityName = $stmt->fetchColumn();
+        }
+
+        // Postal code
+        $postal = !empty($company['postalcode']) ? $company['postalcode'] : '';
+
+        // Print street + city line
+        echo htmlspecialchars($cityName . ', ' . $provinceAbbr . '  ' . $postal);
+        ?><br>
+        Phone: <?= htmlspecialchars($company['companyPhone']) ?><br>
+        Email: <?= htmlspecialchars($company['companyEmail']) ?>
     </div>
 
     <!-- Recipient -->
     <h3>Recipient:</h3>
     <div class="box">
         <strong><?= htmlspecialchars($invoice['NameAdd']) ?></strong><br>
-        <?= htmlspecialchars($invoice['street']) ?>, 
-        <?= htmlspecialchars('Bld ' . $invoice['bultingNo'] . ', Door ' . $invoice['doorNo']) ?><br>
-        <?= htmlspecialchars($invoice['cityName']) ?>, <?= htmlspecialchars($invoice['provinceName']) ?><br>
-        <?= htmlspecialchars($invoice['poatalCode']) ?><br>
+        <?= htmlspecialchars($invoice['street']) ?>, <?= htmlspecialchars( $invoice['bultingNo'] . ', '. $invoice['doorNo']) ?><br>
+        <?= htmlspecialchars($invoice['cityName']) ?>, <?=  htmlspecialchars($invoice['provinceName']) ?>  <?= htmlspecialchars($invoice['poatalCode']) ?><br>
         Phone: <?= htmlspecialchars($invoice['phoneNumber']) ?>
     </div>
 

@@ -221,7 +221,31 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Company Info -->
     <div class="company-info">
+
         <strong><?= htmlspecialchars($company['companyName']) ?></strong><br>
+        <?= htmlspecialchars($company['companyAdd']) ?><br>
+        <?php
+        // Province abbreviation
+        $provinceAbbr = '';
+        if (!empty($company['province'])) {
+            $stmt = $con->prepare("SELECT provinceName FROM tblprovince WHERE provinceID = ?");
+            $stmt->execute([$company['province']]);
+            $provinceAbbr = $stmt->fetchColumn();
+        }
+        // City
+        $cityName = '';
+        if (!empty($company['city'])) {
+            $stmt = $con->prepare("SELECT cityName FROM tblcity WHERE cityID = ?");
+            $stmt->execute([$company['city']]);
+            $cityName = $stmt->fetchColumn();
+        }
+
+        // Postal code
+        $postal = !empty($company['postalcode']) ? $company['postalcode'] : '';
+
+        // Print street + city line
+        echo htmlspecialchars($cityName . ', ' . $provinceAbbr . '  ' . $postal);
+        ?><br>
         Phone: <?= htmlspecialchars($company['companyPhone']) ?><br>
         Email: <?= htmlspecialchars($company['companyEmail']) ?><br>
         Tax Number: <?= htmlspecialchars($finance['taxNumber']) ?><br>
@@ -244,11 +268,9 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="info-box">
             <h3>Shipping Address</h3>
-            <?= htmlspecialchars($invoice['street']) ?>, 
-            <?= htmlspecialchars('Bld ' . $invoice['bultingNo'] . ', Door ' . $invoice['doorNo']) ?><br>
-            <?= htmlspecialchars($invoice['cityName']) ?>, 
-            <?= htmlspecialchars($invoice['provinceName']) ?> 
-            <?= htmlspecialchars($invoice['poatalCode']) ?><br>
+            <?= htmlspecialchars($invoice['street']) ?>, <?= htmlspecialchars( $invoice['bultingNo'] . ', '. $invoice['doorNo']) ?><br>
+            <?= htmlspecialchars($invoice['cityName']) ?>, <?=  htmlspecialchars($invoice['provinceName']) ?>  <?= htmlspecialchars($invoice['poatalCode']) ?><br>
+
         </div>
     </div>
 

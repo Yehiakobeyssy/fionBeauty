@@ -307,14 +307,15 @@
                         <?php
                             $sql = "
                                     SELECT 
-                                        IFNULL(SUM(CASE WHEN invoiceStatus < 5 THEN invoiceAmount ELSE 0 END), 0) AS totalBalance,
-                                        COUNT(*) AS allOrders,
-                                        SUM(CASE WHEN invoiceStatus < 4 THEN 1 ELSE 0 END) AS processing,
-                                        SUM(CASE WHEN invoiceStatus = 6 THEN 1 ELSE 0 END) AS returned,
-                                        SUM(CASE WHEN invoiceStatus = 5 THEN 1 ELSE 0 END) AS cancelled,
-                                        SUM(CASE WHEN invoiceStatus = 4 THEN 1 ELSE 0 END) AS completed
+                                        COALESCE(SUM(CASE WHEN invoiceStatus < 5 THEN invoiceAmount ELSE 0 END), 0) AS totalBalance,
+                                        COALESCE(COUNT(*), 0) AS allOrders,
+                                        COALESCE(SUM(CASE WHEN invoiceStatus < 4 THEN 1 ELSE 0 END), 0) AS processing,
+                                        COALESCE(SUM(CASE WHEN invoiceStatus = 6 THEN 1 ELSE 0 END), 0) AS returned,
+                                        COALESCE(SUM(CASE WHEN invoiceStatus = 5 THEN 1 ELSE 0 END), 0) AS cancelled,
+                                        COALESCE(SUM(CASE WHEN invoiceStatus = 4 THEN 1 ELSE 0 END), 0) AS completed
                                     FROM tblinvoice
                                     WHERE clientID = :userID
+
                                     ";
 
                             // تنفيذ الاستعلام

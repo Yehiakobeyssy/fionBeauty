@@ -54,10 +54,8 @@
                     <?php
                         switch ($do) {
                             case 'main':
-                                // 🟦 Main Setting section
-                                
-                                // Fetch current settings
-                                $stmt = $con->prepare("SELECT * FROM tblsetting WHERE seetingID  = 1");
+                                // Fetch settings
+                                $stmt = $con->prepare("SELECT * FROM tblsetting WHERE seetingID = 1");
                                 $stmt->execute();
                                 $setting = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -66,23 +64,46 @@
                                     $companyPhone  = $_POST['companyPhone'];
                                     $companyEmail  = $_POST['companyEmail'];
                                     $companyAdd    = $_POST['companyAdd'];
+                                    $province      = $_POST['province'] ?? null;
+                                    $city          = $_POST['city'] ?? null;
+                                    $postalcode    = $_POST['postalcode'] ?? null;
                                     $noteHeader    = $_POST['noteHeader'];
                                     $daysofnewitem = $_POST['daysofnewitem'];
 
                                     $update = $con->prepare("
                                         UPDATE tblsetting 
-                                        SET companyPhone = ?, companyEmail = ?, companyAdd = ?, noteHeader = ?, daysofnewitem = ?
-                                        WHERE seetingID  = 1
+                                        SET 
+                                            companyPhone  = ?, 
+                                            companyEmail  = ?, 
+                                            companyAdd    = ?, 
+                                            province      = ?, 
+                                            city          = ?, 
+                                            postalcode    = ?, 
+                                            noteHeader    = ?, 
+                                            daysofnewitem = ?
+                                        WHERE seetingID = 1
                                     ");
-                                    $update->execute([$companyPhone, $companyEmail, $companyAdd, $noteHeader, $daysofnewitem]);
+                                    $update->execute([
+                                        $companyPhone,
+                                        $companyEmail,
+                                        $companyAdd,
+                                        $province,
+                                        $city,
+                                        $postalcode,
+                                        $noteHeader,
+                                        $daysofnewitem
+                                    ]);
 
                                     echo '<div class="card" style="color:var(--color-success);font-weight:600;">✅ Settings updated successfully!</div>';
+
                                     // Refresh data
-                                    $stmt = $con->prepare("SELECT * FROM tblsetting WHERE seetingID  = 1");
+                                    $stmt = $con->prepare("SELECT * FROM tblsetting WHERE seetingID = 1");
                                     $stmt->execute();
                                     $setting = $stmt->fetch(PDO::FETCH_ASSOC);
                                 }
                                 ?>
+
+                                <!-- SETTINGS FORM -->
                                 <div class="card" style="max-width:700px;margin:auto;">
                                     <h2 class="h2 mb-3">🛠️ Main Settings</h2>
 
@@ -99,11 +120,53 @@
                                             <small class="hint">Used for customer messages and notifications.</small>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label>🏢 Company Address</label>
-                                            <input type="text" name="companyAdd" value="<?= htmlspecialchars($setting['companyAdd']) ?>" class="input">
-                                            <small class="hint">Appears in invoices and about page.</small>
-                                        </div>
+                                        <div class="mb-4">
+    <h5 class="fw-bold mb-3">🏢 Company Address</h5>
+
+    <input type="text" name="companyAdd" value="<?= htmlspecialchars($setting['companyAdd']) ?>" class="input" placeholder="Street address or suite">
+
+    <div class="row" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <div class="col" style="flex:1;min-width:200px;">
+            <label>🌍 Province</label>
+            <select name="province" id="province" class="input">
+                <option value="">-- Select Province --</option>
+                <?php
+                $stmt = $con->prepare("SELECT provinceID, provinceName FROM tblprovince ORDER BY provinceName ASC");
+                $stmt->execute();
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $selected = ($setting['province'] == $row['provinceID']) ? 'selected' : '';
+                    echo "<option value='{$row['provinceID']}' $selected>{$row['provinceName']}</option>";
+                }
+                ?>
+            </select>
+        </div>
+
+        <div class="col" style="flex:1;min-width:200px;">
+            <label>🏙️ City</label>
+            <select name="city" id="city" class="input">
+                <option value="">-- Select City --</option>
+                <?php
+                if (!empty($setting['province'])) {
+                    $stmt = $con->prepare("SELECT cityID, cityName FROM tblcity WHERE provinceID = :pid ORDER BY cityName ASC");
+                    $stmt->execute([':pid' => $setting['province']]);
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $selected = ($setting['city'] == $row['cityID']) ? 'selected' : '';
+                        echo "<option value='{$row['cityID']}' $selected>{$row['cityName']}</option>";
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <label>📮 Postal Code</label>
+        <input type="text" name="postalcode" value="<?= htmlspecialchars($setting['postalcode']) ?>" class="input" maxlength="20" placeholder="e.g., M5H 2N2">
+    </div>
+
+    <small class="hint mt-2 d-block">Appears in invoices and about page.</small>
+</div>
+
 
                                         <div class="mb-3">
                                             <label>📝 Note Header</label>
@@ -122,6 +185,27 @@
                                         </div>
                                     </form>
                                 </div>
+
+                                <!-- AJAX: Update City dropdown dynamically -->
+                                <script>
+                                $('#province').change(function() {
+                                    var provinceID = $(this).val();
+                                    $('#city').html('<option>Loading...</option>');
+                                    if (provinceID) {
+                                        $.ajax({
+                                            url: 'ajaxadmin/ajax_get_city.php',
+                                            type: 'POST',
+                                            data: { provinceID: provinceID },
+                                            success: function(response) {
+                                                $('#city').html(response);
+                                            }
+                                        });
+                                    } else {
+                                        $('#city').html('<option value="">-- Select City --</option>');
+                                    }
+                                });
+                                </script>
+
                                 <?php
                                 break;
 

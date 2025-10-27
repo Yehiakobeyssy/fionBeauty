@@ -118,7 +118,7 @@
 
 </style>
 <?php
-    $sql=$con->prepare('SELECT companyAdd,companyPhone,companyEmail FROM    tblsetting WHERE seetingID   = 1 ');
+    $sql=$con->prepare('SELECT * FROM    tblsetting WHERE seetingID   = 1 ');
     $sql->execute();
     $supportinfo=$sql->fetch();
     
@@ -133,10 +133,43 @@
     </div>
     <div class="support">
         <h4>Support</h4>
-        <label for=""><?php echo $supportinfo['companyAdd'] ?></label>
-        <label for=""><?php echo $supportinfo['companyEmail'] ?></label>
-        <label for=""><?php echo $supportinfo['companyPhone'] ?></label>
+
+        <label>
+            
+            <?php 
+            // Street Address
+            echo htmlspecialchars($supportinfo['companyAdd']); 
+            echo "<br>";
+
+            // Fetch province abbreviation
+            $provinceAbbr = '';
+            if (!empty($supportinfo['province'])) {
+                $stmt = $con->prepare("SELECT provinceName FROM tblprovince WHERE provinceID = ?");
+                $stmt->execute([$supportinfo['province']]);
+                $provinceAbbr = $stmt->fetchColumn();
+            }
+
+            // Fetch city name
+            $cityName = '';
+            if (!empty($supportinfo['city'])) {
+                $stmt = $con->prepare("SELECT cityName FROM tblcity WHERE cityID = ?");
+                $stmt->execute([$supportinfo['city']]);
+                $cityName = $stmt->fetchColumn();
+            }
+
+            // Postal Code
+            $postal = !empty($supportinfo['postalcode']) ? $supportinfo['postalcode'] : '';
+
+            // Build Canadian style address line
+            $addressLine = trim("$cityName, $provinceAbbr  $postal");
+            echo htmlspecialchars($addressLine);
+            ?>
+        </label>
+
+        <label> <?php echo htmlspecialchars($supportinfo['companyEmail']); ?></label>
+        <label> <?php echo htmlspecialchars($supportinfo['companyPhone']); ?></label>
     </div>
+
     <div class="account_links">
         <h4>Account</h4>
         <a href="user/dashboard.php">My Account</a>
