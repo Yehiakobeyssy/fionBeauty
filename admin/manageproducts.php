@@ -303,7 +303,7 @@
                                     <h2>Category Details</h2>
                                     <input type="text" placeholder="Category Name" name="catName" required>
                                     <label for="">Accepted Free Shipping</label>
-                                    <select name="" id="">
+                                    <select name="shippingfree_accepted" id="">
                                         <option value="1">Yes</option>
                                         <option value="0">NO</option>
                                     </select>
