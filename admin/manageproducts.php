@@ -50,11 +50,13 @@
         $catDescription = $_POST['catDescription'] ?? '';
         $carImg = $filename;
         $shippingfree_accepted = $_POST['shippingfree_accepted'];
+        $amountOver = $_POST['amountOver'];
+        $discount = $_POST['discount'];
         $catActive = 1;
 
         // 3. Insert into database
-        $sql = $con->prepare('INSERT INTO tblcategory (catName, catDescription, carImg,shippingfree_accepted, catActive) VALUES (?, ?, ?,?, ?)');
-        $sql->execute([$catName, $catDescription, $carImg,$shippingfree_accepted, $catActive]);
+        $sql = $con->prepare('INSERT INTO tblcategory (catName, catDescription, carImg,shippingfree_accepted,amountOver,discount, catActive) VALUES (?, ?, ?,?,?,?, ?)');
+        $sql->execute([$catName, $catDescription, $carImg,$shippingfree_accepted,$amountOver,$discount, $catActive]);
 
         // 4. Redirect to view the category
         $catId = $con->lastInsertId();
@@ -65,7 +67,7 @@
     
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/manageproducts.css">
+    <link rel="stylesheet" href="css/manageproducts.css?v=1.1">
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
@@ -156,29 +158,39 @@
                         </div>
                         <div class="category_info">
                             
-                            <div class="category_name">
+                            <div class="category_name admin-category-info">
                                 <?php
-                                    $sql=$con->prepare('SELECT carImg,catName,catDescription,catInputDate,shippingfree_accepted	 FROM tblcategory WHERE categoryId = ?');
+                                    $sql = $con->prepare('SELECT carImg, catName, catDescription, catInputDate, shippingfree_accepted, amountOver, discount FROM tblcategory WHERE categoryId = ?');
                                     $sql->execute([$cat]);
-                                    $catecorynameinfo = $sql->fetch();
-
+                                    $categoryInfo = $sql->fetch(PDO::FETCH_ASSOC);
                                 ?>
+                                
                                 <div class="img">
-                                    <img src="../images/items/<?= $catecorynameinfo['carImg']?>" alt="">
+                                    <img src="../images/items/<?= htmlspecialchars($categoryInfo['carImg']) ?>" alt="<?= htmlspecialchars($categoryInfo['catName']) ?>">
                                 </div>
+                                
                                 <div class="namecat">
-                                    <h5><?= $catecorynameinfo['catName']?></h5>
-                                    <label for=""><?= $catecorynameinfo['catDescription']?></label><br>
-                                    <label for=""><strong>Accepted Free shipping :</strong><?= $catecorynameinfo['shippingfree_accepted'] == 1 ? 'Yes' : 'No' ?></label><br>
-                                    <label for="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="15" viewBox="0 0 19 15" fill="none">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.7812 7.5C16.7812 4.27834 14.039 1.66667 10.6562 1.66667C7.54781 1.66667 4.9802 3.87195 4.58422 6.72937L5.22503 6.11908C5.56674 5.79364 6.12076 5.79364 6.46247 6.11908C6.80418 6.44452 6.80418 6.97216 6.46247 7.29759L3.96561 9.67555C3.79475 9.83827 3.51775 9.83827 3.34689 9.67555L0.850032 7.29759C0.508323 6.97216 0.508323 6.44452 0.850032 6.11908C1.19174 5.79364 1.74576 5.79364 2.08747 6.11908L2.81403 6.81105C3.17925 2.99184 6.55089 0 10.6562 0C15.0055 0 18.5312 3.35786 18.5312 7.5C18.5312 11.6421 15.0055 15 10.6562 15C8.16895 15 5.95061 13.9008 4.50883 12.1879C4.20657 11.8288 4.26721 11.3043 4.64426 11.0165C5.02132 10.7286 5.57201 10.7863 5.87427 11.1454C6.9982 12.4807 8.72238 13.3333 10.6562 13.3333C14.039 13.3333 16.7812 10.7217 16.7812 7.5ZM11.5312 4.16667C11.5312 3.70643 11.1395 3.33333 10.6562 3.33333C10.173 3.33333 9.78125 3.70643 9.78125 4.16667V7.5C9.78125 7.96024 10.173 8.33333 10.6562 8.33333H12.8438C13.327 8.33333 13.7188 7.96024 13.7188 7.5C13.7188 7.03976 13.327 6.66667 12.8438 6.66667H11.5312V4.16667Z" fill="#667085"/>
-                                        </svg>
-                                        <strong>Create At:</strong>
-                                        <?= date('d M Y', strtotime($catecorynameinfo['catInputDate'])) ?>
+                                    <h5><?= htmlspecialchars($categoryInfo['catName']) ?></h5>
+                                    <label><?= htmlspecialchars($categoryInfo['catDescription']) ?></label><br>
+                                    <label><strong>Accepted Free Shipping:</strong> <?= $categoryInfo['shippingfree_accepted'] == 1 ? 'Yes' : 'No' ?></label><br>
+                                    
+                                    <!-- New: Amount Over and Discount -->
+                                    <label>
+                                        <strong>Discount Rule:</strong> 
+                                        <?php if ($categoryInfo['amountOver'] > 0 && $categoryInfo['discount'] > 0): ?>
+                                            Get <strong><?= number_format($categoryInfo['discount'], 2) ?>%</strong> discount when purchase total in this category exceeds <strong>$<?= number_format($categoryInfo['amountOver'], 2) ?></strong>
+                                        <?php else: ?>
+                                            No category discount
+                                        <?php endif; ?>
+                                    </label><br>
+                                    
+                                    <label>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="15" viewBox="0 0 19 15" fill="none"> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.7812 7.5C16.7812 4.27834 14.039 1.66667 10.6562 1.66667C7.54781 1.66667 4.9802 3.87195 4.58422 6.72937L5.22503 6.11908C5.56674 5.79364 6.12076 5.79364 6.46247 6.11908C6.80418 6.44452 6.80418 6.97216 6.46247 7.29759L3.96561 9.67555C3.79475 9.83827 3.51775 9.83827 3.34689 9.67555L0.850032 7.29759C0.508323 6.97216 0.508323 6.44452 0.850032 6.11908C1.19174 5.79364 1.74576 5.79364 2.08747 6.11908L2.81403 6.81105C3.17925 2.99184 6.55089 0 10.6562 0C15.0055 0 18.5312 3.35786 18.5312 7.5C18.5312 11.6421 15.0055 15 10.6562 15C8.16895 15 5.95061 13.9008 4.50883 12.1879C4.20657 11.8288 4.26721 11.3043 4.64426 11.0165C5.02132 10.7286 5.57201 10.7863 5.87427 11.1454C6.9982 12.4807 8.72238 13.3333 10.6562 13.3333C14.039 13.3333 16.7812 10.7217 16.7812 7.5ZM11.5312 4.16667C11.5312 3.70643 11.1395 3.33333 10.6562 3.33333C10.173 3.33333 9.78125 3.70643 9.78125 4.16667V7.5C9.78125 7.96024 10.173 8.33333 10.6562 8.33333H12.8438C13.327 8.33333 13.7188 7.96024 13.7188 7.5C13.7188 7.03976 13.327 6.66667 12.8438 6.66667H11.5312V4.16667Z" fill="#667085"/> </svg>
+                                        <strong>Created At:</strong> <?= date('d M Y', strtotime($categoryInfo['catInputDate'])) ?>
                                     </label>
                                 </div>
                             </div>
+
 
                             <div class="statistic_cat">
                                 <?php
@@ -307,6 +319,10 @@
                                         <option value="1">Yes</option>
                                         <option value="0">NO</option>
                                     </select>
+                                    <div class="catprice">
+                                        <input type="number" name="amountOver" step="0.01" placeholder="Spend amount over (e.g. 100.00)">
+                                        <input type="number" name="discount" step="0.01" placeholder="Discount percentage (e.g. 10%)" min="0" max="100">
+                                    </div>
                                     <textarea placeholder="Category Discription" name="catDescription" required></textarea>
                                     <div class="buttons">
                                         <button type="submit" class="btn btn-primary" name="btnnewitem">Save Changes</button>
@@ -343,6 +359,8 @@
                                 $catDescription = $_POST['catDescription'] ?? '';
                                 $filename = $category['carImg']; // default: keep old image
                                 $shippingfree_accepted = $_POST['shippingfree_accepted'];
+                                $amountOver = $_POST['amountOver'];
+                                $discount = $_POST['discount'];
 
                                 // Handle new image upload
                                 if (!empty($_FILES['carImg']['name'])) {
@@ -369,8 +387,8 @@
                                 }
 
                                 // Update database
-                                $sql = $con->prepare("UPDATE tblcategory SET catName=?, catDescription=?,shippingfree_accepted=? , carImg=? WHERE categoryId =?");
-                                $sql->execute([$catName, $catDescription,$shippingfree_accepted, $filename, $cat]);
+                                $sql = $con->prepare("UPDATE tblcategory SET catName=?, catDescription=?,shippingfree_accepted=? ,amountOver=?,discount=?, carImg=? WHERE categoryId =?");
+                                $sql->execute([$catName, $catDescription,$shippingfree_accepted,$amountOver,$discount, $filename, $cat]);
 
                                 echo '<script>location.href="manageproducts.php?do=viewcat&catid=' . $cat . '"</script>';
                             }
@@ -407,6 +425,10 @@
                                         <option value="1" <?= $category['shippingfree_accepted'] == 1 ? 'selected' : '' ?>>Yes</option>
                                         <option value="0" <?= $category['shippingfree_accepted'] == 0 ? 'selected' : '' ?>>No</option>
                                     </select>
+                                    <div class="catprice">
+                                        <input type="number" name="amountOver" step="0.01" placeholder="Spend amount over (e.g. 100.00)" value="<?php echo htmlspecialchars($category['amountOver']); ?>">
+                                        <input type="number" name="discount" step="0.01" min="0" max="100" placeholder="Discount percentage (e.g. 10%)" value="<?php echo htmlspecialchars($category['discount']); ?>">
+                                    </div>
                                     <textarea placeholder="Category Description" name="catDescription" required><?php echo htmlspecialchars($category['catDescription']); ?></textarea>
                                     <div class="buttons">
                                         <button type="submit" class="btn btn-primary" name="btnupdateitem">Update Category</button>

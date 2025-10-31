@@ -86,7 +86,8 @@ main{
 }
 
 .filter_manage_category input[type="text"],
-.filter_manage_category input[type="date"] {
+.filter_manage_category input[type="date"],
+.filter_manage_category input[type="number"]{
     padding: 6px 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -514,4 +515,12 @@ table tbody td{
 .btnsitems{
     margin-top: 10px;
     text-align: center;
+}
+.catprice{
+    display: flex;
+    justify-content: space-between;
+}
+.catprice input{
+    width: 48%;
+    border: 1px solid black;
 }

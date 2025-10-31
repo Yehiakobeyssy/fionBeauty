@@ -276,36 +276,62 @@
 
                     // Initialize totals
                     $totalSubtotal = 0;  // before discount
-                    $totalDiscount = 0;
+                    $totalDiscount = 0;  // item + promo discounts
                     $totalTax = 0;
+
+                    // Track subtotal per category
+                    $categoryTotals = [];
 
                     // Loop over cart
                     foreach ($_SESSION['cart'] as $itemId => $qty) {
                         // Get item details
-                        $stmt = $con->prepare("SELECT itmId, itmName, sellPrice, minQuantity ,promotional FROM tblitems WHERE itmId = ?");
+                        $stmt = $con->prepare("SELECT itmId, itmName, sellPrice, minQuantity, promotional, catId FROM tblitems WHERE itmId = ?");
                         $stmt->execute([$itemId]);
                         $item = $stmt->fetch(PDO::FETCH_ASSOC);
                         if (!$item) continue;
 
                         $price = $item['sellPrice'];
                         $subtotal = $price * $qty;
-                        $subdiscount = ($price * $qty * $item['promotional'] ) / 100;
 
-                        // Get discount percent (if any)
+                        // Promotional discount
+                        $promoDiscount = ($subtotal * $item['promotional']) / 100;
+
+                        // Quantity-based discount
                         $stmt = $con->prepare("SELECT precent FROM tbldiscountitem WHERE itemID = ? AND quatity <= ? ORDER BY quatity DESC LIMIT 1");
                         $stmt->execute([$itemId, $qty]);
                         $discountPercent = $stmt->fetchColumn() ?: 0;
-                        $discountAmount = ($price * $qty * $discountPercent) / 100;
+                        $qtyDiscount = ($subtotal * $discountPercent) / 100;
 
-                        // Accumulate totals
+                        // Accumulate item totals
                         $totalSubtotal += $subtotal;
-                        $totalDiscount += $discountAmount + $subdiscount;;
+                        $totalDiscount += $promoDiscount + $qtyDiscount;
+
+                        // Track subtotal per category
+                        $catId = $item['catId'];
+                        if (!isset($categoryTotals[$catId])) $categoryTotals[$catId] = 0;
+                        $categoryTotals[$catId] += $subtotal;
                     }
+
+                    // --- Apply category-level discounts ---
+                    $totalCategoryDiscount = 0;
+                    foreach ($categoryTotals as $catId => $catSubtotal) {
+                        $stmt = $con->prepare("SELECT amountOver, discount FROM tblcategory WHERE categoryId = ?");
+                        $stmt->execute([$catId]);
+                        $category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                        if ($category && $catSubtotal >= $category['amountOver']) {
+                            $catDiscount = ($catSubtotal * $category['discount']) / 100;
+                            $totalCategoryDiscount += $catDiscount;
+                        }
+                    }
+
+                    // Add category discount to total discount
+                    $totalDiscount += $totalCategoryDiscount;
 
                     // --- Apply tax logic ---
                     if ($includeTax == 1) {
                         // Prices already include tax
-                        $subtotalExcludingTax = $totalSubtotal / (1 + ($taxPercent / 100)); // real subtotal (without tax)
+                        $subtotalExcludingTax = $totalSubtotal / (1 + ($taxPercent / 100)); // real subtotal without tax
                         $totalTax = $totalSubtotal - $subtotalExcludingTax; // extracted tax
                         $grandTotal = $totalSubtotal - $totalDiscount; // tax already included in price
                     } else {
@@ -314,6 +340,7 @@
                         $totalTax = $taxBase * ($taxPercent / 100);
                         $grandTotal = $taxBase + $totalTax;
                     }
+
                 ?>
                 <table>
                     <tr>
