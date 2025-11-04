@@ -18,7 +18,7 @@
     $do=isset($_GET['do'])?$_GET['do']:'manage'
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/manageWorkshops.css">
+    <link rel="stylesheet" href="css/manageWorkshops.css?v=1.1">
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
@@ -68,17 +68,17 @@
                             // Assuming you already have $con as your PDO connection
 
                             // 1. Total Revenue
-                            $stmt = $con->prepare("SELECT COALESCE(SUM(totalAmount), 0) AS totalRevenue FROM tblinvoiceworkshop ");
+                            $stmt = $con->prepare("SELECT COALESCE(SUM(totalAmount), 0) AS totalRevenue FROM tblinvoiceworkshop  WHERE status != 6");
                             $stmt->execute();
                             $totalRevenue = $stmt->fetch(PDO::FETCH_ASSOC)['totalRevenue'];
 
                             // 2. All Workshops
-                            $stmt = $con->prepare("SELECT COUNT(*) AS totalWorkshops FROM workshops");
+                            $stmt = $con->prepare("SELECT COUNT(*) AS totalWorkshops FROM workshops WHERE  ActiveWorkshop = 1");
                             $stmt->execute();
                             $totalWorkshops = $stmt->fetch(PDO::FETCH_ASSOC)['totalWorkshops'];
 
                             // 3. Upcoming Workshops
-                            $stmt = $con->prepare("SELECT COUNT(*) AS upcomingWorkshops FROM workshops WHERE workshop_date >= CURDATE()");
+                            $stmt = $con->prepare("SELECT COUNT(*) AS upcomingWorkshops FROM workshops WHERE workshop_date >= CURDATE() AND ActiveWorkshop = 1");
                             $stmt->execute();
                             $upcomingWorkshops = $stmt->fetch(PDO::FETCH_ASSOC)['upcomingWorkshops'];
 
@@ -198,7 +198,7 @@
                                 $stmtSeen->execute([$notificationId, $adminId]);
                             }
                         }
-                    ?>
+                    ?> 
                     <div class="container_new">
                         <div class="title_form">New Workshop</div>
                         <form action="" method="post">
@@ -211,7 +211,7 @@
                             <div class="specific">
                             <div class="time">
                                 <label>Date</label>
-                                <input type="date" name="date" required>
+                                <input type="date" name="date" required required min="<?php echo date('Y-m-d'); ?>">
                             </div>
                             <div class="time">
                                 <label>Time</label>
@@ -332,7 +332,7 @@
                             <div class="specific">
                                 <div class="time">
                                     <label>Date</label>
-                                    <input type="date" name="date" required value="<?= htmlspecialchars($workshop['workshop_date']) ?>">
+                                    <input type="date" name="date" required value="<?= htmlspecialchars($workshop['workshop_date']) ?> "  min="<?php echo date('Y-m-d'); ?>">
                                 </div>
                                 <div class="time">
                                     <label>Time</label>
@@ -483,6 +483,7 @@
                                             <th>Amount</th>
                                             <th>Transaction ID</th>
                                             <th>Method</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -490,11 +491,13 @@
                                         $stmt3 = $con->prepare("
                                             SELECT 
                                                 c.clientFname, c.clientLname, c.clientPhoneNumber, c.clientEmail,
-                                                i.invoiceCode, i.invoiceDate, i.totalAmount, i.transactionID, i.method
+                                                i.invoiceCode, i.invoiceDate, i.totalAmount, i.transactionID, i.method,
+                                                di.detailID  AS detailID
                                             FROM tblclient c
                                             JOIN tblinvoiceworkshop i ON c.clientID = i.clientID
                                             JOIN tbldetailinvoiceworkshop di ON i.invoiceID = di.invoiceID
-                                            WHERE di.workshopID = ?
+                                            JOIN workshop_bookings wb ON wb.workshop_id = di.workshopID AND wb.user_id = c.clientID
+                                            WHERE di.workshopID = ? AND i.status != 6
                                             ORDER BY i.invoiceDate DESC
                                         ");
                                         $stmt3->execute([$wid]);
@@ -502,6 +505,16 @@
 
                                         if ($stmt3->rowCount() > 0) {
                                             foreach ($rows as $row) {
+                                                $btnLabel = $row['totalAmount'] > 0 ? 
+                                                            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                                <circle cx="12" cy="12" r="11.25" stroke="#F59E0B" stroke-width="1.5"/>
+                                                                <path d="M12 8v4l3 3" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>' : 
+                                                            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                                <path d="M16.6667 4.64286H4.44449L5.5556 17.5H14.4445L15.5556 4.64286H3.33337M10 7.85714V14.2857M12.7778 7.85714L12.2223 14.2857M7.22226 7.85714L7.77782 14.2857M7.77782 4.64286L8.33337 2.5H11.6667L12.2223 4.64286" stroke="#E01212" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>';
+                                                $btnClass = $row['totalAmount'] > 0 ? 'refund-btn' : 'delete-btn';
+                                                $btntitle = $row['totalAmount'] > 0 ? 'Refount':'Delete';
                                                 echo "
                                                 <tr>
                                                     <td>{$row['clientFname']} {$row['clientLname']}</td>
@@ -512,13 +525,24 @@
                                                     <td>\${$row['totalAmount']}</td>
                                                     <td>{$row['transactionID']}</td>
                                                     <td><span class='payment-badge'>{$row['method']}</span></td>
+                                                    <td>
+                                                        <button class='refund-action' 
+                                                            title='{$btntitle}'
+                                                            data-invoice='{$row['invoiceCode']}'
+                                                            data-transaction='{$row['transactionID']}'
+                                                            data-amount='{$row['totalAmount']}'
+                                                            data-detailid='{$row['detailID']}'
+                                                            data-workshop='{$wid}' >
+                                                            {$btnLabel}
+                                                        </button>
+                                                    </td>
                                                 </tr>";
                                             }
                                         } else {
-                                            echo "<tr><td colspan='8' style='text-align:center;color:#888;'>No bookings yet.</td></tr>";
+                                            echo "<tr><td colspan='9' style='text-align:center;color:#888;'>No bookings yet.</td></tr>";
                                         }
                                         ?>
-                                    </tbody>
+                                        </tbody>
                                 </table>
                             </div>
 
@@ -560,13 +584,130 @@
 
                         <?php
                     }
-                }
+                } elseif($do =='delete'){
+                    $wid = isset($_GET['wid']) ? (int)$_GET['wid'] : 0;
+
+                    // Check if this workshop has bookings
+                    $stmt = $con->prepare("SELECT COUNT(*) FROM workshop_bookings WHERE workshop_id = ?");
+                    $stmt->execute([$wid]);
+                    $bookings_count = $stmt->fetchColumn();
+
+                    if ($bookings_count == 0) {
+                        // No bookings — safe to delete
+                        if (isset($_POST['confirmDelete'])) {
+                            // Soft delete workshop
+                            $update = $con->prepare("UPDATE workshops SET ActiveWorkshop = 0 WHERE id = ?");
+                            $update->execute([$wid]);
+                            echo '
+                                <div class="alert alert-danger">
+                                    Workshop deleted successfully.
+                                </div>
+                                <script>
+                                    setTimeout(function(){ window.location.href = "manageWorkshops.php"; }, 2000);
+                                </script>
+                            ';
+                        } else {
+                            ?>
+                            <div class="alert alert-danger deleteworkshop">
+                                Are you sure you want to delete this workshop?
+                                <form method="post" style="margin-top:10px;">
+                                    <button type="submit" name="confirmDelete" class="btn btn-danger">Yes, Delete</button>
+                                    <a href="manageWorkshops.php" class="btn btn-secondary">Cancel</a>
+                                </form>
+                            </div>
+                            <?php
+                        }
+                    } else {
+                        // Workshop has bookings — show warning and action options
+                        ?>
+                        <div class="alert alert-danger deleteworkshop">
+                            ⚠️ This workshop has <b><?= $bookings_count ?></b> booked clients.<br>
+                            You must <b>refund or delete all bookings</b> before deleting the workshop.
+                        </div>
+
+                        <div class="action-buttons">
+                            <?php
+                            // Check if the workshop has any paid bookings
+                            $stmtCheck = $con->prepare("
+                                SELECT COUNT(*) 
+                                FROM tblinvoiceworkshop i
+                                INNER JOIN tbldetailinvoiceworkshop di ON di.invoiceID = i.invoiceID
+                                WHERE di.workshopID = ? AND i.totalAmount > 0
+                            ");
+                            $stmtCheck->execute([$wid]);
+                            $hasPaid = $stmtCheck->fetchColumn() > 0;
+
+                            // Set label and color
+                            $btnLabel = $hasPaid ? 'Refund All' : 'Delete All Bookings';
+                            $btnClass = $hasPaid ? 'btn-warning' : 'btn-danger';
+                            ?>
+
+                            <!-- Dynamic Button -->
+                            <button type="button" 
+                                    class="btn <?= $btnClass ?> refund-all-btn" 
+                                    data-workshop="<?= $wid ?>" 
+                                    data-paid="<?= $hasPaid ? 1 : 0 ?>">
+                                <?= $btnLabel ?>
+                            </button>
+                        </div>
+
+                        <div class="workshop-bookings">
+                            <h3>Existing Bookings</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Invoice Code</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $stmt = $con->prepare("
+                                        SELECT 
+                                            c.clientFname, c.clientLname, c.clientEmail, c.clientPhoneNumber,
+                                            i.invoiceCode, i.totalAmount, i.status
+                                        FROM workshop_bookings wb
+                                        JOIN tblclient c ON wb.user_id = c.clientID
+                                        LEFT JOIN tbldetailinvoiceworkshop di ON wb.workshop_id = di.workshopID
+                                        LEFT JOIN tblinvoiceworkshop i ON di.invoiceID = i.invoiceID
+                                        WHERE wb.workshop_id = ? AND i.status != 6
+                                    ");
+                                    $stmt->execute([$wid]);
+                                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                    if ($rows) {
+                                        foreach ($rows as $r) {
+                                            $statusText = $r['status'] == 6 ? 'Refunded' : 'Active';
+                                            echo "
+                                            <tr>
+                                                <td>{$r['clientFname']} {$r['clientLname']}</td>
+                                                <td>{$r['clientEmail']}</td>
+                                                <td>{$r['clientPhoneNumber']}</td>
+                                                <td>{$r['invoiceCode']}</td>
+                                                <td>\${$r['totalAmount']}</td>
+                                                <td>{$statusText}</td>
+                                            </tr>";
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='6'>No bookings found.</td></tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php
+                    }
+                                }
 
             ?>
             
         </div>
     </main>
     <?php include '../common/jslinks.php'?>
-    <script src="js/manageWorkshops.js"></script>
+    <script src="js/manageWorkshops.js?v=1.1"></script>
 
 </body>

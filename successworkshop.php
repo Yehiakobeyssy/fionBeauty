@@ -156,9 +156,13 @@ if ($status === 'succeeded') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
     <meta charset="UTF-8">
     <title>Workshop Payment Status</title>
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <link href="common/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="common/fcss/all.min.css">
+    <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="css/success.css">

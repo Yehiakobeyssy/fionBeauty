@@ -41,7 +41,7 @@ $sql2 = "
         $groupBy AS period,
         SUM(totalAmount) AS totalRevenue
     FROM tblinvoiceworkshop
-    WHERE invoiceDate >= :dateLimit
+    WHERE invoiceDate >= :dateLimit AND status !=6
     GROUP BY period
     ORDER BY period ASC
 ";

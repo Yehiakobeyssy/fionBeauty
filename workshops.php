@@ -29,8 +29,7 @@
         <h1 class="">Upcoming Workshops</h1>
         <div class="workshops-list">
             <?php
-                // جلب كل الورش القادمة
-                $stmt = $con->prepare("SELECT * FROM workshops WHERE workshop_date >= CURDATE() ORDER BY workshop_date, start_time");
+                $stmt = $con->prepare("SELECT * FROM workshops WHERE ActiveWorkshop	= 1 AND workshop_date >= CURDATE() ORDER BY workshop_date, start_time");
                 $stmt->execute();
                 $workshops = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

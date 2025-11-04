@@ -28,7 +28,7 @@ $totalInvoice = $stmtInvoice->fetchColumn() ?? 0;
 // --- Calculate total from tblinvoiceworkshop ---
 $sqlWorkshop = "SELECT SUM(totalAmount) AS totalRevenue
                 FROM tblinvoiceworkshop
-                WHERE invoiceDate >= :dateLimit";
+                WHERE invoiceDate >= :dateLimit AND status !=6" ;
 $stmtWorkshop = $con->prepare($sqlWorkshop);
 $stmtWorkshop->execute([':dateLimit' => $dateLimit]);
 $totalWorkshop = $stmtWorkshop->fetchColumn() ?? 0;

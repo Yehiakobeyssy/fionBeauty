@@ -13,6 +13,8 @@ $start = ($page - 1) * $perPage;
 $where = [];
 $params = [];
 
+
+$where[] = "w.ActiveWorkshop = 1";
 // Filters
 if ($dateFilter != '') {
     $where[] = "w.workshop_date = ?";

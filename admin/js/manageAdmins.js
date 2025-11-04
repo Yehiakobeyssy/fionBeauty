@@ -141,9 +141,10 @@ $(document).ready(function(){
         // --- Basic checks ---
         if (email === "") {
             errorMsg = "Please enter your email.";
-        } else if (/@hotmail\.com$/.test(email) || /@icloud\.com$/.test(email)) {
-            errorMsg = "❌ Hotmail or iCloud emails are not allowed.";
+        } else if (/@icloud\.com$/.test(email)) {
+            errorMsg = "❌ iCloud emails are not allowed.";
         }
+
 
         if (errorMsg) {
             showError(errorMsg);

@@ -13,7 +13,7 @@ if ($after_id > 0) {
         JOIN tblseenNotification s ON n.notificationId = s.notificationId
         WHERE s.adminID = ?
         AND n.notificationId > ?
-        ORDER BY n.datenotification DESC
+        ORDER BY n.notificationId DESC
     ");
     $stmt->execute([$adminId, $after_id]);
 } else {
@@ -23,7 +23,7 @@ if ($after_id > 0) {
         FROM tblNotification n
         JOIN tblseenNotification s ON n.notificationId = s.notificationId
         WHERE s.adminID = ?
-        ORDER BY n.datenotification DESC
+        ORDER BY n.notificationId DESC
         LIMIT 10
     ");
     $stmt->execute([$adminId]);

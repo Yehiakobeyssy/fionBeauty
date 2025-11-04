@@ -173,7 +173,7 @@ $(document).ready(function() {
                 // chart.draw(data, options);
             },
             error: function (xhr, status, error) {
-                console.error('❌ AJAX Error:', error);
+                console.error('❌ AJAX Error:', error); 
                 console.log(xhr.responseText);
             }
         });

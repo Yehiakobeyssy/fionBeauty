@@ -90,7 +90,7 @@ table tbody td{
     padding: 18px 22px;
     border-bottom: 1px solid #eee;
 }
-.btnedit,.btnview{
+.btnedit,.btnview,.btnDelete,.workshop-bookings button{
     border: transparent ;
     background-color: transparent ;
     margin: 0 6px ;
@@ -481,3 +481,10 @@ form textarea:focus {
 }
 
 
+.action-buttons{
+  margin: 25px 0;
+  text-align: right;
+}
+.deleteworkshop{
+  text-align: center  ;
+}

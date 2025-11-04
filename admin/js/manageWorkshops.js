@@ -85,6 +85,11 @@ function renderWorkshops(data){
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8047 5.81991C16.781 4.8436 16.781 3.26069 15.8047 2.28438L15.2155 1.69512C14.2391 0.718813 12.6562 0.718813 11.6799 1.69512L2.19097 11.1841C1.84624 11.5288 1.60982 11.9668 1.51082 12.4442L0.841106 15.6735C0.719324 16.2607 1.23906 16.7805 1.82629 16.6587L5.05565 15.989C5.53302 15.89 5.97103 15.6536 6.31577 15.3089L15.8047 5.81991ZM14.6262 3.46289L14.0369 2.87363C13.7115 2.5482 13.1839 2.5482 12.8584 2.87363L11.9745 3.75755L13.7423 5.52531L14.6262 4.6414C14.9516 4.31596 14.9516 3.78833 14.6262 3.46289ZM12.5638 6.70382L10.796 4.93606L3.36948 12.3626C3.25457 12.4775 3.17577 12.6235 3.14277 12.7826L2.73082 14.769L4.71721 14.3571C4.87634 14.3241 5.02234 14.2453 5.13726 14.1303L12.5638 6.70382Z" fill="#FFAD33"/>
                             </svg>
                         </button>
+                        <button class="btnDelete" data-index="${w.id}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M16.6667 4.64286H4.44449L5.5556 17.5H14.4445L15.5556 4.64286H3.33337M10 7.85714V14.2857M12.7778 7.85714L12.2223 14.2857M7.22226 7.85714L7.77782 14.2857M7.77782 4.64286L8.33337 2.5H11.6667L12.2223 4.64286" stroke="#E01212" stroke-width="1.56" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </td>
                 </tr>
             `;
@@ -100,6 +105,43 @@ $(document).off('click', '.btnedit').on('click', '.btnedit', function(){
 $(document).off('click', '.btnview').on('click', '.btnview', function(){
     const wid = $(this).data('index');
     window.location.href = `manageWorkshops.php?do=view&wid=${wid}`;
+});
+
+$(document).off('click', '.btnDelete').on('click', '.btnDelete', function(){
+    const wid = $(this).data('index');
+    window.location.href = `manageWorkshops.php?do=delete&wid=${wid}`;
+}); 
+
+
+$(document).on('click', '.refund-all-btn', function() {
+    const workshopId = $(this).data('workshop');
+
+    if (!confirm('Are you sure you want to refund all clients and deactivate this workshop?')) return;
+
+    $.ajax({
+        url: 'ajaxadmin/refundAll.php',
+        method: 'POST',
+        data: { workshopId: workshopId },
+        beforeSend: function() {
+            $('.refund-all-btn').prop('disabled', true).text('Processing...');
+        },
+        success: function(response) {
+            if (response.trim() === 'success') {
+                alert('All clients refunded and workshop deactivated.');
+                location.reload();
+            } else if (response.trim() === 'no_invoices') {
+                alert('No invoices found for this workshop.');
+            } else {
+                alert('Error: ' + response);
+            }
+        },
+        error: function(xhr, status, err) {
+            alert('AJAX error: ' + err);
+        },
+        complete: function() {
+            $('.refund-all-btn').prop('disabled', false).text('Refund All');
+        }
+    });
 });
 
 
@@ -197,3 +239,46 @@ function renderPagination(total, start, end){
     $('.pagination-container').remove();
     $('.tbl').append(`<div class="pagination-container">${html}</div>`);
 }
+
+$(document).on('click', '.refund-action', function() {
+    const btn = $(this);
+    const invoiceCode = btn.data('invoice');
+    const transactionId = btn.data('transaction');
+    const amount = parseFloat(btn.data('amount'));
+    const detailID = btn.data('detailid');
+    const workshopId = btn.data('workshop');
+
+    const confirmMsg = amount > 0 
+        ? `Are you sure you want to refund $${amount} and remove this booking?`
+        : 'Are you sure you want to delete this free booking?';
+
+    if (!confirm(confirmMsg)) return;
+
+    $.ajax({
+        url: 'ajaxadmin/refundWorkshop.php',
+        method: 'POST',
+        data: {
+            invoiceCode: invoiceCode,
+            transactionId: transactionId,
+            amount: amount,
+            detailID: detailID,
+            workshopId: workshopId
+        },
+        beforeSend: function() {
+            btn.prop('disabled', true).text('Processing...');
+        },
+        success: function(res) {
+            if (res.trim() === 'success') {
+                alert('Action completed successfully.');
+                location.reload();
+            } else {
+                alert('Error: ' + res);
+                btn.prop('disabled', false).text(amount > 0 ? 'Refund' : 'Delete');
+            }
+        },
+        error: function(xhr) {
+            alert('AJAX Error: ' + xhr.status);
+            btn.prop('disabled', false);
+        }
+    });
+});
