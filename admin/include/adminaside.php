@@ -118,6 +118,15 @@ aside a.active svg path {
         </svg>
         Expensis
     </a> -->
+    <a href="managePayment.php">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img" aria-labelledby="paymentCard" fill="none">
+            <rect x="2" y="4" width="20" height="16" rx="2" ry="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            <rect x="2" y="8" width="20" height="3" fill="currentColor"/>
+            <rect x="6" y="14" width="6" height="2" rx="1" fill="currentColor"/>
+            <circle cx="18" cy="15" r="1" fill="currentColor"/>
+        </svg>
+        Payments
+    </a>
     <a href="manageRegions.php">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12ZM13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12Z" fill="#667085"/>

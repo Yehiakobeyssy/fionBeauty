@@ -76,7 +76,7 @@ $(document).ready(function(){
             pageData.forEach(order => {
                 let statusClass = 'alert alert-secondary p-1 m-0';
                 switch (order.statusName) {
-                    case 'Order received':
+                    case 'Paid':
                         statusClass = 'alert alert-info p-1 m-0';
                         break;
                     case 'Processing':

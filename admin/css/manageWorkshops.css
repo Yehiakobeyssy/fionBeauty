@@ -27,7 +27,7 @@ main{
 .allstatistic{
     display: flex;
     justify-content: space-between;
-}
+} 
 .totalbalance{
     text-align: center;
 }

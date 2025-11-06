@@ -209,7 +209,7 @@
                                 // حالة الطلب
                                 $statusClass = '';
                                 switch ($order['statusName']) {
-                                    case 'Order received':
+                                    case 'Paid':
                                         $statusClass = 'alert alert-info p-1 m-0';
                                         break;
                                     case 'Processing':
