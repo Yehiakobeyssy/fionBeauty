@@ -19,7 +19,7 @@
     
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/managebrands.css">
+    <link rel="stylesheet" href="css/managebrands.css?v=1.1">
 </head> 
 <body> 
     <?php include 'include/adminheader.php' ?>
@@ -53,7 +53,7 @@
                     </svg>
                     Add Brand
                 </a>
-            </div>
+            </div> 
             <?php
                 if($do == 'manage'){?>
                     <div class="mainstatistic card">
@@ -154,10 +154,11 @@
                                 }
                             }
                             $brandName = $_POST['brandName'];
+                            $brandsubtitle =$_POST['brandsubtitle'];
                             $brandActive = 1;
 
-                            $sql=$con->prepare('INSERT INTO tblbrand (brandName,brandIcon,brandActive) VALUES (?,?,?)');
-                            $sql->execute([$brandName,$filename,$brandActive]);
+                            $sql=$con->prepare('INSERT INTO tblbrand (brandName,subtitle,brandIcon,brandActive) VALUES (?,?,?,?)');
+                            $sql->execute([$brandName,$brandsubtitle,$filename,$brandActive]);
 
                             echo "<div class='susseccs_massage'><h5>New Brand Successfully added</h5></div>";
 
@@ -186,7 +187,14 @@
                                 </label>
                                 <input id="file-upload" name="brandIcon" type="file" accept="image/*" onchange="previewImage(event)" style="display:none;">
                             </div>
-                            <input type="text" name="brandName" id="" placeholder="Brand Name" required>
+                            <div class="field-wrap">
+                                <input type="text" name="brandName" placeholder="Brand Name" required>
+
+                                <div class="subtitle-wrap">
+                                    <input type="text" name="brandsubtitle" id="brandsubtitle" placeholder="Sub title" maxlength="150">
+                                    <span id="charCount" class="lblrmaining">150 characters remaining</span>
+                                </div>
+                            </div>
                             <div class="btncontrol">
                                 <button type="reset" class="btn btn-outboder">Cancel</button>
                                 <button type="submit" class="btn btn-inboder" name="btnaddBrand">Add Brand</button>
@@ -201,6 +209,15 @@
                             };
                             reader.readAsDataURL(e.target.files[0]);
                         }
+                        const input = document.getElementById('brandsubtitle');
+                        const counter = document.getElementById('charCount');
+                        const max = 150;
+
+                        input.addEventListener('input', () => {
+                            const remaining = max - input.value.length;
+                            counter.textContent = remaining + " characters remaining";
+                        });
+
                     </script>
                 <?php
                 }elseif($do=='edid'){?>
@@ -225,6 +242,7 @@
                         if(isset($_POST['btnEditBrand'])){
                             $brandName = $_POST['brandName'];
                             $filename = $brand['brandIcon']; // keep old icon if no new upload
+                            $brandsubtitle = $_POST['brandsubtitle'];
 
                             // Handle new image upload
                             if (!empty($_FILES['brandIcon']['name'])) {
@@ -252,8 +270,8 @@
                             }
 
                             // Update brand data
-                            $sql = $con->prepare("UPDATE tblbrand SET brandName = ?, brandIcon = ? WHERE brandId = ?");
-                            $sql->execute([$brandName, $filename, $brandId]);
+                            $sql = $con->prepare("UPDATE tblbrand SET brandName = ?,subtitle=? , brandIcon = ? WHERE brandId = ?");
+                            $sql->execute([$brandName,$brandsubtitle, $filename, $brandId]);
 
                             echo "<div class='susseccs_massage'><h5>Brand Successfully Updated</h5></div>";
 
@@ -290,10 +308,17 @@
                                 </label>
                                 <input id="file-upload" name="brandIcon" type="file" accept="image/*" onchange="previewImage(event)" style="display:none;">
                             </div>
-                            <input type="text" name="brandName" value="<?php echo htmlspecialchars($brand['brandName']); ?>" placeholder="Brand Name" required>
+                            <div class="field-wrap">
+                                <input type="text" name="brandName" placeholder="Brand Name" value="<?php echo htmlspecialchars($brand['brandName']); ?>" required>
+                                <div class="subtitle-wrap">
+                                    <input type="text" name="brandsubtitle" id="brandsubtitle1" placeholder="Sub title" maxlength="150" value="<?php echo htmlspecialchars($brand['subtitle']); ?>">
+                                    <span id="charCount1" class="lblrmaining">150 characters remaining</span>
+                                </div>
+                            </div>
                             <div class="btncontrol">
                                 <a href="brands.php" class="btn btn-outboder">Cancel</a>
                                 <button type="submit" class="btn btn-inboder" name="btnEditBrand">Update Brand</button>
+                                <a href="manageBrandtamplate.php?bid=<?=$brandId?>" class="btn btn-success">Create Brand Page</a>
                             </div>
                         </form>
                     </div>
@@ -306,6 +331,15 @@
                             };
                             reader.readAsDataURL(e.target.files[0]);
                         }
+                        const input1 = document.getElementById('brandsubtitle1');
+                        const counter1 = document.getElementById('charCount1');
+                        const max1 = 150;
+
+                        input1.addEventListener('input', () => {
+                            const remaining1 = max1 - input1.value.length;
+                            counter1.textContent = remaining1 + " characters remaining";
+                        });
+
                     </script>
 
                 <?php
@@ -378,5 +412,5 @@
         </div>
     </main>
     <?php include '../common/jslinks.php'?>
-    <script src="js/managebrands.js"></script>
+    <script src="js/managebrands.js?v=1.1"></script>
 </body>

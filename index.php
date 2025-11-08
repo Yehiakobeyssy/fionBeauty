@@ -187,15 +187,15 @@
         <h2>Top Brands Deal</h2>
         <div class="brandslogos">
             <?php 
-                $sql= $con->prepare('SELECT brandName , brandIcon  FROM tblbrand  WHERE brandActive = 1 ORDER BY RAND() LIMIT 5');
+                $sql= $con->prepare('SELECT brandId ,brandName , brandIcon  FROM tblbrand  WHERE brandActive = 1 ORDER BY RAND() LIMIT 5');
                 $sql->execute();
                 $brands = $sql->fetchAll();
                 foreach($brands as $brand){
                     echo '
-                        <div class="brnadcard">
+                        <a class="brnadcard" href="brandinfo.php?bid='.$brand['brandId'].'">
                             <img src="images/brands/'.$brand['brandIcon'].'" >
                             <label><strong>'.$brand['brandName'].'</strong></label>
-                        </div>
+                        </a>
                     ';
                 }
             ?>

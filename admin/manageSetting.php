@@ -213,13 +213,13 @@
 
                             case 'slide_home':
                                 
-                                $pageSide = 'index.php'; 
+
+                                $pageSide = 'index.php';
                                 $uploadDir = '../images/slide/';
                                 $adminId = $admin_id;
 
                                 // 🟢 Insert new slide
                                 if (isset($_POST['addSlide'])) {
-                                    $slideHref = '';
                                     $slideActive = 1;
 
                                     if (!empty($_FILES['slideScr']['name'])) {
@@ -227,8 +227,11 @@
                                         $targetPath = $uploadDir . $filename;
                                         move_uploaded_file($_FILES['slideScr']['tmp_name'], $targetPath);
 
+                                        $slideHref = $_POST['slideHref'] ?? '';
+
                                         $stmt = $con->prepare("INSERT INTO tblslideshow (slideScr, slideHref, adminId, slideActive, pageSide) VALUES (?, ?, ?, ?, ?)");
                                         $stmt->execute([$filename, $slideHref, $adminId, $slideActive, $pageSide]);
+
                                         echo '<div class="card" style="color:var(--color-success);font-weight:600;">✅ Slide added successfully!</div>';
                                     } else {
                                         echo '<div class="card" style="color:var(--color-danger);font-weight:600;">⚠️ Please choose an image!</div>';
@@ -240,14 +243,16 @@
                                 $stmt->execute([$pageSide]);
                                 $slides = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 ?>
+
                                 <div class="card" style="max-width:700px;margin:auto;">
                                     <h2 class="h2 mb-3">🏠 Home Page Slides</h2>
                                     <form method="POST" enctype="multipart/form-data" id="slideForm">
+                                        <!-- Image upload preview -->
                                         <div class="thumbnail-section">
                                             <img id="thumbnail" src="https://via.placeholder.com/400x200?text=Preview" alt="">
                                             <p>Add Slide Image</p>
                                             <label for="file-upload" class="choose-button">
-                                                Choose Image 
+                                                Choose Image
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                     <path d="M4.16667 5.83301H5C5.44203 5.83301 5.86595 5.65741 6.17851 5.34485C6.49107 5.03229 6.66667 4.60837 6.66667 4.16634C6.66667 3.94533 6.75446 3.73337 6.91074 3.57709C7.06702 3.42081 7.27899 3.33301 7.5 3.33301H12.5C12.721 3.33301 12.933 3.42081 13.0893 3.57709C13.2455 3.73337 13.3333 3.94533 13.3333 4.16634C13.3333 4.60837 13.5089 5.03229 13.8215 5.34485C14.134 5.65741 14.558 5.83301 15 5.83301H15.8333C16.2754 5.83301 16.6993 6.0086 17.0118 6.32116C17.3244 6.63372 17.5 7.05765 17.5 7.49967V14.9997C17.5 15.4417 17.3244 15.8656 17.0118 16.1782C16.6993 16.4907 16.2754 16.6663 15.8333 16.6663H4.16667C3.72464 16.6663 3.30072 16.4907 2.98816 16.1782C2.67559 15.8656 2.5 15.4417 2.5 14.9997V7.49967C2.5 7.05765 2.67559 6.63372 2.98816 6.32116C3.30072 6.0086 3.72464 5.83301 4.16667 5.83301" stroke="#009245" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
@@ -255,7 +260,23 @@
                                             <input id="file-upload" name="slideScr" type="file" accept="image/*" onchange="previewImage(event)" style="display:none;">
                                         </div>
 
-                                        
+                                        <!-- Dynamic href select -->
+                                        <div class="form-group mt-3">
+                                            <label for="typeSelect">Select Type</label>
+                                            <select id="typeSelect" class="form-control">
+                                                <option value="">-- Choose --</option>
+                                                <option value="brand">Brand</option>
+                                                <option value="category">Category</option>
+                                                <option value="item">Item</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label for="valueSelect">Select Value</label>
+                                            <select id="valueSelect" name="slideHref" class="form-control">
+                                                <option value="">-- Select Type First --</option>
+                                            </select>
+                                        </div>
 
                                         <div class="text-center mt-3">
                                             <button type="submit" name="addSlide" class="btn btn-primary">➕ Add Slide</button>
@@ -287,7 +308,7 @@
                                 const slides = <?= json_encode($slides) ?>;
                                 let currentIndex = 0;
 
-                                // Preview upload
+                                // Image preview
                                 function previewImage(e){
                                     const reader = new FileReader();
                                     reader.onload = function(){
@@ -296,7 +317,7 @@
                                     reader.readAsDataURL(e.target.files[0]);
                                 }
 
-                                // Navigation
+                                // Slide navigation
                                 $('#nextSlide').on('click', function(){
                                     if(slides.length === 0) return;
                                     currentIndex = (currentIndex + 1) % slides.length;
@@ -312,7 +333,7 @@
                                     $('#slideInfo').text(slides[currentIndex].slideHref || 'No link');
                                 }
 
-                                // Delete (AJAX → ajaxadmin/)
+                                // Delete slide
                                 $('#deleteSlide').on('click', function(){
                                     if(slides.length === 0) return;
                                     const slideID = slides[currentIndex].slideID;
@@ -323,7 +344,29 @@
                                         }, 'json');
                                     }
                                 });
+
+                                // Dynamic href dropdown
+                                $('#typeSelect').on('change', function() {
+                                    const type = $(this).val();
+                                    if(!type) {
+                                        $('#valueSelect').html('<option value="">-- Select Type First --</option>');
+                                        return;
+                                    }
+
+                                    $.get('ajaxadmin/fetch_slide_values.php', { type }, function(data) {
+                                        const options = JSON.parse(data);
+                                        let html = '<option value="">-- Choose --</option>';
+                                        options.forEach(opt => {
+                                            html += `<option value="${opt.href}">${opt.name}</option>`;
+                                        });
+                                        $('#valueSelect').html(html);
+                                        if(options.length > 0){
+                                            $('#valueSelect').val(options[0].href);
+                                        }
+                                    });
+                                });
                                 </script>
+
 
                                 <?php
 
@@ -338,7 +381,6 @@
 
                                 // 🟢 Insert new slide
                                 if (isset($_POST['addSlide'])) {
-                                    $slideHref = '';
                                     $slideActive = 1;
 
                                     if (!empty($_FILES['slideScr']['name'])) {
@@ -346,8 +388,11 @@
                                         $targetPath = $uploadDir . $filename;
                                         move_uploaded_file($_FILES['slideScr']['tmp_name'], $targetPath);
 
+                                        $slideHref = $_POST['slideHref'] ?? '';
+
                                         $stmt = $con->prepare("INSERT INTO tblslideshow (slideScr, slideHref, adminId, slideActive, pageSide) VALUES (?, ?, ?, ?, ?)");
                                         $stmt->execute([$filename, $slideHref, $adminId, $slideActive, $pageSide]);
+
                                         echo '<div class="card" style="color:var(--color-success);font-weight:600;">✅ Slide added successfully!</div>';
                                     } else {
                                         echo '<div class="card" style="color:var(--color-danger);font-weight:600;">⚠️ Please choose an image!</div>';
@@ -359,14 +404,16 @@
                                 $stmt->execute([$pageSide]);
                                 $slides = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 ?>
+
                                 <div class="card" style="max-width:700px;margin:auto;">
-                                    <h2 class="h2 mb-3">🏠 Category Page Slides</h2>
+                                    <h2 class="h2 mb-3">🏠 Home Page Slides</h2>
                                     <form method="POST" enctype="multipart/form-data" id="slideForm">
+                                        <!-- Image upload preview -->
                                         <div class="thumbnail-section">
                                             <img id="thumbnail" src="https://via.placeholder.com/400x200?text=Preview" alt="">
                                             <p>Add Slide Image</p>
                                             <label for="file-upload" class="choose-button">
-                                                Choose Image 
+                                                Choose Image
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                                     <path d="M4.16667 5.83301H5C5.44203 5.83301 5.86595 5.65741 6.17851 5.34485C6.49107 5.03229 6.66667 4.60837 6.66667 4.16634C6.66667 3.94533 6.75446 3.73337 6.91074 3.57709C7.06702 3.42081 7.27899 3.33301 7.5 3.33301H12.5C12.721 3.33301 12.933 3.42081 13.0893 3.57709C13.2455 3.73337 13.3333 3.94533 13.3333 4.16634C13.3333 4.60837 13.5089 5.03229 13.8215 5.34485C14.134 5.65741 14.558 5.83301 15 5.83301H15.8333C16.2754 5.83301 16.6993 6.0086 17.0118 6.32116C17.3244 6.63372 17.5 7.05765 17.5 7.49967V14.9997C17.5 15.4417 17.3244 15.8656 17.0118 16.1782C16.6993 16.4907 16.2754 16.6663 15.8333 16.6663H4.16667C3.72464 16.6663 3.30072 16.4907 2.98816 16.1782C2.67559 15.8656 2.5 15.4417 2.5 14.9997V7.49967C2.5 7.05765 2.67559 6.63372 2.98816 6.32116C3.30072 6.0086 3.72464 5.83301 4.16667 5.83301" stroke="#009245" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
@@ -374,7 +421,23 @@
                                             <input id="file-upload" name="slideScr" type="file" accept="image/*" onchange="previewImage(event)" style="display:none;">
                                         </div>
 
-                                        
+                                        <!-- Dynamic href select -->
+                                        <div class="form-group mt-3">
+                                            <label for="typeSelect">Select Type</label>
+                                            <select id="typeSelect" class="form-control">
+                                                <option value="">-- Choose --</option>
+                                                <option value="brand">Brand</option>
+                                                <option value="category">Category</option>
+                                                <option value="item">Item</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label for="valueSelect">Select Value</label>
+                                            <select id="valueSelect" name="slideHref" class="form-control">
+                                                <option value="">-- Select Type First --</option>
+                                            </select>
+                                        </div>
 
                                         <div class="text-center mt-3">
                                             <button type="submit" name="addSlide" class="btn btn-primary">➕ Add Slide</button>
@@ -404,9 +467,9 @@
 
                                 <script>
                                 const slides = <?= json_encode($slides) ?>;
-                                currentIndex = 0;
+                                let currentIndex1 = 0;
 
-                                // Preview upload
+                                // Image preview
                                 function previewImage(e){
                                     const reader = new FileReader();
                                     reader.onload = function(){
@@ -415,7 +478,7 @@
                                     reader.readAsDataURL(e.target.files[0]);
                                 }
 
-                                // Navigation
+                                // Slide navigation
                                 $('#nextSlide').on('click', function(){
                                     if(slides.length === 0) return;
                                     currentIndex = (currentIndex + 1) % slides.length;
@@ -431,7 +494,7 @@
                                     $('#slideInfo').text(slides[currentIndex].slideHref || 'No link');
                                 }
 
-                                // Delete (AJAX → ajaxadmin/)
+                                // Delete slide
                                 $('#deleteSlide').on('click', function(){
                                     if(slides.length === 0) return;
                                     const slideID = slides[currentIndex].slideID;
@@ -441,6 +504,27 @@
                                             location.reload();
                                         }, 'json');
                                     }
+                                });
+
+                                // Dynamic href dropdown
+                                $('#typeSelect').on('change', function() {
+                                    const type = $(this).val();
+                                    if(!type) {
+                                        $('#valueSelect').html('<option value="">-- Select Type First --</option>');
+                                        return;
+                                    }
+
+                                    $.get('ajaxadmin/fetch_slide_values.php', { type }, function(data) {
+                                        const options = JSON.parse(data);
+                                        let html = '<option value="">-- Choose --</option>';
+                                        options.forEach(opt => {
+                                            html += `<option value="${opt.href}">${opt.name}</option>`;
+                                        });
+                                        $('#valueSelect').html(html);
+                                        if(options.length > 0){
+                                            $('#valueSelect').val(options[0].href);
+                                        }
+                                    });
                                 });
                                 </script>
 

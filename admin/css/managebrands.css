@@ -60,7 +60,6 @@ main{
     justify-content: space-between;
     align-items: flex-end;
     gap: 15px;
-    
     border: 1px solid #eee;
     border-radius: 6px;
     padding: 15px 20px;
@@ -106,7 +105,7 @@ table tbody td{
     padding: 18px 22px;
     border-bottom: 1px solid #eee;
 }
-.btnedit,.btndelete{
+.btnedit,.btndelete,.btnview{
     border: transparent;
     background-color: transparent;
     margin: 0 6px;
@@ -220,3 +219,25 @@ table tbody td{
     color: var(--color-white);
 
 }
+.subtitle-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.subtitle-wrap .lblrmaining {
+    text-align: right;
+}
+
+input {
+    margin: 5px 0;
+}
+
+.lblrmaining {
+    color: var(--color-muted);
+    font-family: Inter;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.06px;
+}
+
