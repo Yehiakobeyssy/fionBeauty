@@ -10,7 +10,7 @@ $brandID = isset($_GET['bid']) ? (int)$_GET['bid'] : 0;
 
 // Check if brand exists
 $checkbarnd = checkItem('brandId','tblbrand',$brandID);
-$checksite = checkItem('BrandID','brandpage',$brandID);
+$checksite = checkItem('BrandID','brandPage',$brandID);
 if($checkbarnd == 0){
     header("Location: index.php");
     exit();
