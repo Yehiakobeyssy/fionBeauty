@@ -16,14 +16,20 @@ body {
     overflow: hidden;
     text-align: center;
     border-radius: 12px;
+    background:var(--color-bg, #fff); /* white background */
 }
 
 .slideshow-container img {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
+    max-height: 40vh;     /* 40% of screen height */
     height: auto;
     display: block;
+    margin: 0 auto;       /* center horizontally */
+    object-fit: contain; /* no cropping, no distortion */
     border-radius: 12px;
 }
+
 
 .mySlide {
     display: none;
