@@ -189,7 +189,7 @@
 
     ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
-    <script src="js/category.js"></script>
+    <script src="js/category.js?v=1.2"></script>
     <script>
         var priceSlider = document.getElementById('rangeSlider');
         var minValueInput = document.getElementById('minValue');

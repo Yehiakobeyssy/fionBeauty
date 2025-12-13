@@ -7,23 +7,34 @@
     color: var(--color-bg);
 }
 
-.itemDiscription{
+.itemDiscription {
     display: flex;
     padding: 30px;
     border-bottom: var(--color-primary) 2px solid;
+    gap: 4%;
 }
-.image , .info{
+
+.image,
+.info {
     width: 48%;
-
 }
-.image{
-    text-align: center;
 
+.image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
 }
-.image img{ 
-    width: 550px;
+
+.image img { 
+    max-width: 100%;
+    max-height: 35vh;     /* professional visual size */
+    width: auto;
     height: auto;
+    object-fit: contain; /* no distortion */
+    display: block;
 }
+
 .info h2{
     color: var(--color-primary);
     font-family: Outfit;
@@ -142,8 +153,13 @@
 }
 #Description_section,
 #reviws_section {
-  display: none; /* الكل مخفي */
+    display: none;          /* hidden by default */
+    max-height: 50vh;       /* max visible height */
+    overflow-y: auto;       /* enable vertical scroll only */
+    overflow-x: hidden;
+    padding-right: 10px;    /* prevents text under scrollbar */
 }
+
 
 #Description_section.active-section {
   display: flex; /* الوصف يظهر كـ flex */
@@ -152,13 +168,27 @@
 #reviws_section.active-section {
   display: block; /* المراجعات تظهر كـ block */
 }
-.sec_Des_text,.sec_Des_img{
+.sec_Des_text{
   width: 48%;
   padding: 30px;
 }
 .sec_Des_img {
-  text-align: center;
+    width: 48%;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.sec_Des_img img {
+    max-width: 100%;
+    max-height: 35vh;   /* LIMIT HERE */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
 .active-tab {
         color: var(--color-primary) !important;
         border-bottom: 2px solid var(--color-primary) !important;
@@ -365,7 +395,7 @@
 .btn-cart:hover {
     background-color: var(--color-primary-variant);
 }
-
+ 
 .extra-shipping {
     display: inline-flex; /* inline makes it small, not full-width */
     justify-content: space-between;

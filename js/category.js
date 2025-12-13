@@ -64,6 +64,12 @@ $(document).ready(function() {
             } else {
                 priceHtml = `<div class="price login-required">Login to see price</div>`;
             }
+            const name =
+                        item.itmName.length > 35
+                            ? item.itmName.substring(0, 33) + "..."
+                            : item.itmName;
+
+            
 
 
             html += `
@@ -74,7 +80,7 @@ $(document).ready(function() {
                     </div>
                     <div class="card-body">
                         <div class="item-title">
-                            <span class="name">${item.itmName}</span>
+                            <span class="name">${name}</span>
                             <span class="item-rating">${parseFloat(item.avgRating).toFixed(1)} ⭐</span>
                         </div>
                         <p class="item-desc">${desc}</p>

@@ -42,14 +42,17 @@ $(document).ready(function() {
             } else {
                 priceHtml = `<div class="stars-block">${'<i class="fas fa-star text-muted"></i>'.repeat(5)}</div>`;
             }
-
+            const name =
+                        item.itmName.length > 35
+                            ? item.itmName.substring(0, 33) + "..."
+                            : item.itmName;
             html += `
                 <div class="card">
                     ${item.promotional > 0 ? `<div class="promotional">${item.promotional}%</div>` : ''}
                     <img src="images/items/${item.mainpic}" alt="${item.itmName}">
                     <div class="card-body itm_daitail" data-index="${item.itmId}">
                         <h5 class="item-title">
-                            <span class="name">${item.itmName}</span>
+                            <span class="name">${name}</span>
                             <span class="rating">${stars}</span>
                         </h5>
                         <p>${item.itmDesc}...</p>

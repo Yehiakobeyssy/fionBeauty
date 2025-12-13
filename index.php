@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=1.1">
+    <link rel="stylesheet" href="css/index.css?v=1.2">
 </head>
 <body>
     <?php 
@@ -158,7 +158,7 @@
                 JOIN tblbrand b ON i.brandId = b.brandId
                 WHERE i.itmActive = 1
                 ORDER BY RAND()
-                LIMIT 1
+                LIMIT 1 
             ");
             $stmt->execute();
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -274,5 +274,5 @@
     </div>
     <?php include  'include/footer.php' ?>
     <?php include 'common/jslinks.php'?>
-    <script src="js/index.js"></script>
+    <script src="js/index.js?v=1.1"></script>
 </body>

@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    session_start(); 
     include 'settings/connect.php';
     include 'common/function.php';
     include 'common/head.php';
@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/daitailitem.css">
+    <link rel="stylesheet" href="css/daitailitem.css?1.2">
 </head>
 <body>
     <?php 
@@ -156,7 +156,7 @@
                     <input type="number" name="" id="quantity" value="<?= $itemInfo['minQuantity'] ?>">
                     <button class="btnquantity" id="qinc">+</button>
                 </div>
-                <button class="btnadd btnbuy"><i class="fa-solid fa-credit-card"></i> Buy Now</button>
+                <!-- <button class="btnadd btnbuy"><i class="fa-solid fa-credit-card"></i> Buy Now</button> -->
                 <button class="btnadd btncart"  value="<?=$item_ID?>"><i class="fas fa-cart-plus"></i> Add to Cart</button>
             </div>
             <div class="shareitem">
