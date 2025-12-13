@@ -171,7 +171,7 @@
                     <div class="item-text">
                         <h2>Don’t Miss Out! Grab the <span class="item-name"><?= htmlspecialchars($item['itmName']) ?></span> by <span class="brand-name"><?= htmlspecialchars($item['brandName']) ?></span> Now!</h2>
                         <p><?= htmlspecialchars($item['itmDesc']) ?></p>
-                        <a href="buy.php?itmId=<?= $item['itmId'] ?>" class="btn-buy">Buy Now</a>
+                        <a href="daitailitem.php?itemid=<?= $item['itmId'] ?>" class="btn-buy">Buy Now</a>
                     </div>
                     <div class="item-image">
                         <img src="images/items/<?= htmlspecialchars($item['mainpic']) ?>" alt="<?= htmlspecialchars($item['itmName']) ?>" class="remove-white">
