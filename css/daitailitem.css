@@ -63,11 +63,20 @@
     font-weight: 500;
     line-height: 150%; /* 36px */
 }
-.shortdiscription{
+.shortdiscription,.ingredients{
     padding: 10px;
     border-bottom: var(--color-primary) 2px solid;
 }
-.shortdiscription p{
+.ingredients h4{
+ 
+    color: var(--color-muted);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+}
+.shortdiscription p,.ingredients p{
     color: #000;
     font-family: Poppins;
     font-size: 14px;
@@ -164,7 +173,7 @@
 #Description_section.active-section {
   display: flex; /* الوصف يظهر كـ flex */
 }
-
+ 
 #reviws_section.active-section {
   display: block; /* المراجعات تظهر كـ block */
 }

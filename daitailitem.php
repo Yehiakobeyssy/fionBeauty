@@ -36,7 +36,7 @@
             $isActive = $result_user['clientActive'];
         } else {
             $isActive = 0; // في حالة مفيش نتيجة
-        }
+        } 
     }
 
 
@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/daitailitem.css?1.2">
+    <link rel="stylesheet" href="css/daitailitem.css?2.4">
 </head>
 <body>
     <?php 
@@ -146,6 +146,10 @@
 
             <div class="shortdiscription">
                 <p><?= nl2br(substr($itemInfo['itmDesc'], 0, 150)) . (strlen($itemInfo['itmDesc']) > 150 ? '...' : '') ?></p>
+            </div>
+            <div class="ingredients">
+                <h4>Ingredients:</h4>
+                <p><?= nl2br($itemInfo['ingredients']) ?></p>
             </div>
             <div class="mini">
                 <label for="">Minimum Quantity : <span id="minquantity"><?= $itemInfo['minQuantity'] ?></span></label>
@@ -256,6 +260,8 @@
     <section id="Description_section" class="active-section">
         <div class="sec_Des_text">
             <p><?= nl2br($itemInfo['itmDesc']) ?></p>
+            <h4>Ingredients:</h4>
+            <p><?= nl2br($itemInfo['ingredients']) ?></p>
         </div>
         <div class="sec_Des_img">
             <img src="images/items/<?= $itemInfo['mainpic'] ?>" alt="" srcset="">

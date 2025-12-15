@@ -175,7 +175,7 @@
                                     <label><strong>Accepted Free Shipping:</strong> <?= $categoryInfo['shippingfree_accepted'] == 1 ? 'Yes' : 'No' ?></label><br>
                                     
                                     <!-- New: Amount Over and Discount -->
-                                    <label>
+                                    <label> 
                                         <strong>Discount Rule:</strong> 
                                         <?php if ($categoryInfo['amountOver'] > 0 && $categoryInfo['discount'] > 0): ?>
                                             Get <strong><?= number_format($categoryInfo['discount'], 2) ?>%</strong> discount when purchase total in this category exceeds <strong>$<?= number_format($categoryInfo['amountOver'], 2) ?></strong>
@@ -505,6 +505,7 @@
                                 $brandId        = $_POST['brandId'];
                                 $itmName        = $_POST['itmName'];
                                 $itmDesc        = $_POST['itmDesc'];
+                                $itmIngredients = $_POST['itmIngredients'];
                                 $mainpic        = $filename;
                                 $sellPrice      = $_POST['sellPrice'];
                                 $commtion       = $_POST['commtion'];
@@ -514,13 +515,14 @@
                                 $getDiscount    = isset($_POST['getDiscount']) ? 1 : 0;
                                 $minQuantity    = $_POST['minQuantity'];
 
-                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,mainpic,sellPrice,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');
+                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
                                 $sql->execute([
                                     $catId,         
                                     $brandId,       
                                     $itmName,        
-                                    $itmDesc,        
+                                    $itmDesc,
+                                    $itmIngredients,        
                                     $mainpic,        
                                     $sellPrice,      
                                     $commtion,
@@ -636,6 +638,7 @@
                                             <input type="number" name="minQuantity" id="" required value="1">
                                         </div>
                                         <textarea placeholder="Product Discription" name="itmDesc" required></textarea>
+                                        <textarea placeholder="Product Ingredients" name="itmIngredients" required></textarea>
                                     </div>
                                 </div>
                                 <div class="discount_info">
@@ -741,6 +744,7 @@
                             $brandId     = $_POST['brandId'];
                             $itmName     = trim(strip_tags($_POST['itmName']));
                             $itmDesc     = trim(strip_tags($_POST['itmDesc']));
+                            $itmIngredients= trim(strip_tags($_POST['itmIngredients']));
                             $sellPrice   = $_POST['sellPrice'];
                             $commtion    = $_POST['commtion'];
                             $promotional = $_POST['promotional']??0;
@@ -751,10 +755,10 @@
 
                             // Update item
                             $sql = $con->prepare("UPDATE tblitems 
-                                SET catId=?, brandId=?, itmName=?, itmDesc=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
+                                SET catId=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
                                 WHERE itmId=?");
                             $sql->execute([
-                                $catId, $brandId, $itmName, $itmDesc, $filename,
+                                $catId, $brandId, $itmName, $itmDesc,$itmIngredients, $filename,
                                 $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,
                                 $itmId
                             ]);
@@ -858,6 +862,7 @@
                                     </div>
 
                                     <textarea placeholder="Product Description" name="itmDesc" required><?php echo htmlspecialchars($item['itmDesc']); ?></textarea>
+                                    <textarea placeholder="Product Ingredients" name="itmIngredients" required><?php echo htmlspecialchars($item['ingredients']); ?></textarea>
                                 </div>
                             </div>
 
