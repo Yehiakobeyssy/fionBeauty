@@ -67,7 +67,7 @@ $(document).ready(function() {
             const name =
                         item.itmName.length > 35
                             ? item.itmName.substring(0, 33) + "..."
-                            : item.itmName;
+                            : item.itmName; 
 
             
 

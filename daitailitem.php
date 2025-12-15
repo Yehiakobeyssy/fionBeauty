@@ -42,7 +42,7 @@
 
 ?>    
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-    <link href="common/css/bootstrap.min.css" rel="stylesheet">
+    <link href="common/css/bootstrap.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">

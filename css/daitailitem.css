@@ -168,7 +168,7 @@
 #reviws_section.active-section {
   display: block; /* المراجعات تظهر كـ block */
 }
-.sec_Des_text{
+.sec_Des_text{ 
   width: 48%;
   padding: 30px;
 }
