@@ -9,10 +9,12 @@
 
 .itemDiscription {
     display: flex;
+    align-items: stretch; /* IMPORTANT */
     padding: 30px;
     border-bottom: var(--color-primary) 2px solid;
     gap: 4%;
 }
+
 
 .image,
 .info {
@@ -20,20 +22,32 @@
 }
 
 .image {
+    width: 48%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #ffffff;
+    background: var(--color-white);
+    border-radius: 18px;
+    padding: 20px;
+
+    max-height: 520px;   /* CONTROL HEIGHT HERE */
 }
 
-.image img { 
+
+
+.image img {
+    max-height: 100%;
     max-width: 100%;
-    max-height: 35vh;     /* professional visual size */
     width: auto;
     height: auto;
-    object-fit: contain; /* no distortion */
+    object-fit: contain;
     display: block;
 }
+
+.image img {
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.12));
+}
+
 
 .info h2{
     color: var(--color-primary);

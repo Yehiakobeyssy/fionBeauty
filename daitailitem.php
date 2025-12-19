@@ -37,7 +37,7 @@
         } else {
             $isActive = 0; // في حالة مفيش نتيجة
         } 
-    }
+    } 
 
 
 ?>    
@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/daitailitem.css?2.4">
+    <link rel="stylesheet" href="css/daitailitem.css?2.6">
 </head>
 <body>
     <?php 
