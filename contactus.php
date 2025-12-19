@@ -21,7 +21,7 @@
             $email   = htmlspecialchars($_POST['email']);
             $phone   = htmlspecialchars($_POST['phone']);
             $message = htmlspecialchars($_POST['message']);
-            $sendetto="yehiakobeyssy2018@gmail.com";
+            $sendetto="info@fionbeautysupplies.ca";
 
             // Create a new PHPMailer instance
 

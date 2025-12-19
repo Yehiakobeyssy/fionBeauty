@@ -1,7 +1,7 @@
 <?php
 // Import PHPMailer classes into the global namespace
 // These must be at the top of your script, not inside a function
-$applicationemail='cccapp@cccbeautysupplies.com';
+$applicationemail='no-reply@fionbeautysupplies.ca';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -17,7 +17,7 @@ $mail = new PHPMailer();
     $mail->isSMTP();
     $mail->Host       = 'smtp.hostinger.com';       // خادم SMTP الخاص بـ Hostinger
     $mail->SMTPAuth   = true;                        // تفعيل المصادقة
-    $mail->Username   = 'cccapp@cccbeautysupplies.com';     // بريدك كامل
+    $mail->Username   = 'no-reply@fionbeautysupplies.ca';     // بريدك كامل
     $mail->Password   = 'Maher@141168';        // استبدلها بـ App Password إذا كان الحساب محمي
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // TLS على المنفذ 587
     $mail->Port       = 587;   
