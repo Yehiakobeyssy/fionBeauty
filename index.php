@@ -46,11 +46,16 @@
     <div class="slideshow-container">
         <?php foreach ($slides as $slide): ?>
             <div class="mySlide">
-                <a href="<?php echo htmlspecialchars($slide['slideHref']); ?>">
-                    <img src="images/slide/<?php echo htmlspecialchars($slide['slideScr']); ?>" alt="Slide">
-                </a>
+                <?php if (!empty($slide['slideHref'])): ?>
+                    <a href="<?= htmlspecialchars($slide['slideHref']) ?>">
+                        <img src="images/slide/<?= htmlspecialchars($slide['slideScr']) ?>" alt="Slide">
+                    </a>
+                <?php else: ?>
+                    <img src="images/slide/<?= htmlspecialchars($slide['slideScr']) ?>" alt="Slide">
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
+
     </div>
     <?php
         $totalStmt = $con->query("SELECT COUNT(*) FROM tblitems WHERE itmActive=1 AND promotional > 0");

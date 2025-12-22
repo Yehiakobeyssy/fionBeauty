@@ -8,11 +8,14 @@
 } 
 
 .slideshow-container img {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
+    max-height: 40vh;     /* 40% of screen height */
     height: auto;
     display: block;
-    margin: 0 auto;
-    border-radius: 10px;
+    margin: 0 auto;       /* center horizontally */
+    object-fit: contain; /* no cropping, no distortion */
+    border-radius: 12px;
 }
 
 .mySlide {
@@ -146,7 +149,7 @@ aside {
     transition: opacity 0.3s;
 }
 
-.card:hover .card-overlay {
+.card:hover .card-overlay { 
     opacity: 1;
 }
 

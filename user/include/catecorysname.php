@@ -127,7 +127,7 @@
         </style>
     <div class="catgeorybtns">
         <button class="allcat" id="btn1">
-            All Categories 
+            Categories 
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M10.3034 10.7917L14.4284 6.66667L15.6067 7.845L10.3034 13.1483L5.00002 7.845L6.17836 6.66667L10.3034 10.7917Z" fill="white"/>
             </svg>
