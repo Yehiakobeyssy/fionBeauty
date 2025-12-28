@@ -43,6 +43,58 @@ main {
 aside {
     width: 250px;
 }
+.cat-wrapper {
+    margin-bottom: 10px;
+}
+
+.cat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: Outfit, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    padding: 8px 0;
+    
+}
+.cat-name{
+    font-family: Outfit, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.cat-header:hover {
+    color: var(--color-primary);
+}
+
+.cat-arrow {
+    transition: transform 0.3s;
+}
+
+.cat-header.active .cat-arrow {
+    transform: rotate(180deg);
+}
+
+.subcats {
+    display: none;
+    padding-left: 15px;
+    margin-top: 5px;
+}
+
+.subcats label {
+    display: block;
+    color: var(--color-muted);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
 
 .catecories, .price, .rating, .brands {
     padding: 15px;

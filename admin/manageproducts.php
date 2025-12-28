@@ -64,10 +64,49 @@
     }
 
 
-    
+    if (isset($_POST['btnaddsub'])) {
+        $filename = ''; // default if no image uploaded
+
+        // 1. Handle image upload
+        if (!empty($_FILES['subCatPic']['name'])) {
+            $files = $_FILES['subCatPic'];
+
+            // Get file extension
+            $ext = strtolower(pathinfo($files['name'], PATHINFO_EXTENSION));
+
+            // Allowed image types
+            $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            if (in_array($ext, $allowed)) {
+                // Generate numeric filename: timestamp + random number
+                $filename = time() . rand(1000, 9999) . "." . $ext;
+                $destination = "../images/items/" . $filename;
+
+                if (!move_uploaded_file($files['tmp_name'], $destination)) {
+                    echo "<script>alert('Error uploading image');</script>";
+                    $filename = ''; // reset on failure
+                }
+            } else {
+                echo "<script>alert('Invalid file type');</script>";
+            }
+        }
+
+        // 2. Collect category data
+        $subcatId = $_POST['subcatID'] ?? '';
+        $subCatname = $_POST['subCatName'] ?? '';
+        $subCatPic = $filename;
+        $subCatDiscription = $_POST['subCatDiscription'];
+        $subActive = 1;
+
+        // 3. Insert into database
+        $sql = $con->prepare('INSERT INTO tblsubcategory(catID, subCatName, subCatPic,subCatDiscription,subCatActive) VALUES (?, ?, ?,?,?)');
+        $sql->execute([$subcatId,$subCatname,$subCatPic,$subCatDiscription,$subActive]);
+
+        echo '<script>location.href="manageproducts.php?do=viewcat&catid=' . $subcatId. '"</script>';
+    }
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/manageproducts.css?v=1.1">
+    <link rel="stylesheet" href="css/manageproducts.css?v=1.3">
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
@@ -251,6 +290,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="subCategorySection">
+                            <div class="title_products">
+                                <h5>Subcategories</h5>
+                                <a href="manageproducts.php?do=addSub&cat=<?php echo $cat ?>">Add subcategorie</a>
+                            </div>
+                            <div class="subcategory-wrapper">
+                                <button class="prev arrawbtn">&#10094;</button>
+
+                                <div class="displaySubcategorys" id="subcategoryContainer"></div>
+
+                                <button class="next arrawbtn">&#10095;</button>
+                            </div>
+
+                        </div>                        
                         <div class="container_products">
                             <div class="title_products">
                                 <h5>Products</h5>
@@ -281,7 +334,7 @@
                         <div class="addproduct">
                             <a href="manageproducts.php?do=additm&cat=<?=$cat?>" class="btn btn-primary">Add Product</a>
                         </div>
-                        <script src="js/managepoduct_viewcat.js"></script>
+                        <script src="js/managepoduct_viewcat.js?v=1.1"></script>
                         <?php
                         break;
 
@@ -479,7 +532,212 @@
                             </div>
                         <?php
                         break;
+                    case 'addSub':
+                        $cat = isset($_GET['cat'])?$_GET['cat']:0;
+                        ?>
+                            <div class="title">
+                                <h5>New Sub Category</h5>
+                            </div>
+                            <form class="product-addform" method="POST" enctype="multipart/form-data">
+                                <div class="genegralinfo">
+                                    <div class="thumbnail-section">
+                                        <img id="thumbnail" src="https://via.placeholder.com/150" alt="">
+                                        <p>Add Thumbnail for Product</p>
+                                        <!-- Make the label clickable directly -->
+                                        <label for="file-upload" class="choose-button">
+                                            Chose Image 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <g clip-path="url(#clip0_4342_4243)">
+                                                    <path d="M4.16667 5.83301H5C5.44203 5.83301 5.86595 5.65741 6.17851 5.34485C6.49107 5.03229 6.66667 4.60837 6.66667 4.16634C6.66667 3.94533 6.75446 3.73337 6.91074 3.57709C7.06702 3.42081 7.27899 3.33301 7.5 3.33301H12.5C12.721 3.33301 12.933 3.42081 13.0893 3.57709C13.2455 3.73337 13.3333 3.94533 13.3333 4.16634C13.3333 4.60837 13.5089 5.03229 13.8215 5.34485C14.134 5.65741 14.558 5.83301 15 5.83301H15.8333C16.2754 5.83301 16.6993 6.0086 17.0118 6.32116C17.3244 6.63372 17.5 7.05765 17.5 7.49967V14.9997C17.5 15.4417 17.3244 15.8656 17.0118 16.1782C16.6993 16.4907 16.2754 16.6663 15.8333 16.6663H4.16667C3.72464 16.6663 3.30072 16.4907 2.98816 16.1782C2.67559 15.8656 2.5 15.4417 2.5 14.9997V7.49967C2.5 7.05765 2.67559 6.63372 2.98816 6.32116C3.30072 6.0086 3.72464 5.83301 4.16667 5.83301" stroke="#009245" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M10 13.333C11.3807 13.333 12.5 12.2137 12.5 10.833C12.5 9.4523 11.3807 8.33301 10 8.33301C8.61929 8.33301 7.5 9.4523 7.5 10.833C7.5 12.2137 8.61929 13.333 10 13.333Z" stroke="#009245" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_4342_4243">
+                                                    <rect width="20" height="20" fill="white"/>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </label>
+                                        <input id="file-upload" name="subCatPic" type="file" accept="image/*" onchange="previewImage(event)" style="display:none;">
+                                    </div>
+                                    <div class="form-section">
+                                        <h2>Sub Category Details</h2>
+                                        <input type="text" placeholder="SubCategory Name" name="subCatName" required>
+                                        <select name="subcatID" id="" required>
+                                            <option value="">[Select Category]</option>
+                                            <?php
+                                                $stat = $con->prepare('SELECT categoryId , catName FROM  tblcategory WHERE catActive = 1 ORDER BY catName ');
+                                                $stat->execute();
+                                                $cats = $stat->fetchAll();
+                                                foreach($cats as $ca){
+                                                    if($cat == $ca['categoryId']){
+                                                        echo '<option value="'.$ca['categoryId'].'" selected>'.$ca['catName'].'</option>';
+                                                    }else{
+                                                        echo '<option value="'.$ca['categoryId'].'">'.$ca['catName'].'</option>';
+                                                    }
+                                                    
+                                                }
+                                            ?>
+                                        </select>
+                                        <textarea placeholder="Sub Category Discription" name="subCatDiscription" ></textarea>
+                                    </div>
+                                </div>
+                                <div class="buttons btnsitems">
+                                        <button type="submit" class="btn btn-primary" name="btnaddsub">Save Sub Category</button>
+                                        <button type="button" class="btn btn-ghost" onclick="window.history.back();">Cancel</button>
+                                </div> 
+                            </form>
+                            <script>
+                                function previewImage(event) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(){
+                                        const output = document.getElementById('thumbnail');
+                                        output.src = reader.result;
+                                    };
+                                    reader.readAsDataURL(event.target.files[0]);
+                                }
+                            </script>
+                        <?php
+                        break;
+                    case 'edidSub':
+                        $subcatID = isset($_GET['subID'])?$_GET['subID']:0;
+                        $checksubCat = checkItem('subCatID','tblsubcategory',$subcatID);
+                        if($checksubCat == 0){
+                            echo '<script> location.href="manageproducts.php"</script>';
+                        }else{
+                            $stmt = $con->prepare("SELECT * FROM tblsubcategory WHERE subCatID   = ?");
+                            $stmt->execute([$subcatID]);
+                            $subcategory = $stmt->fetch(PDO::FETCH_ASSOC);
+                        }
 
+                        if (isset($_POST['btnupdatesubcategory'])) {
+                            $catID = $_POST['subcatID'] ?? '';
+                            $subCatName = $_POST['subCatName'] ?? '';
+                            $filename = $subcategory['subCatPic']; // default: keep old image
+                            $subCatDiscription = $_POST['subCatDiscription'];
+
+                            // Handle new image upload
+                            if (!empty($_FILES['subCatPic']['name'])) {
+                                $files = $_FILES['subCatPic'];
+                                $ext = strtolower(pathinfo($files['name'], PATHINFO_EXTENSION));
+                                $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+                                if (in_array($ext, $allowed)) {
+                                    $newFilename = time() . rand(1000, 9999) . "." . $ext;
+                                    $destination = "../images/items/" . $newFilename;
+
+                                    if (move_uploaded_file($files['tmp_name'], $destination)) {
+                                        // Delete old image if exists
+                                        if (!empty($filename) && file_exists("../images/items/" . $filename)) {
+                                            unlink("../images/items/" . $filename);
+                                        }
+                                        $filename = $newFilename;
+                                    } else {
+                                        echo "<script>alert('Error uploading new image');</script>";
+                                    }
+                                } else {
+                                    echo "<script>alert('Invalid file type');</script>";
+                                }
+                            }
+
+                            // Update database
+                            $sql = $con->prepare("UPDATE tblsubcategory SET catID=?, subCatName=?,subCatPic=? ,subCatDiscription=? WHERE subCatID =?");
+                            $sql->execute([$catID,$subCatName,$filename,$subCatDiscription,$subcatID]);
+
+                            echo '<script>location.href="manageproducts.php?do=viewcat&catid=' .$catID . '"</script>';
+                        }
+
+                        ?>
+                            <div class="title">
+                                <h5>Edit SubCategory</h5>
+                            </div>
+                            <form class="category-addform" method="POST" enctype="multipart/form-data">
+                                <div class="thumbnail-section">
+                                    <img id="thumbnail" src="<?php echo !empty($subcategory['subCatPic']) ? '../images/items/' . $subcategory['subCatPic'] : 'https://via.placeholder.com/150'; ?>" alt="">
+                                    <p>Add Thumbnail for category</p>
+                                    <label for="file-upload" class="choose-button">
+                                        Choose Image
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <g clip-path="url(#clip0_4342_4243)">
+                                                <path d="M4.16667 5.83301H5C5.44203 5.83301 5.86595 5.65741 6.17851 5.34485C6.49107 5.03229 6.66667 4.60837 6.66667 4.16634C6.66667 3.94533 6.75446 3.73337 6.91074 3.57709C7.06702 3.42081 7.27899 3.33301 7.5 3.33301H12.5C12.721 3.33301 12.933 3.42081 13.0893 3.57709C13.2455 3.73337 13.3333 3.94533 13.3333 4.16634C13.3333 4.60837 13.5089 5.03229 13.8215 5.34485C14.134 5.65741 14.558 5.83301 15 5.83301H15.8333C16.2754 5.83301 16.6993 6.0086 17.0118 6.32116C17.3244 6.63372 17.5 7.05765 17.5 7.49967V14.9997C17.5 15.4417 17.3244 15.8656 17.0118 16.1782C16.6993 16.4907 16.2754 16.6663 15.8333 16.6663H4.16667C3.72464 16.6663 3.30072 16.4907 2.98816 16.1782C2.67559 15.8656 2.5 15.4417 2.5 14.9997V7.49967C2.5 7.05765 2.67559 6.63372 2.98816 6.32116C3.30072 6.0086 3.72464 5.83301 4.16667 5.83301" stroke="#009245" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M10 13.333C11.3807 13.333 12.5 12.2137 12.5 10.833C12.5 9.4523 11.3807 8.33301 10 8.33301C8.61929 8.33301 7.5 9.4523 7.5 10.833C7.5 12.2137 8.61929 13.333 10 13.333Z" stroke="#009245" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <defs>
+                                                <clipPath id="clip0_4342_4243">
+                                                    <rect width="20" height="20" fill="white"/>
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                    </label>
+                                    <input id="file-upload" name="subCatPic" type="file" accept="image/*" onchange="previewImage(event)" style="display:none;">
+                                </div>
+                                <div class="form-section">
+                                    <h2>Sub Category Details</h2>
+                                    <input type="text" placeholder="Sub Category Name" name="subCatName" value="<?php echo htmlspecialchars($subcategory['subCatName']); ?>" required>
+                                    <select name="subcatID" id="" required>
+                                        <option value="">[Select Category]</option>
+                                        <?php
+                                            $stat = $con->prepare('SELECT categoryId , catName FROM  tblcategory WHERE catActive = 1 ORDER BY catName ');
+                                            $stat->execute();
+                                            $cats = $stat->fetchAll();
+                                            foreach($cats as $ca){
+                                                if($ca['categoryId'] == $subcategory['catID']){
+                                                    echo '<option value="'.$ca['categoryId'].'" selected>'.$ca['catName'].'</option>';
+                                                }else{
+                                                    echo '<option value="'.$ca['categoryId'].'">'.$ca['catName'].'</option>';
+                                                }
+                                                
+                                            }
+                                        ?>
+                                    </select>
+                                    <textarea placeholder="Sub Category Discription" name="subCatDiscription" ><?php echo htmlspecialchars($subcategory['subCatDiscription']); ?></textarea>
+                                    
+                                    <div class="buttons">
+                                        <button type="submit" class="btn btn-primary" name="btnupdatesubcategory">Update Subcategory</button>
+                                        <button type="button" class="btn btn-ghost" onclick="window.history.back();">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <script>
+                                function previewImage(event) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(){
+                                        const output = document.getElementById('thumbnail');
+                                        output.src = reader.result;
+                                    };
+                                    reader.readAsDataURL(event.target.files[0]);
+                                }
+                            </script>
+                        <?php
+                        break;
+                    case 'deleteSub':
+                        $subcatID = isset($_GET['subID'])?$_GET['subID']:0;
+                        $checksubCat = checkItem('subCatID','tblsubcategory',$subcatID);
+                        if($checksubCat == 0){
+                            echo '<script> location.href="manageproducts.php"</script>';
+                        }else{
+                            $stmt = $con->prepare("SELECT * FROM tblsubcategory WHERE subCatID   = ?");
+                            $stmt->execute([$subcatID]);
+                            $subcategory = $stmt->fetch(PDO::FETCH_ASSOC);
+                        }
+                        if(isset($_POST['btndeletesub'])){
+                            $sql=$con->prepare('UPDATE tblsubcategory SET subCatActive = 0 WHERE subCatID  =?');
+                            $sql->execute([$subcatID]);
+                            echo '<script>location.href="manageproducts.php?do=viewcat&catid='.$subcategory['catID'].'"</script>';
+                        }
+                        ?>
+                        <div class="delete_container alert alert-danger">
+                            <p>Do you want to delete <?= $subcategory['subCatName'] ?></p>
+                            <form action="" method="post">
+                                <div class="btncontrol">
+                                    <button type="submit" class="btn btn-primary" name="btndeletesub">Yes</button>
+                                    <a href="manageproducts.phpmanageproducts.php?do=viewcat&catid=<?= $subcategory['catID']?>" class="btn btn-ghost">No</a>
+                                </div>
+                            </form>
+                        </div>
+                        <?php
+                        break;
                     case 'additm':
                         $cat = isset($_GET['cat'])?$_GET['cat']:0;
 
@@ -502,6 +760,7 @@
                                 }
 
                                 $catId          = $_POST['catId'];
+                                $subCatID       = $_POST['subCatID'];
                                 $brandId        = $_POST['brandId'];
                                 $itmName        = $_POST['itmName'];
                                 $itmDesc        = $_POST['itmDesc'];
@@ -515,10 +774,11 @@
                                 $getDiscount    = isset($_POST['getDiscount']) ? 1 : 0;
                                 $minQuantity    = $_POST['minQuantity'];
 
-                                $sql = $con ->prepare('INSERT INTO tblitems (catId,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
+                                $sql = $con ->prepare('INSERT INTO tblitems (catId,subCatID,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
                                 $sql->execute([
-                                    $catId,         
+                                    $catId,
+                                    $subCatID,         
                                     $brandId,       
                                     $itmName,        
                                     $itmDesc,
@@ -577,22 +837,36 @@
                                     <div class="form-section">
                                         <h2>Product Details</h2>
                                         <input type="text" placeholder="Product Name" name="itmName" required>
+                                        <div class="selectoption">
+                                            <label for="">Category</label>
+                                            <select name="catId" id="AddItemCategory"  required>
+                                                <option value="">[Select Category]</option>
+                                                <?php
+                                                    $stat = $con->prepare('SELECT categoryId , catName FROM  tblcategory WHERE catActive = 1 ORDER BY catName ');
+                                                    $stat->execute();
+                                                    $cats = $stat->fetchAll();
+                                                    foreach($cats as $ca){
+                                                        if($cat == $ca['categoryId']){
+                                                            echo '<option value="'.$ca['categoryId'].'" selected>'.$ca['catName'].'</option>';
+                                                        }else{
+                                                            echo '<option value="'.$ca['categoryId'].'">'.$ca['catName'].'</option>';
+                                                        }
+                                                        
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
                                         <div class="barnd">
                                             <div class="selectoption">
-                                                <label for="">Category</label>
-                                                <select name="catId" id="" required>
-                                                    <option value="">[Select Category]</option>
+                                                <label for="">Sub Category</label>
+                                                <select name="subCatID" id="AddItemSub" required>
+                                                    <option value="">[Select SubCategory]</option>
                                                     <?php
-                                                        $stat = $con->prepare('SELECT categoryId , catName FROM  tblcategory WHERE catActive = 1 ORDER BY catName ');
+                                                        $stat = $con->prepare('SELECT subCatID  , subCatName FROM  tblsubcategory WHERE subCatActive = 1 ORDER BY subCatName ');
                                                         $stat->execute();
-                                                        $cats = $stat->fetchAll();
-                                                        foreach($cats as $ca){
-                                                            if($cat == $ca['categoryId']){
-                                                                echo '<option value="'.$ca['categoryId'].'" selected>'.$ca['catName'].'</option>';
-                                                            }else{
-                                                                echo '<option value="'.$ca['categoryId'].'">'.$ca['catName'].'</option>';
-                                                            }
-                                                            
+                                                        $subcats = $stat->fetchAll();
+                                                        foreach($subcats as $sub){
+                                                            echo '<option value="'.$sub['subCatID'].'">'.$sub['subCatName'].'</option>';
                                                         }
                                                     ?>
                                                 </select>
@@ -676,7 +950,7 @@
                                 </div>                        
                             </form>
 
-                            <script src="js/managepoduct_additm.js"></script>
+                            <script src="js/managepoduct_additm.js?v=1.1"></script>
                             <script>
                                 function previewImage(event) {
                                     const reader = new FileReader();
@@ -686,6 +960,46 @@
                                     };
                                     reader.readAsDataURL(event.target.files[0]);
                                 }
+                                $(document).ready(function () {
+                                    const $cat = $('#AddItemCategory');
+                                    const $sub = $('#AddItemSub');
+                                    
+                                    function loadSubcategories(catId, selectedSub = '') {
+                                        $sub.html('<option value="">[Select SubCategory]</option>');
+                                        if (catId === '') return;
+
+                                        $.ajax({
+                                            url: 'ajaxadmin/getSubCategories.php',
+                                            type: 'POST',
+                                            dataType: 'json',
+                                            data: { catId: catId },
+                                            success: function (res) {
+                                                if (res.success) {
+                                                    $.each(res.data, function (i, sub) {
+                                                        const option = $('<option>', {
+                                                            value: sub.subCatID,
+                                                            text: sub.subCatName
+                                                        });
+                                                        if (sub.subCatID == selectedSub) option.prop('selected', true);
+                                                        $sub.append(option);
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    // On category change
+                                    $cat.on('change', function () {
+                                        loadSubcategories($(this).val());
+                                    });
+
+                                    // ✅ On page load: check if a category is already selected
+                                    if ($cat.val() !== '') {
+                                        const selectedSub = '<?php echo $subCat ?? ''; ?>'; // optional, if editing
+                                        loadSubcategories($cat.val(), selectedSub);
+                                    }
+                                });
+
                             </script>
                         <?php
                         break;
@@ -741,6 +1055,7 @@
 
                             // Prepare data
                             $catId       = $_POST['catId'];
+                            $subCatID    = $_POST['subCatID'];
                             $brandId     = $_POST['brandId'];
                             $itmName     = trim(strip_tags($_POST['itmName']));
                             $itmDesc     = trim(strip_tags($_POST['itmDesc']));
@@ -755,10 +1070,10 @@
 
                             // Update item
                             $sql = $con->prepare("UPDATE tblitems 
-                                SET catId=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
+                                SET catId=?,subCatID=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
                                 WHERE itmId=?");
                             $sql->execute([
-                                $catId, $brandId, $itmName, $itmDesc,$itmIngredients, $filename,
+                                $catId,$subCatID, $brandId, $itmName, $itmDesc,$itmIngredients, $filename,
                                 $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,
                                 $itmId
                             ]);
@@ -801,20 +1116,34 @@
                                 <div class="form-section">
                                     <h2>Product Details</h2>
                                     <input type="text" placeholder="Product Name" name="itmName" required value="<?php echo htmlspecialchars($item['itmName']); ?>">
-
+                                    <div class="selectoption">
+                                        <label>Category</label>
+                                        <select name="catId" id="edidItemCategory" required>
+                                            <option value="">[Select Category]</option>
+                                            <?php
+                                            $stat = $con->prepare('SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName');
+                                            $stat->execute();
+                                            $cats = $stat->fetchAll();
+                                            foreach ($cats as $ca) {
+                                                $sel = ($item['catId'] == $ca['categoryId']) ? 'selected' : '';
+                                                echo '<option value="' . $ca['categoryId'] . '" ' . $sel . '>' . $ca['catName'] . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                     <div class="barnd">
                                         <div class="selectoption">
-                                            <label>Category</label>
-                                            <select name="catId" required>
-                                                <option value="">[Select Category]</option>
+                                            <label for="">Sub Category</label>
+                                            <select name="subCatID" id="edidItemSub" required>
+                                                <option value="">[Select SubCategory]</option>
                                                 <?php
-                                                $stat = $con->prepare('SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName');
-                                                $stat->execute();
-                                                $cats = $stat->fetchAll();
-                                                foreach ($cats as $ca) {
-                                                    $sel = ($item['catId'] == $ca['categoryId']) ? 'selected' : '';
-                                                    echo '<option value="' . $ca['categoryId'] . '" ' . $sel . '>' . $ca['catName'] . '</option>';
-                                                }
+                                                    $stat = $con->prepare('SELECT subCatID  , subCatName FROM  tblsubcategory WHERE subCatActive = 1 ORDER BY subCatName ');
+                                                    $stat->execute();
+                                                    $subcats = $stat->fetchAll();
+                                                    foreach($subcats as $sub){
+                                                        $sel = ($item['subCatID'] == $ca['subCatID']) ? 'selected' : '';
+                                                        echo '<option value="'.$sub['subCatID'].'" ' . $sel . '>'.$sub['subCatName'].'</option>';
+                                                    }
                                                 ?>
                                             </select>
                                         </div>
@@ -912,6 +1241,46 @@
                         </form>
 
                         <script>
+                            $(document).ready(function () {
+                            const $cat = $('#edidItemCategory');
+                            const $sub = $('#edidItemSub');
+                            
+                            function loadSubcategories(catId, selectedSub = '') {
+                                $sub.html('<option value="">[Select SubCategory]</option>');
+                                if (catId === '') return;
+
+                                $.ajax({
+                                    url: 'ajaxadmin/getSubCategories.php',
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: { catId: catId },
+                                    success: function (res) {
+                                        if (res.success) {
+                                            $.each(res.data, function (i, sub) {
+                                                const option = $('<option>', {
+                                                    value: sub.subCatID,
+                                                    text: sub.subCatName
+                                                });
+                                                if (sub.subCatID == selectedSub) option.prop('selected', true);
+                                                $sub.append(option);
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+
+                            // On category change
+                            $cat.on('change', function () {
+                                loadSubcategories($(this).val());
+                            });
+
+                            // ✅ On page load: check if a category is already selected
+                            if ($cat.val() !== '') {
+                                const selectedSub = '<?php echo $subCat ?? ''; ?>'; // optional, if editing
+                                loadSubcategories($cat.val(), selectedSub);
+                            }
+                        });
+
                         function previewImage(event) {
                             const reader = new FileReader();
                             reader.onload = function(){

@@ -68,53 +68,96 @@
     box-shadow: var(--shadow-sm);
 }
 
-/* Dropdown container */
 .dropdown-content {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* First 3 categories in a row */
+    grid-auto-rows: auto;                 /* Rest flow vertically */
+    gap: 20px 40px;                       /* Row and column gaps */
     position: absolute;
-    top: 215px;
+    top: 230px;
     left: 40px;
-    height: 250px;
-    width: 30vw;
-    z-index: 5;
-    border-radius: var(--radius);
-    background: var(--color-card);
-    box-shadow: var(--shadow-md);
-    display: flex;
-}
-
-/* Left list and right image */
-.dropdownlist {
-    width: 30%;
-    height: 100%;
+    width: 750px;
+    max-height: 500px;
     overflow-y: auto;
-    border-right: 1px solid rgba(0,0,0,0.05);
-    background: rgba(0,0,0,0.03);
-}
-
-.imgstyle {
-    width: 70%;
-    padding: var(--space-3);
-}
-.dropdown-content img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    background: var(--color-card);
     border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+    z-index: 9000;
 }
 
-/* Dropdown links */
-.dropdownlist a {
-    display: block;
-    padding: var(--space-2) var(--space-3);
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    color: var(--color-dark);
-    text-decoration: none;
-    transition: color .2s ease, background .2s ease;
+/* Prevent individual category from breaking columns */
+.dropdown-section {
+    break-inside: avoid;
 }
-.dropdownlist a:hover {
+
+
+/* Category section with spacing */
+.dropdown-section {
+    break-inside: avoid;   /* Prevent breaking category across columns */
+    margin-bottom: 20px;
+}
+
+/* Category name */
+.dropdown-cat {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: var(--color-dark);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 5px;
+}
+
+/* Subcategory list */
+.dropdown-subcats {
+    list-style: none;
+    margin: 10px 0 0 0;
+    padding-left: 0;
+}
+
+.dropdown-subcats li {
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.dropdown-subcats li:hover {
     color: var(--color-primary);
+    text-decoration: underline;
+}
+
+/* Category heading style */
+.dropdown-cat a {
+    color: var(--color-dark);
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration: none; /* Remove underline */
+}
+
+.dropdown-cat a:hover {
+    color: var(--color-primary); /* Optional hover color */
+}
+
+/* Subcategory list style */
+.dropdown-subcats li a {
+    color: var(--color-icon);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 150% */
+    letter-spacing: 0.06px;
+    text-decoration: none; /* Remove underline */
+    transition: color 0.2s ease;
+}
+
+.dropdown-subcats li a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
 }
 
 /* Responsive tweaks */
@@ -146,20 +189,36 @@
         ?>
     </div>
     <div class="dropdown-content" id="dropdown1">
-        <div class="dropdownlist">
-            <?php
-            $sql=$con->prepare('SELECT categoryId,catName FROM tblcategory WHERE catActive = 1 ORDER BY catName ');
-            $sql->execute();
-            $cats = $sql->fetchAll();
-            foreach($cats as $cat){
-                echo '<a href="category.php?cat='.$cat['catName'].'"  data-index="'.$cat['categoryId'].'">'.$cat['catName'].'</a>';
+        <?php
+        $sql = $con->prepare('SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName');
+        $sql->execute();
+        $categories = $sql->fetchAll();
+
+        foreach ($categories as $cat) {
+            $subSql = $con->prepare('SELECT subCatName FROM tblsubcategory WHERE catID = ? AND subCatActive = 1 ORDER BY subCatName');
+            $subSql->execute([$cat['categoryId']]);
+            $subcats = $subSql->fetchAll();
+
+            echo '<div class="dropdown-section">';
+            // Category link
+            $catLink = 'category.php?cat=' . urlencode($cat['catName']);
+            echo '<h3 class="dropdown-cat"><a href="'.$catLink.'">'.$cat['catName'].'</a></h3>';
+
+            echo '<ul class="dropdown-subcats">';
+            foreach ($subcats as $sub) {
+                // Subcategory link
+                $subLink = 'category.php?subcat=' . urlencode($sub['subCatName']);
+                echo '<li><a href="'.$subLink.'">'.$sub['subCatName'].'</a></li>';
             }
-            ?>
-        </div>
-        <div class="imgstyle">
-            <img src="img/items/" alt="" srcset="" id="categoryImage">
-        </div>
+            echo '</ul>';
+            echo '</div>';
+        }
+        ?>
     </div>
+
+
+
+
     <script>
      $('#btn1').click(function () {
         $('#dropdown1').toggle();

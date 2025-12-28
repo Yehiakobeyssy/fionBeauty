@@ -3,7 +3,7 @@ main{
 }
 .container_info{
     margin: 20px;
-    width: 100% ;
+    width: 100% ; 
 }
 .titlecat{
     margin: 30px 50px;
@@ -224,6 +224,72 @@ table tbody td{
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+}
+.subCategorySection{
+    margin: 30px 0;
+}
+.title_products{
+    display: flex;
+    justify-content: space-between;
+}
+.subcategory-wrapper{
+    display: flex;
+
+}
+.arrawbtn{
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--color-primary);
+}
+.displaySubcategorys{
+    display: flex;
+    margin: 25px auto;
+}
+.cardsubcat{
+    text-align: center;
+    width: 250px;
+    margin: 0 18px;
+}
+.edidsub{
+    text-align: right;
+}
+.imgSub img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.discription{
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+}
+.discription h4{
+    color: var(--color-primary);
+    font-family: Outfit;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.discription label{
+    color: var(--color-icon);
+    font-family: Outfit;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px; /* 150% */
+    letter-spacing: 0.06px;
+}
+.discription button{
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-sm);
+    border: transparent;
+    padding: 6px;
+    border-radius: 12px;
+    margin-top: 5px;
 }
 .result_product {
   display: grid;
