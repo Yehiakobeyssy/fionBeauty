@@ -38,10 +38,11 @@ $(document).ready(function () {
 
     function renderSubcategories() {
         container.innerHTML = '';
-
         if (subcategories.length === 0) return;
 
-        for (let i = 0; i < pageSize; i++) {
+        const itemsToRender = Math.min(pageSize, subcategories.length);
+
+        for (let i = 0; i < itemsToRender; i++) {
             const index = (currentIndex + i) % subcategories.length;
             const item = subcategories[index];
 

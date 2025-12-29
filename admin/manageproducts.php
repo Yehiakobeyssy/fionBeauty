@@ -130,7 +130,7 @@
                 exit(); // stop the rest of the page from executing
             }
         ?>
-    <main>
+    <main> 
         <?php include 'include/adminaside.php'?>
         <div class="container_info">
             <?php
@@ -334,7 +334,7 @@
                         <div class="addproduct">
                             <a href="manageproducts.php?do=additm&cat=<?=$cat?>" class="btn btn-primary">Add Product</a>
                         </div>
-                        <script src="js/managepoduct_viewcat.js?v=1.1"></script>
+                        <script src="js/managepoduct_viewcat.js?v=1.3"></script>
                         <?php
                         break;
 
