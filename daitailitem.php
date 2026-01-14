@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/daitailitem.css?2.6">
+    <link rel="stylesheet" href="css/daitailitem.css?2.7">
 </head>
 <body>
     <?php 
@@ -56,10 +56,10 @@
     ?>
     <div class="titleCatecory">
         <div class="navbarsection">
-            <h5>Home/ Catecories / Items / <span> <?= $itemInfo['itmName']?></span></h5> 
+            <h5> Home / Catecories / Items / <span> <?= $itemInfo['itmName']?></span></h5> 
         </div>
         <div class="catecoryname">
-            <h2><?= $itemInfo['itmName']?></h2>
+            <h5><?= $itemInfo['itmName']?></h5>
         </div>      
         <div class="desgin">
 

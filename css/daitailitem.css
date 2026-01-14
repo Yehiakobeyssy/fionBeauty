@@ -6,6 +6,19 @@
     background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
     color: var(--color-bg);
 }
+.navbarsection h5{
+    color: var(--color-icon);
+    font-size: 14px;
+}
+.navbarsection span{
+    color: var(--color-bg);
+    font-weight: bolder;
+}
+.catecoryname{
+    color: var(--color-bg);
+    font-weight: bolder;
+    font-size: 24px;
+}
 
 .itemDiscription {
     display: flex;

@@ -46,14 +46,14 @@ if($categoryName > 0 ){
         $resulttitle = $sql->fetch(PDO::FETCH_ASSOC);
         $categoryNewName = $resulttitle['catName'];
         $subCatName = $resulttitle['subCatName'];
-        $navbar = '<h5>Home/ Catecories / '.$categoryNewName .' /<strong>'. $subCatName .'</strong></h5>';
+        $navbar = '<h5> Home / Catecories / '.$categoryNewName .' / <span>'. $subCatName .'</span> </h5>';
         $pageTitle = '<h5>'.$subCatName.'</h5>';
     }else{
-        $navbar = '<h5>Home/ Catecories / <strong></strong></h5>';
+        $navbar = '<h5> Home / Catecories / <span></span></h5>';
         $pageTitle = '';
     }
 }else{
-    $navbar = '<h5>Home/ Catecories / <strong></strong></h5>';
+    $navbar = '<h5>Home/ Catecories / <span></span></h5>';
     $pageTitle = '';
 }
 
@@ -65,7 +65,7 @@ if($categoryName > 0 ){
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/category.css?v=1.4">
+    <link rel="stylesheet" href="css/category.css?v=1.5">
 </head>
 <body>
     <?php 
