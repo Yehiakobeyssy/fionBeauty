@@ -17,70 +17,44 @@ if ($totalItems < 6) {
 }
 
 // GET parameters
-$categoryName = isset($_GET['cat']) ? trim($_GET['cat']) : '';
+$categoryName = isset($_GET['cat']) ? $_GET['cat'] : 0;
 $keyword      = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
-$subCatId     = isset($_GET['subcat']) ? (int) $_GET['subcat'] : 0;
+$subCatId     = isset($_GET['subcat']) ?  $_GET['subcat'] : 0;
 
-$result = ['category' => '', 'items' => []];
-
-// =================== BUILD QUERY ===================
-$sql = "
-    SELECT i.itmId, i.itmName, i.itmDesc, i.ingredients, i.mainpic, i.sellPrice, i.promotional, 
-           c.catName, s.subCatName
-    FROM tblitems i
-    JOIN tblcategory c ON i.catId = c.categoryId
-    LEFT JOIN tblsubcategory s ON i.subCatID = s.subCatID
-    WHERE i.itmActive = 1
-";
-
-$params = [];
-$filters = [];
-
-// Category filter
-if ($categoryName) {
-    $filters[] = "c.catName LIKE :categoryName";
-    $params[':categoryName'] = "%$categoryName%";
-}
-
-// Subcategory filter
-if ($subCatId > 0) {
-    $filters[] = "i.subCatID = :subCatId";
-    $params[':subCatId'] = $subCatId;
-}
-
-// Keyword search
-if ($keyword) {
-    $filters[] = "(i.itmName LIKE :keyword OR i.itmDesc LIKE :keyword OR i.ingredients LIKE :keyword)";
-    $params[':keyword'] = "%$keyword%";
-}
-
-// Append filters to SQL
-if ($filters) {
-    $sql .= " AND " . implode(" AND ", $filters);
-}
-
-// Order
-$sql .= " ORDER BY i.itmName ASC";
-
-$stmt = $con->prepare($sql);
-$stmt->execute($params);
-$items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Set category for page title (first match)
-if (!empty($items)) {
-    $result['category'] = $items[0]['catName'];
-    foreach ($items as $row) {
-        $result['items'][] = [
-            'id' => $row['itmId'],
-            'name' => $row['itmName'],
-            'desc' => $row['itmDesc'],
-            'ingredients' => $row['ingredients'],
-            'mainpic' => $row['mainpic'],
-            'sellPrice' => $row['sellPrice'],
-            'promotional' => $row['promotional'],
-            'subCatName' => $row['subCatName']
-        ];
+if($categoryName > 0 ){
+    $checkcat= checkItem('categoryId',"tblcategory", $categoryName);
+    if($checkcat > 0 ){
+        $stat1 = $con->prepare('SELECT catName FROM tblcategory WHERE categoryId  = ?');
+        $stat1->execute([$categoryName]);
+        $resulttitle = $stat1->fetch(PDO::FETCH_ASSOC);
+        $categoryNewName= $resulttitle['catName'];
+        $navbar = '<h5>Home/ Catecories / <strong>'. $categoryNewName .'</strong></h5>';
+        $pageTitle = '<h5>'.$categoryNewName.'</h5>';
+    }else{
+        $navbar = '<h5>Home/ Catecories / <strong></strong></h5>';
+        $pageTitle = '';
     }
+}elseif($subCatId > 0 ){
+    $checksubcat =checkItem('subCatID',"tblsubcategory", $subCatId) ;
+    if($checksubcat > 0){
+        $sql=$con->prepare('SELECT subCatName,catName 
+                            FROM tblsubcategory
+                            INNER JOIN tblcategory 
+                            ON tblsubcategory.catID = tblcategory.categoryId 
+                            WHERE subCatID  = ?');
+        $sql->execute([$subCatId]);
+        $resulttitle = $sql->fetch(PDO::FETCH_ASSOC);
+        $categoryNewName = $resulttitle['catName'];
+        $subCatName = $resulttitle['subCatName'];
+        $navbar = '<h5>Home/ Catecories / '.$categoryNewName .' /<strong>'. $subCatName .'</strong></h5>';
+        $pageTitle = '<h5>'.$subCatName.'</h5>';
+    }else{
+        $navbar = '<h5>Home/ Catecories / <strong></strong></h5>';
+        $pageTitle = '';
+    }
+}else{
+    $navbar = '<h5>Home/ Catecories / <strong></strong></h5>';
+    $pageTitle = '';
 }
 
 // =================== HTML START ===================
@@ -109,10 +83,10 @@ if (!empty($items)) {
     ?>
     <div class="titleCatecory">
         <div class="navbarsection">
-            <h5>Home/ Catecories / <strong><?php echo $result['category'] ?></strong></h5>
+            <?= $navbar ?>
         </div>
         <div class="catecoryname">
-            <h2><?php echo $result['category'] ?></h2>
+            <?= $pageTitle ?>
         </div>      
         <div class="desgin">
 
@@ -227,7 +201,7 @@ if (!empty($items)) {
 
     ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
-    <script src="js/category.js?v=1.5"></script>
+    <script src="js/category.js?v=1.6"></script>
     <script>
         var priceSlider = document.getElementById('rangeSlider');
         var minValueInput = document.getElementById('minValue');

@@ -644,14 +644,19 @@ function displayDropdown(items) {
     $('.dropdownsmartsearch').show();
 }
 $('#txtsearch').on('keydown', function (e) {
-    if (e.key === 'Enter' || e.keyCode === 13) {
-        var firstItem = document.querySelector('#itemsContainer a');
-        if (firstItem) {
-            window.location.href = firstItem.href;
+    if (e.key === 'Enter') {
+
+        e.preventDefault(); // stop form submit FIRST
+
+        const itemvalue = $(this).val().trim();
+
+        if (itemvalue !== '') {
+            window.location.href =
+                '../category.php?keyword=' + encodeURIComponent(itemvalue);
         }
-        e.preventDefault(); // prevent form submission if inside a form
     }
 });
+
 
 // Navigate to category page on click
 document.getElementById('itemsContainer').addEventListener('mousedown', function (event) {

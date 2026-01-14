@@ -162,9 +162,58 @@
 
 /* Responsive tweaks */
 @media (max-width: 768px) {
-    .dropdown-content { top: 340px; }
+    
     .allcat { font-size: 0.9rem; }
     .btncate { font-size: 0.9rem; }
+}
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+    .dropdown-content {
+        grid-template-columns: repeat(2, 1fr);
+        width: 90%;
+        left: 5%;
+        top: 320px;
+        gap: 20px 30px;
+    }
+}
+
+/* Small tablets & large phones (≤ 768px) */
+@media (max-width: 768px) {
+    .dropdown-content {
+        grid-template-columns: 1fr;
+        width: 95%;
+        left: 2.5%;
+        top: 370px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .dropdown-cat a {
+        font-size: 18px;
+    }
+
+    .dropdown-subcats li a {
+        font-size: 13px;
+    }
+}
+
+/* Mobile phones (≤ 480px) */
+@media (max-width: 480px) {
+    .dropdown-content {
+        width: 100%;
+        left: 0;
+        top: 370px;
+        border-radius: 0;
+        padding: 15px;
+    }
+
+    .dropdown-cat a {
+        font-size: 16px;
+    }
+
+    .dropdown-subcats li a {
+        font-size: 12px;
+    }
 }
 
         </style>
@@ -181,7 +230,7 @@
             $cats = $sql->fetchAll();
             foreach($cats as $cat){
                 echo '
-                    <button class="btncate" data-index="'.$cat['catName'].'">
+                    <button class="btncate" data-index="'.$cat['categoryId'].'">
                     '.$cat['catName'].'
                     </button>
                 ';
@@ -195,23 +244,23 @@
         $categories = $sql->fetchAll();
 
         foreach ($categories as $cat) {
-            $subSql = $con->prepare('SELECT subCatName FROM tblsubcategory WHERE catID = ? AND subCatActive = 1 ORDER BY subCatName');
+            $subSql = $con->prepare('SELECT subCatName,subCatID  FROM tblsubcategory WHERE catID = ? AND subCatActive = 1 ORDER BY subCatName');
             $subSql->execute([$cat['categoryId']]);
             $subcats = $subSql->fetchAll();
 
             echo '<div class="dropdown-section">';
             // Category link
-            $catLink = 'category.php?cat=' . urlencode($cat['catName']);
+            $catLink = 'category.php?cat=' . $cat['categoryId'];
             echo '<h3 class="dropdown-cat"><a href="'.$catLink.'">'.$cat['catName'].'</a></h3>';
 
             echo '<ul class="dropdown-subcats">';
             foreach ($subcats as $sub) {
                 // Subcategory link
-                $subLink = 'category.php?subcat=' . urlencode($sub['subCatName']);
+                $subLink = 'category.php?subcat=' . $sub['subCatID'];
                 echo '<li><a href="'.$subLink.'">'.$sub['subCatName'].'</a></li>';
             }
             echo '</ul>';
-            echo '</div>';
+            echo '</div>'; 
         }
         ?>
     </div>

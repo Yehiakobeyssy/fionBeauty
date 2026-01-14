@@ -181,7 +181,7 @@
             $cats = $sql->fetchAll();
             foreach($cats as $cat){
                 echo '
-                    <button class="btncate" data-index="'.$cat['catName'].'">
+                    <button class="btncate" data-index="'.$cat['categoryId'].'">
                     '.$cat['catName'].'
                     </button>
                 ';
@@ -195,19 +195,19 @@
         $categories = $sql->fetchAll();
 
         foreach ($categories as $cat) {
-            $subSql = $con->prepare('SELECT subCatName FROM tblsubcategory WHERE catID = ? AND subCatActive = 1 ORDER BY subCatName');
+            $subSql = $con->prepare('SELECT subCatName,subCatID  FROM tblsubcategory WHERE catID = ? AND subCatActive = 1 ORDER BY subCatName');
             $subSql->execute([$cat['categoryId']]);
             $subcats = $subSql->fetchAll();
 
             echo '<div class="dropdown-section">';
             // Category link
-            $catLink = '../category.php?cat=' . urlencode($cat['catName']);
+            $catLink = '../category.php?cat=' . $cat['categoryId'];
             echo '<h3 class="dropdown-cat"><a href="'.$catLink.'">'.$cat['catName'].'</a></h3>';
 
             echo '<ul class="dropdown-subcats">';
             foreach ($subcats as $sub) {
                 // Subcategory link
-                $subLink = '../category.php?subcat=' . urlencode($sub['subCatName']);
+                $subLink = '../category.php?subcat=' .$sub['subCatID'];
                 echo '<li><a href="'.$subLink.'">'.$sub['subCatName'].'</a></li>';
             }
             echo '</ul>';

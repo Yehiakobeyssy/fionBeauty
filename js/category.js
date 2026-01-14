@@ -10,31 +10,32 @@ $(document).ready(function() {
     }
     const urlParams = getUrlParams();
 
-    // <input type="text" name="searchCatId" id="searchCatID">
-    // <input type="text" name="serachsubcat" id="searchsubCatID"></input>
-    $.ajax({
-        url: 'ajax/searchcategroypage.php',
-        type: 'GET',
-        dataType: 'json',
-        data: {
-            cat: urlParams.cat,
-            subcat: urlParams.subcat
-        },
-        success: function(response) {
-            if(response.status === 'success') {
-                $('#searchCatID').val(response.catID);
-                $('#searchsubCatID').val(response.subCatID);
-            } else {
-                $('#searchCatID').val('');
-                $('#searchsubCatID').val('');
-                console.log('Category/Subcategory not found');
-            }
-            filterItems();
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', error);
-        }
-    });
+    $('#searchCatID').val(urlParams.cat);
+    $('#searchsubCatID').val(urlParams.subcat);
+    // urlParams.keyword
+    // $.ajax({
+    //     url: 'ajax/searchcategroypage.php',
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     data: {
+    //         cat: urlParams.cat,
+    //         subcat: urlParams.subcat
+    //     },
+    //     success: function(response) {
+    //         if(response.status === 'success') {
+    //             $('#searchCatID').val(response.catID);
+    //             $('#searchsubCatID').val(response.subCatID);
+    //         } else {
+    //             $('#searchCatID').val('');
+    //             $('#searchsubCatID').val('');
+    //             console.log('Category/Subcategory not found');
+    //         }
+    //         filterItems();
+    //     },
+    //     error: function(xhr, status, error) {
+    //         console.error('AJAX Error:', error);
+    //     }
+    // });
 
     // ================= SLIDESHOW =================
     let slideIndex = 0;
@@ -145,7 +146,7 @@ $(document).ready(function() {
             data: {
                 categoryId: categoryId,
                 subCatId: subCatId,
-                keyword: $("#searchInput").val() || '',
+                keyword: (urlParams.keyword ?? $("#searchInput").val() ?? '').trim(),
                 minPrice: $("#minValue").val(),
                 maxPrice: $("#maxValue").val(),
                 rating: $("input[name=rating]:checked").val() || 0,

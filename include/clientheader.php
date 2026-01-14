@@ -672,7 +672,7 @@ function displayDropdown(items) {
 
     items.slice(0, 10).forEach(function (item) {
         var link = document.createElement('a');
-        link.href = 'category.php?keyword=' + encodeURIComponent(item);
+        link.href = 'category.php?keyword=' + encodeURIComponent(item); 
         link.className = 'result-item';
 
         // Use different icon: DB vs history
@@ -691,12 +691,16 @@ function displayDropdown(items) {
     $('.dropdownsmartsearch').show();
 }
 $('#txtsearch').on('keydown', function (e) {
-    if (e.key === 'Enter' || e.keyCode === 13) {
-        var firstItem = document.querySelector('#itemsContainer a');
-        if (firstItem) {
-            window.location.href = firstItem.href;
+    if (e.key === 'Enter') {
+
+        e.preventDefault(); // stop form submit FIRST
+
+        const itemvalue = $(this).val().trim();
+
+        if (itemvalue !== '') {
+            window.location.href =
+                'category.php?keyword=' + encodeURIComponent(itemvalue);
         }
-        e.preventDefault(); // prevent form submission if inside a form
     }
 });
 
