@@ -10,7 +10,7 @@ main{
     text-align: right;
 
 }
-.title{
+.title{ 
     margin: 30px 50px;
 }
 .title h5{
@@ -246,11 +246,16 @@ table tbody td{
 .displaySubcategorys{
     display: flex;
     margin: 25px auto;
+    height: 450px;
 }
 .cardsubcat{
     text-align: center;
     width: 250px;
     margin: 0 18px;
+}
+.cardsubcat .discription label{
+    height: 150px;
+    overflow-y: auto;
 }
 .edidsub{
     text-align: right;

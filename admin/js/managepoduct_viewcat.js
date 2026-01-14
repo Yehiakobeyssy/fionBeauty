@@ -69,7 +69,6 @@ $(document).ready(function () {
                         <button class="see-product" data-subcat="${item.subCatID}">
                             See Product
                         </button>
-
                     </div>
                 </div>
             `;

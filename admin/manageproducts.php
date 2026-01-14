@@ -18,7 +18,7 @@
     $do = isset($_GET['do'])?$_GET['do']:'managecat';
 
 
-    if (isset($_POST['btnnewitem'])) {
+    if (isset($_POST['btnnewitem'])) { 
         $filename = ''; // default if no image uploaded
 
         // 1. Handle image upload
@@ -106,7 +106,7 @@
     }
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/manageproducts.css?v=1.3">
+    <link rel="stylesheet" href="css/manageproducts.css?v=1.5">
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
