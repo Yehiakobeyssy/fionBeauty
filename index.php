@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=1.4">
+    <link rel="stylesheet" href="css/index.css?v=1.5">
 </head>
 <body>
     <?php 

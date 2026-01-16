@@ -139,8 +139,12 @@ body {
     left: 0;
     width: 100%;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    color:var(--color-bg);
+    background: linear-gradient(
+        135deg,
+        rgba(0,146,69,0.38),
+        rgba(0,178,92,0.28)
+    );
+    color:var(--color-dark);
     box-sizing: border-box;
     z-index: 2; /* overlay on top of image */
 }
@@ -399,8 +403,12 @@ body {
    Brands Section
 ===================== */
 .topbrands {
-    background-color: var(--color-primary);
-    color: var(--color-white);
+    background: linear-gradient(
+        135deg,
+        rgba(0,146,69,0.18),
+        rgba(0,178,92,0.08)
+    );
+    color: var(--color-dark);
     text-align: center;
     padding: 30px;
     border-radius: 12px;
