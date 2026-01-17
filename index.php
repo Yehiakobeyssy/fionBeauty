@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=1.5">
+    <link rel="stylesheet" href="css/index.css?v=1.6">
 </head>
 <body>
     <?php 
@@ -102,7 +102,6 @@
                     <img src="images/items/<?= htmlspecialchars($categories[0]['carImg']) ?>" alt="">
                     <div class="overlay">
                         <h3><?= htmlspecialchars($categories[0]['catName']) ?></h3>
-                        <p><?= mb_substr(htmlspecialchars($categories[0]['catDescription']), 0, 75) ?></p>
                         <a href="category.php?cat=<?= $categories[0]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
                     </div>
                 </div>
@@ -114,7 +113,6 @@
                         <img src="images/items/<?= htmlspecialchars($categories[1]['carImg']) ?>" alt="">
                         <div class="overlay">
                             <h3><?= htmlspecialchars($categories[1]['catName']) ?></h3>
-                            <p><?= mb_substr(htmlspecialchars($categories[1]['catDescription']), 0, 75)?></p>
                             <a href="category.php?cat=<?= $categories[1]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
                         </div>
                     </div>
@@ -124,7 +122,6 @@
                             <img src="images/items/<?= htmlspecialchars($categories[2]['carImg']) ?>" alt="">
                             <div class="overlay">
                                 <h3><?= htmlspecialchars($categories[2]['catName']) ?></h3>
-                                <p><?= mb_substr(htmlspecialchars($categories[2]['catDescription']), 0, 75) ?></p>
                                 <a href="category.php?cat=<?= $categories[2]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
                             </div>
                         </div>
@@ -133,7 +130,7 @@
                             <img src="images/items/<?= htmlspecialchars($categories[3]['carImg']) ?>" alt="">
                             <div class="overlay">
                                 <h3><?= htmlspecialchars($categories[3]['catName']) ?></h3>
-                                <p><?= mb_substr(htmlspecialchars($categories[3]['catDescription']), 0, 75) ?></p>
+                                
                                 <a href="category.php?cat=<?= $categories[3]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
                             </div>
                         </div>
