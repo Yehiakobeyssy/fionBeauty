@@ -19,19 +19,19 @@
     if ($result['totalitem'] < 6) {
         header('Location: commingsoon.php');
         exit(); // Always call exit after redirect
-    }
+    } 
 ?>    
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
     <link href="common/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=1.6">
+    <link rel="stylesheet" href="css/index.css?v=1.7">
 </head>
 <body>
     <?php 
         include 'include/header.php';
-        include 'include/clientheader.php'; 
+        include 'include/clientheader.php';
         include 'include/catecorysname.php';
     
         $sql = "SELECT slideScr, slideHref 
@@ -102,7 +102,7 @@
                     <img src="images/items/<?= htmlspecialchars($categories[0]['carImg']) ?>" alt="">
                     <div class="overlay">
                         <h3><?= htmlspecialchars($categories[0]['catName']) ?></h3>
-                        <a href="category.php?cat=<?= $categories[0]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
+                        <a href="category.php?cat=<?= $categories[0]['categoryId'] ?>" class="btn btn-ghost">Shop Now</a>
                     </div>
                 </div>
 

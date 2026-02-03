@@ -169,7 +169,7 @@ $(document).ready(function() {
                 </div>`;
             $("#categories_container").append(sectionHtml);
             loadItemscat(cat.categoryId, 1);
-        });
+        }); 
     });
 
     function loadItemscat(categoryId, page) {

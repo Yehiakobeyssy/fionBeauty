@@ -3,22 +3,23 @@
     padding: 25px;
     display: flex;
     justify-content: space-between;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
+    background: transparent;
     color: var(--color-bg);
+    border-bottom: var(--color-icon) 1px solid;
 }
 .navbarsection h5{
     color: var(--color-icon);
     font-size: 14px;
 }
 .navbarsection span{
-    color: var(--color-bg);
+    color: var(--color-dark);
     font-weight: bolder;
 }
 .catecoryname{
-    color: var(--color-bg);
+    color: var(--color-dark);
     font-weight: bolder;
     font-size: 24px;
-}
+} 
 
 .itemDiscription {
     display: flex;
