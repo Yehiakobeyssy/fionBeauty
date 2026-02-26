@@ -108,5 +108,50 @@
     <?php include  'include/footer.php' ?>
     <?php include 'common/jslinks.php'?>
     <script src="js/contactus.js"></script>
+    <script>
+document.querySelector("form[action='']").addEventListener("submit", function(e) {
 
+    let name = this.querySelector("input[name='name']").value.trim();
+    let email = this.querySelector("input[name='email']").value.trim();
+    let phone = this.querySelector("input[name='phone']").value.trim();
+    let message = this.querySelector("textarea[name='message']").value.trim();
+
+    // Name: letters + spaces only, max 35 characters
+    let nameRegex = /^[A-Za-z\s]{1,35}$/;
+
+    // Email: real format
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    // Phone: optional + only at first, then numbers (7–15 digits)
+    let phoneRegex = /^\+?[0-9]{7,15}$/;
+
+    // Message: minimum 10 characters, must contain letters
+    let messageRegex = /^(?=.*[A-Za-z]).{10,}$/;
+
+    if (!nameRegex.test(name)) {
+        alert("Name must contain letters only (max 35 characters).");
+        e.preventDefault();
+        return;
+    }
+
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        e.preventDefault();
+        return;
+    }
+
+    if (!phoneRegex.test(phone)) {
+        alert("Phone must contain only numbers and may start with +.");
+        e.preventDefault();
+        return;
+    }
+
+    if (!messageRegex.test(message)) {
+        alert("Message must be at least 10 characters and contain real text.");
+        e.preventDefault();
+        return;
+    }
+
+});
+</script>
 </body>
