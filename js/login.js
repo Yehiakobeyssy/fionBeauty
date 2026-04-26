@@ -51,7 +51,7 @@ $(document).ready(function(){
     $('#clientEmail').on('blur input', function(){
         var email = $(this).val().trim();
         var $note = $('#email-check');
-
+ 
         clearTimeout(emailTimer);
         if(!email) { $note.text(''); return; }
 
