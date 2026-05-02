@@ -1,14 +1,23 @@
 <?php
+session_start();
 // no processing here: HTML + minimal PHP for session detection/rendering only
 include 'settings/connect.php'; // $con available if needed for rendering (e.g. professions)
 include 'common/function.php';
+include 'common/head.php';
+
+
     if (isset($_SESSION['user_id'])) {
         $user_id = (int) $_SESSION['user_id'];  
+        header('Location: user/dashboard.php');
+        exit();
     } elseif (isset($_COOKIE['user_id'])) {
         $user_id = (int) $_COOKIE['user_id'];  
+        header('Location: user/dashboard.php');
+        exit();
     } else {
         $user_id = 0; // if neither session nor cookie exist
     };
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -20,12 +29,13 @@ include 'common/function.php';
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
     <link rel="stylesheet" href="css/login.css">
-    <script src="common/jslinks/jquery.min.js"></script> <!-- ensure jQuery loaded -->
-</head>
+    
+</head> 
 <body>
     <?php 
         include 'include/header.php';
         include 'include/clientheader.php';
+
     ?>
 
     <div class="container_login">
@@ -122,6 +132,7 @@ include 'common/function.php';
     </div>
 
     <?php include 'include/footer.php' ?>
+    <?php include 'common/jslinks.php'?>
     <script src="js/login.js"></script>
 </body>
 </html>
