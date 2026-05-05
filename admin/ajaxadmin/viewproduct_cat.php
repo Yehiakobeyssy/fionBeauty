@@ -113,31 +113,70 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $displayPrice = $row['sellPrice'];
     }
 
-    $html .= '
-    <div class="card_product" style="position: relative;">
-        ' . $priceHTML . '
-        <div class="img_product">
-            <img src="../images/items/' . htmlspecialchars($row['mainpic']) . '" alt="">
-        </div>
-        <div class="item_discription">
-            <h5>' . htmlspecialchars($row['itmName']) . '</h5>
-            <label><small>' . htmlspecialchars($row['brandName']) . '</small></label><br>
-            <label>' . htmlspecialchars(substr($row["itmDesc"], 0, 75)) . '...</label>
-           <h6>';
+$html .= '
+<div class="card_product" style="position: relative;">
+    ' . $priceHTML . '
+
+    <div class="img_product">
+        <img src="../images/items/' . htmlspecialchars($row['mainpic']) . '" alt="">
+    </div>
+
+    <div class="item_discription">
+        <h5>' . htmlspecialchars($row['itmName']) . '</h5>
+        <label><small>' . htmlspecialchars($row['brandName']) . '</small></label><br>
+        <label>' . htmlspecialchars(substr($row["itmDesc"], 0, 75)) . '...</label>
+
+        <!-- PRICE + TOGGLE ROW -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+            
+            <!-- PRICE (LEFT) -->
+            <h6 style="margin:0;">';
+            
             if ($promoPercent > 0) {
                 $newPrice = $row['sellPrice'] - ($row['sellPrice'] * $promoPercent / 100);
-               $html .= '<span style="text-decoration: line-through; color:#888;">$' . number_format($row['sellPrice'], 2) . '</span>';
-                $html .= ' <span style="color:#e74c3c; margin-left:5px;">$' . number_format($newPrice, 2) . '</span>';
+
+                $html .= '
+                <span style="text-decoration: line-through; color:#888;">
+                    $' . number_format($row['sellPrice'], 2) . '
+                </span>
+                <span style="color:#e74c3c; margin-left:5px;">
+                    $' . number_format($newPrice, 2) . '
+                </span>';
             } else {
                 $html .= '$' . number_format($row['sellPrice'], 2);
             }
-             $html .= '</h6>
+
+            $html .= '</h6>';
+
+            // --- TOGGLE STATE ---
+            $checked = ($row['foryouSection'] == 1) ? 'checked' : '';
+
+            // --- TOGGLE (RIGHT) ---
+            $html .= '
+            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <span style="font-size:12px;">For you</span>
+                <input type="checkbox" 
+                       class="foryouToggle" 
+                       data-id="' . $row['itmId'] . '" 
+                       ' . $checked . '>
+            </label>
+
         </div>
-        <div class="controlitem">
-            <button class="btn btn-primary" onclick="window.location.href=\'manageproducts.php?do=edititm&itmId=' . $row['itmId'] . '\'">Edit</button>
-            <button class="btn btn-ghost" onclick="if(confirm(\'Are you sure you want to delete this item?\')) window.location.href=\'manageproducts.php?do=deleteitm&itmId=' . $row['itmId'] . '\'">Delete</button>
-        </div>
-    </div>';
+    </div>
+
+    <div class="controlitem">
+        <button class="btn btn-primary"
+            onclick="window.location.href=\'manageproducts.php?do=edititm&itmId=' . $row['itmId'] . '\'">
+            Edit
+        </button>
+
+        <button class="btn btn-ghost"
+            onclick="if(confirm(\'Are you sure you want to delete this item?\')) 
+            window.location.href=\'manageproducts.php?do=deleteitm&itmId=' . $row['itmId'] . '\'">
+            Delete
+        </button>
+    </div>
+</div>';
 }
 
 echo json_encode([

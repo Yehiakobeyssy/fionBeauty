@@ -595,3 +595,34 @@ table tbody td{
     width: 48%;
     border: 1px solid black;
 }
+.foryouToggle {
+    appearance: none;
+    width: 36px;
+    height: 18px;
+    background: #ccc;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+
+.foryouToggle:checked {
+    background: #27ae60;
+}
+
+.foryouToggle::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+
+.foryouToggle:checked::before {
+    left: 20px;
+}

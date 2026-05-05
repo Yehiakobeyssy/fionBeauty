@@ -166,3 +166,22 @@ function applyFilterManageCat(page = 1) {
         }
     });
 }
+$(document).on('change', '.foryouToggle', function() {
+    let itmId = $(this).data('id');
+    let value = $(this).is(':checked') ? 1 : 0;
+
+    $.ajax({
+        url: 'ajaxadmin/update_foryou.php',
+        type: 'POST',
+        data: {
+            itmId: itmId,
+            value: value
+        },
+        success: function(res) {
+            console.log('ForYou updated:', res);
+        },
+        error: function() {
+            alert('Error updating For You');
+        }
+    });
+});

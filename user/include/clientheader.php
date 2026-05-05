@@ -326,6 +326,50 @@ width:95px;
 
 }
 
+@media (max-width: 425px) {
+
+    /* hide logo image */
+    .brand-logo img {
+        display: none;
+    }
+
+    /* make header row clean horizontal */
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    /* keep brand name left */
+    .brand-logo {
+        gap: 10px;
+    }
+
+    .brand-logo h1 {
+        font-size: 26px;
+        letter-spacing: 4px;
+    }
+
+    .brand-logo span {
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    /* push hamburger to right */
+    .hamburger {
+        display: block;
+        margin-left: auto;
+        font-size: 28px;
+    }
+
+    /* hide right side (search + nav) */
+    .right-side {
+        display: none;
+    }
+
+}
+
 </style>
 
 

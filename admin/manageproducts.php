@@ -106,7 +106,7 @@
     }
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/manageproducts.css?v=1.5">
+    <link rel="stylesheet" href="css/manageproducts.css?v=1.7">
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
@@ -334,7 +334,7 @@
                         <div class="addproduct">
                             <a href="manageproducts.php?do=additm&cat=<?=$cat?>" class="btn btn-primary">Add Product</a>
                         </div>
-                        <script src="js/managepoduct_viewcat.js?v=1.3"></script>
+                        <script src="js/managepoduct_viewcat.js?v=1.5"></script>
                         <?php
                         break;
 
@@ -773,9 +773,10 @@
                                 $itmActive      = 1;
                                 $getDiscount    = isset($_POST['getDiscount']) ? 1 : 0;
                                 $minQuantity    = $_POST['minQuantity'];
+                                $foryou         = $_POST['foryou'] ?? 0;
 
-                                $sql = $con ->prepare('INSERT INTO tblitems (catId,subCatID,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+                                $sql = $con ->prepare('INSERT INTO tblitems (catId,subCatID,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,foryouSection,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
                                 $sql->execute([
                                     $catId,
                                     $subCatID,         
@@ -785,6 +786,7 @@
                                     $itmIngredients,        
                                     $mainpic,        
                                     $sellPrice,      
+                                    $foryou,
                                     $commtion,
                                     $promotional,
                                     $extra_shipfee,      
@@ -837,25 +839,37 @@
                                     <div class="form-section">
                                         <h2>Product Details</h2>
                                         <input type="text" placeholder="Product Name" name="itmName" required>
-                                        <div class="selectoption">
-                                            <label for="">Category</label>
-                                            <select name="catId" id="AddItemCategory"  required>
-                                                <option value="">[Select Category]</option>
-                                                <?php
-                                                    $stat = $con->prepare('SELECT categoryId , catName FROM  tblcategory WHERE catActive = 1 ORDER BY catName ');
-                                                    $stat->execute();
-                                                    $cats = $stat->fetchAll();
-                                                    foreach($cats as $ca){
-                                                        if($cat == $ca['categoryId']){
-                                                            echo '<option value="'.$ca['categoryId'].'" selected>'.$ca['catName'].'</option>';
-                                                        }else{
-                                                            echo '<option value="'.$ca['categoryId'].'">'.$ca['catName'].'</option>';
+                                        <div class="barnd">
+                                            <div class="selectoption">
+                                                <label for="">For You  Section</label>
+                                                <select name="foryou" id="" >
+                                                    <option value="0">No</option>
+                                                    <option value="1">Yes</option>
+                                                </select>   
+                                            </div>
+                                            <div class="selectoption ">
+                                                <label for="">Category</label>
+                                                <select name="catId" id="AddItemCategory"  required>
+                                                    <option value="">[Select Category]</option>
+                                                    <?php
+                                                        $stat = $con->prepare('SELECT categoryId , catName FROM  tblcategory WHERE catActive = 1 ORDER BY catName ');
+                                                        $stat->execute();
+                                                        $cats = $stat->fetchAll();
+                                                        foreach($cats as $ca){
+                                                            if($cat == $ca['categoryId']){
+                                                                echo '<option value="'.$ca['categoryId'].'" selected>'.$ca['catName'].'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$ca['categoryId'].'">'.$ca['catName'].'</option>';
+                                                            }
+                                                            
                                                         }
-                                                        
-                                                    }
-                                                ?>
-                                            </select>
+                                                    ?>
+                                                </select>
+                                                
+                                            </div>
+                                            
                                         </div>
+                                        
                                         <div class="barnd">
                                             <div class="selectoption">
                                                 <label for="">Sub Category</label>
@@ -1062,6 +1076,7 @@
                             $itmIngredients= trim(strip_tags($_POST['itmIngredients']));
                             $sellPrice   = $_POST['sellPrice'];
                             $commtion    = $_POST['commtion'];
+                            $foryou       = $_POST['foryou'] ?? 0;
                             $promotional = $_POST['promotional']??0;
                             $extra_shipfee = isset($_POST['extra_shipfee']) ? $_POST['extra_shipfee'] : 0;
                             $itmActive   = 1;
@@ -1070,11 +1085,11 @@
 
                             // Update item
                             $sql = $con->prepare("UPDATE tblitems 
-                                SET catId=?,subCatID=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=? 
+                                SET catId=?,subCatID=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=?, foryouSection=? 
                                 WHERE itmId=?");
                             $sql->execute([
                                 $catId,$subCatID, $brandId, $itmName, $itmDesc,$itmIngredients, $filename,
-                                $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,
+                                $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,$foryou,
                                 $itmId
                             ]);
 
@@ -1116,21 +1131,32 @@
                                 <div class="form-section">
                                     <h2>Product Details</h2>
                                     <input type="text" placeholder="Product Name" name="itmName" required value="<?php echo htmlspecialchars($item['itmName']); ?>">
-                                    <div class="selectoption">
-                                        <label>Category</label>
-                                        <select name="catId" id="edidItemCategory" required>
-                                            <option value="">[Select Category]</option>
-                                            <?php
-                                            $stat = $con->prepare('SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName');
-                                            $stat->execute();
-                                            $cats = $stat->fetchAll();
-                                            foreach ($cats as $ca) {
-                                                $sel = ($item['catId'] == $ca['categoryId']) ? 'selected' : '';
-                                                echo '<option value="' . $ca['categoryId'] . '" ' . $sel . '>' . $ca['catName'] . '</option>';
-                                            }
-                                            ?>
-                                        </select>
+                                    <div class="barnd">
+                                        <div class="selectoption">
+                                            <label for="">For You  Section</label>
+                                            <select name="foryou" id="" >
+                                                <option value="0" <?php echo ($item['foryouSection'] == 0) ? 'selected' : ''; ?>>No</option>
+                                                <option value="1" <?php echo ($item['foryouSection'] == 1) ? 'selected' : ''; ?>>Yes</option>
+                                            </select>
+                                        </div>
+                                        <div class="selectoption">
+                                            <label>Category</label>
+                                            <select name="catId" id="edidItemCategory" required>
+                                                <option value="">[Select Category]</option>
+                                                <?php
+                                                $stat = $con->prepare('SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName');
+                                                $stat->execute();
+                                                $cats = $stat->fetchAll();
+                                                foreach ($cats as $ca) {
+                                                    $sel = ($item['catId'] == $ca['categoryId']) ? 'selected' : '';
+                                                    echo '<option value="' . $ca['categoryId'] . '" ' . $sel . '>' . $ca['catName'] . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
                                     </div>
+                                    
+                                    
                                     <div class="barnd">
                                         <div class="selectoption">
                                             <label for="">Sub Category</label>
