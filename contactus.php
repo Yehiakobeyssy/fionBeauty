@@ -4,13 +4,20 @@
     include 'common/function.php';
     include 'common/head.php';
 
+    $sql=$con->prepare("SELECT companyAdd,province,city,postalcode FROM  tblsetting WHERE seetingID =1");
+    $sql->execute();
+    $result1 = $sql->fetch(PDO::FETCH_ASSOC);
+    $companyAdd = $result1['companyAdd'];
+    $province = $result1['province'];
+    $city = $result1['city'];
+    $postalcode = $result1['postalcode'];   
     if (isset($_SESSION['user_id'])) {
         $user_id = (int) $_SESSION['user_id'];  
     } elseif (isset($_COOKIE['user_id'])) {
         $user_id = (int) $_COOKIE['user_id'];  
     } else {
         $user_id = 0; // if neither session nor cookie exist
-    };
+    }; 
 
 
             require 'mail.php';
@@ -65,7 +72,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/contactus.css">
+    <link rel="stylesheet" href="css/contactus.css?v=1.1">
 </head>
 <body>
     <?php 
@@ -75,7 +82,22 @@
     ?>
     <main>
         <div class="side_decor">
-            <img src="images/img_app/contactusimg.png" alt="" srcset="">
+            <img src="images/img_app/contactusimg1.png" alt="" srcset="">
+            <div class="add">
+                <h3>Address</h3>
+                <p><?php echo htmlspecialchars($companyAdd); ?></p>
+                
+                <?php
+                    $sql=$con->prepare("SELECT provinceName FROM tblprovince WHERE provinceID  = ?");
+                    $sql->execute([$province]);
+                    $provinceName = $sql->fetchColumn();    
+
+                    $sql=$con->prepare("SELECT cityName FROM tblcity WHERE cityID = ?");
+                    $sql->execute([$city]); 
+                    $cityName = $sql->fetchColumn();    
+                ?>
+                <p><?php echo htmlspecialchars($cityName) . ", " . htmlspecialchars($provinceName).' '.htmlspecialchars($postalcode); ?></p>
+            </div>
         </div>
         <div class="contactus_form">
             <div class="container_form">
@@ -89,7 +111,7 @@
                     <input type="email" name="email" id="">
                     <label for="">Phone Number</label>
                     <input type="text" name="phone" id="">
-                    <label for="">Massage</label>
+                    <label for="">Message</label>
                     <textarea name="message" id="" rows="4"></textarea>
                     <div class="btncontrol">
                         <button type="submit">

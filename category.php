@@ -65,7 +65,7 @@ if($categoryName > 0 ){
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/category.css?v=1.5">
+    <link rel="stylesheet" href="css/category.css?v=1.6">
 </head>
 <body>
     <?php 
@@ -93,13 +93,7 @@ if($categoryName > 0 ){
         </div>
     </div>
     <div class="slideshow-container">
-        <?php foreach ($slides as $slide): ?>
-            <div class="mySlide">
-                <a href="<?php echo htmlspecialchars($slide['slideHref']); ?>">
-                    <img src="images/slide/<?php echo htmlspecialchars($slide['slideScr']); ?>" alt="Slide">
-                </a>
-            </div>
-        <?php endforeach; ?>
+        
     </div>
     <input type="text" name="searchCatId" id="searchCatID" hidden>
     <input type="text" name="serachsubcat" id="searchsubCatID" hidden>
