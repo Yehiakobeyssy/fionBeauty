@@ -32,6 +32,7 @@
     justify-content: flex-start;
     background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
 }
+
 .navbarsection h5{
     color: var(--color-bg);
     font-size: 14px;
@@ -41,11 +42,11 @@
     color: var(--color-bg);
     font-weight: bolder;
 }
+
 .catecoryname{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-
     color: var(--color-bg);
     font-weight: bolder;
     font-size: 24px;
@@ -334,6 +335,29 @@ aside {
     .items_cards {
         grid-template-columns: repeat(2, 1fr);
     }
+        .titleCatecory{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .navbarsection{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .catecoryname{
+        position: relative;
+        left: auto;
+        transform: none;
+        width: 100%;
+        text-align: center;
+    }
+
 }
 
 @media (max-width: 600px) {

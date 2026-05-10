@@ -65,7 +65,7 @@ if($categoryName > 0 ){
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/category.css?v=1.6">
+    <link rel="stylesheet" href="css/category.css?v=1.7">
 </head>
 <body>
     <?php 
