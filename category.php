@@ -65,13 +65,12 @@ if($categoryName > 0 ){
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/category.css?v=1.7">
+    <link rel="stylesheet" href="css/category.css?v=1.9">
 </head>
 <body>
     <?php 
         include 'include/header.php';
         include 'include/clientheader.php'; 
-        include 'include/catecorysname.php';
     
         $sql = "SELECT slideScr, slideHref 
                 FROM tblslideshow 
@@ -97,91 +96,94 @@ if($categoryName > 0 ){
     </div>
     <input type="text" name="searchCatId" id="searchCatID" hidden>
     <input type="text" name="serachsubcat" id="searchsubCatID" hidden>
-    <main>
-        
-        <aside>
-            <div class="catecories">
-                <h3>Categories</h3>
-                <?php
-    // Fetch all categories
-    $catStmt = $con->prepare("SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName");
-    $catStmt->execute();
-    $categories = $catStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($categories as $cat):
-        // Fetch subcategories for this category along with item counts
-        $subStmt = $con->prepare("
-            SELECT s.subCatID, s.subCatName, COUNT(i.itmId) AS ItemsCount
-            FROM tblsubcategory s
-            LEFT JOIN tblitems i ON i.subCatID = s.subCatID AND i.itmActive = 1
-            WHERE s.catID = :catId AND s.subCatActive = 1
-            GROUP BY s.subCatID, s.subCatName
-            ORDER BY s.subCatName
-        ");
-        $subStmt->execute([':catId' => $cat['categoryId']]);
-        $subcategories = $subStmt->fetchAll(PDO::FETCH_ASSOC);
-    ?>
-        <div class="category-block">
-            <div class="cat-header">
-                <span><?php echo htmlspecialchars($cat['catName']); ?></span>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="subcats" style="display: none;">
-                <?php foreach ($subcategories as $sub): ?>
-                    <label>
-                        <input type="radio" name="subcategory" class="subcat-radio" value="<?php echo $sub['subCatID']; ?>">
-                        <?php echo htmlspecialchars($sub['subCatName']); ?> (<?php echo $sub['ItemsCount']; ?>)
-                    </label><br>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    <?php endforeach; ?>
-            </div>
+        <div class="fion_page">
+            <main>
+                
+                <aside>
+                    <div class="catecories">
+                        <h3>Categories</h3>
+                        <?php
+                // Fetch all categories
+                $catStmt = $con->prepare("SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName");
+                $catStmt->execute();
+                $categories = $catStmt->fetchAll(PDO::FETCH_ASSOC);
 
-            <div class="brands">
-                <h3>Brand</h3>
-                <?php
-                    $sql=$con->prepare('SELECT brandId ,brandName FROM  tblbrand WHERE brandActive = 1');
-                    $sql->execute();
-                    $brands = $sql->fetchAll();
-                    foreach($brands as $brand){
-                        echo '
-                            <input type="radio" name="brand" class="brand_type" value="'.$brand['brandId'].'" >
-                            <label>'.$brand['brandName'].' </label><br>
-                        ';
-                    }
+                foreach ($categories as $cat):
+                    // Fetch subcategories for this category along with item counts
+                    $subStmt = $con->prepare("
+                        SELECT s.subCatID, s.subCatName, COUNT(i.itmId) AS ItemsCount
+                        FROM tblsubcategory s
+                        LEFT JOIN tblitems i ON i.subCatID = s.subCatID AND i.itmActive = 1
+                        WHERE s.catID = :catId AND s.subCatActive = 1
+                        GROUP BY s.subCatID, s.subCatName
+                        ORDER BY s.subCatName
+                    ");
+                    $subStmt->execute([':catId' => $cat['categoryId']]);
+                    $subcategories = $subStmt->fetchAll(PDO::FETCH_ASSOC);
                 ?>
-            </div>
-            <div class="price">
-                <h3>Price</h3>
-                <div class="price_input">
-                    <div id="rangeSlider"></div>
-                    <label>Price : <span id="minprice"></span> - <span id="maxprice"></span></label>
-                    <input type="text" id="minValue" readonly hidden>
-                    <input type="text" id="maxValue" readonly hidden>
-                </div>
-            </div>
-            
-            <div class="rating">
-                <h3>Rating</h3>
-                <input type="radio" name="rating" class="rating" value="5">
-                <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i>  <strong>5</strong></label><br>
-                <input type="radio" name="rating" class="rating" value="4">
-                <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i>  <strong>4</strong></label><br>
-                <input type="radio" name="rating" class="rating" value="3">
-                <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>3</strong></label><br>
-                <input type="radio" name="rating" class="rating" value="2">
-                <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>2</strong></label><br>
-                <input type="radio" name="rating" class="rating" value="1">
-                <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>1</strong></label><br>
-                <input type="radio" name="rating" class="rating" value="0">
-                <label><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>0</strong></label><br>
-            </div>
-        </aside>
-        <div class="container_items">
-            
+                    <div class="category-block">
+                        <div class="cat-header">
+                            <span><?php echo htmlspecialchars($cat['catName']); ?></span>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="subcats" style="display: none;">
+                            <?php foreach ($subcategories as $sub): ?>
+                                <label>
+                                    <input type="radio" name="subcategory" class="subcat-radio" value="<?php echo $sub['subCatID']; ?>">
+                                    <?php echo htmlspecialchars($sub['subCatName']); ?> (<?php echo $sub['ItemsCount']; ?>)
+                                </label><br>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                        </div>
+
+                        <div class="brands">
+                            <h3>Brand</h3>
+                            <?php
+                                $sql=$con->prepare('SELECT brandId ,brandName FROM  tblbrand WHERE brandActive = 1');
+                                $sql->execute();
+                                $brands = $sql->fetchAll();
+                                foreach($brands as $brand){
+                                    echo '
+                                        <input type="radio" name="brand" class="brand_type" value="'.$brand['brandId'].'" >
+                                        <label>'.$brand['brandName'].' </label><br>
+                                    ';
+                                }
+                            ?>
+                        </div>
+                        <div class="price">
+                            <h3>Price</h3>
+                            <div class="price_input">
+                                <div id="rangeSlider"></div>
+                                <label>Price : <span id="minprice"></span> - <span id="maxprice"></span></label>
+                                <input type="text" id="minValue" readonly hidden>
+                                <input type="text" id="maxValue" readonly hidden>
+                            </div>
+                        </div>
+                        
+                        <div class="rating">
+                            <h3>Rating</h3>
+                            <input type="radio" name="rating" class="rating" value="5">
+                            <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i>  <strong>5</strong></label><br>
+                            <input type="radio" name="rating" class="rating" value="4">
+                            <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i>  <strong>4</strong></label><br>
+                            <input type="radio" name="rating" class="rating" value="3">
+                            <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>3</strong></label><br>
+                            <input type="radio" name="rating" class="rating" value="2">
+                            <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>2</strong></label><br>
+                            <input type="radio" name="rating" class="rating" value="1">
+                            <label><i class="fas fa-star text-warning"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>1</strong></label><br>
+                            <input type="radio" name="rating" class="rating" value="0">
+                            <label><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i><i class="fas fa-star text-muted"></i>  <strong>0</strong></label><br>
+                        </div>
+                    </aside>
+                    <div class="container_items">
+                        
+                    </div>
+            </main>
         </div>
-    </main>
     <?php include  'include/footer.php' ?>
     
     <?php 

@@ -81,7 +81,6 @@ if($order) {
 <?php 
 include 'include/header.php';
 include 'include/clientheader.php'; 
-include 'include/catecorysname.php';
 ?>
 
 <div class="status-box">

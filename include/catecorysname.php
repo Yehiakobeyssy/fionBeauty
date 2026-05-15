@@ -1,314 +1,283 @@
 <style>
 /* ============================
-   Category Buttons / Dropdown
+   Main Layout
 ============================ */
-.catgeorybtns {
-    display: flex;
-    overflow-x: auto;
-    margin: var(--space-5);
-    padding: var(--space-4);
-    position: relative;
-    height: 100px;
-    gap: var(--space-3);
-}
 
-/* Custom Scrollbar */
-.catgeorybtns::-webkit-scrollbar {
-    width: 7px;
-}
-.catgeorybtns::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2);
-    border-radius: 40px;
-}
-.catgeorybtns::-webkit-scrollbar-track {
-    background-color: rgba(0,0,0,0.05);
-}
 
-/* All Categories button */
-.allcat {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-3);
-    height: 34px;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: transform .08s ease, box-shadow .12s ease, background-color .12s ease;
-}
-.allcat:hover,
-.allcat:focus {
-    background-color: var(--color-primary-variant);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-/* Individual category buttons */
-.btncate {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap;
-    height: 34px;
-    padding: 16px 20px;
-    border-radius: var(--radius);
-    border: 1px solid var(--color-primary);
-    background-color: transparent;
-    color: var(--color-dark);
-    cursor: pointer;
-    transition: all .2s ease;
-}
-.btncate:hover {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    box-shadow: var(--shadow-sm);
-}
-
-.dropdown-content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* First 3 categories in a row */
-    grid-auto-rows: auto;                 /* Rest flow vertically */
-    gap: 20px 40px;                       /* Row and column gaps */
-    position: absolute;
-    top: 230px;
-    left: 40px;
-    width: 750px;
-    max-height: 500px;
-    overflow-y: auto;
+/* ============================
+   Aside Category Menu
+============================ */
+.category_aside{
+    width: 350px;
+    min-width: 350px;
     background: var(--color-card);
     border-radius: var(--radius);
-    padding: 20px;
     box-shadow: var(--shadow-md);
-    z-index: 9000;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Prevent individual category from breaking columns */
-.dropdown-section {
-    break-inside: avoid;
-}
-
-
-/* Category section with spacing */
-.dropdown-section {
-    break-inside: avoid;   /* Prevent breaking category across columns */
-    margin-bottom: 20px;
-}
-
-/* Category name */
-.dropdown-cat {
-    font-weight: 700;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
-    color: var(--color-dark);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    padding-bottom: 5px;
-}
-
-/* Subcategory list */
-.dropdown-subcats {
-    list-style: none;
-    margin: 10px 0 0 0;
-    padding-left: 0;
-}
-
-.dropdown-subcats li {
-    margin-bottom: 5px;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.dropdown-subcats li:hover {
-    color: var(--color-primary);
-    text-decoration: underline;
-}
-
-/* Category heading style */
-.dropdown-cat a {
-    color: var(--color-dark);
-    font-family: 'Outfit', sans-serif;
+/* Aside Header */
+.category_header{
+    padding: 18px 20px;
+    background: var(--color-primary);
+    color: var(--color-white);
     font-size: 20px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
-    text-decoration: none; /* Remove underline */
-}
-
-.dropdown-cat a:hover {
-    color: var(--color-primary); /* Optional hover color */
-}
-
-/* Subcategory list style */
-.dropdown-subcats li a {
-    color: var(--color-icon);
     font-family: 'Outfit', sans-serif;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 18px; /* 150% */
-    letter-spacing: 0.06px;
-    text-decoration: none; /* Remove underline */
-    transition: color 0.2s ease;
 }
 
-.dropdown-subcats li a:hover {
+/* Category Item */
+.category_item{
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.category_item:last-child{
+    border-bottom: none;
+}
+
+/* Main Category Button */
+.category_btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    background: transparent;
+    border: none;
+}
+
+.category_btn:hover{
+    background: rgba(0,0,0,0.03);
+}
+
+/* Left Side */
+.category_left{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Category Image */
+.category_left img{
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Category Name */
+.category_left span{
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-dark);
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Arrow */
+.category_arrow{
+    transition: 0.3s ease;
+    flex-shrink: 0;
+}
+
+.category_item.active .category_arrow{
+    transform: rotate(180deg);
+}
+
+/* ============================
+   Subcategories
+============================ */
+.subcategories{
+    display: none;
+    background: rgba(0,0,0,0.02);
+    padding: 0 0 10px 0;
+}
+
+.subcategories a{
+    display: block;
+    padding: 10px 20px 10px 72px;
+    text-decoration: none;
+    color: var(--color-icon);
+    font-size: 14px;
+    transition: 0.2s ease;
+    font-family: 'Outfit', sans-serif;
+}
+
+.subcategories a:hover{
+    background: rgba(0,0,0,0.04);
     color: var(--color-primary);
-    text-decoration: underline;
+    padding-left: 78px;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    
-    .allcat { font-size: 0.9rem; }
-    .btncate { font-size: 0.9rem; }
-}
-/* Tablets (≤ 1024px) */
-@media (max-width: 1024px) {
-    .dropdown-content {
-        grid-template-columns: repeat(2, 1fr);
-        width: 90%;
-        left: 5%;
-        top: 320px;
-        gap: 20px 30px;
-    }
+/* ============================
+   Main Content
+============================ */
+.main_content{
+    flex: 1;
+    width: 100%;
 }
 
-/* Small tablets & large phones (≤ 768px) */
-@media (max-width: 768px) {
-    .dropdown-content {
-        grid-template-columns: 1fr;
-        width: 95%;
-        left: 2.5%;
-        top: 370px;
-        max-height: 70vh;
-        overflow-y: auto;
+/* ============================
+   Responsive
+============================ */
+@media (max-width: 768px){
+
+    .fion_container{
+        flex-direction: column;
     }
 
-    .dropdown-cat a {
-        font-size: 18px;
-    }
-
-    .dropdown-subcats li a {
-        font-size: 13px;
-    }
-}
-
-/* Mobile phones (≤ 480px) */
-@media (max-width: 480px) {
-    .dropdown-content {
+    .category_aside{
         width: 100%;
-        left: 0;
-        top: 370px;
-        border-radius: 0;
-        padding: 15px;
+        min-width: 100%;
     }
 
-    .dropdown-cat a {
-        font-size: 16px;
-    }
-
-    .dropdown-subcats li a {
-        font-size: 12px;
+    .main_content{
+        width: 100%;
     }
 }
+</style>
 
-        </style>
-    <div class="catgeorybtns">
-        <button class="allcat" id="btn1">
-            Categories 
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10.3034 10.7917L14.4284 6.66667L15.6067 7.845L10.3034 13.1483L5.00002 7.845L6.17836 6.66667L10.3034 10.7917Z" fill="white"/>
-            </svg>
-        </button>
+
+<div class="fion_container">
+
+    <!-- =========================
+         CATEGORY ASIDE
+    ========================== -->
+    <aside class="category_aside">
+
+        <div class="category_header">
+            Categories
+        </div>
+
         <?php
-            $sql=$con->prepare('SELECT categoryId,catName FROM tblcategory WHERE catActive = 1 ORDER BY catName ');
-            $sql->execute();
-            $cats = $sql->fetchAll();
-            foreach($cats as $cat){
-                echo '
-                    <button class="btncate" data-index="'.$cat['categoryId'].'">
-                    '.$cat['catName'].'
-                    </button>
-                ';
-            }
-        ?>
-    </div>
-    <div class="dropdown-content" id="dropdown1">
-        <?php
-        $sql = $con->prepare('SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName');
+        $sql = $con->prepare("
+            SELECT categoryId, catName, carImg 
+            FROM tblcategory 
+            WHERE catActive = 1 
+            ORDER BY catName
+        ");
         $sql->execute();
         $categories = $sql->fetchAll();
 
-        foreach ($categories as $cat) {
-            $subSql = $con->prepare('SELECT subCatName,subCatID  FROM tblsubcategory WHERE catID = ? AND subCatActive = 1 ORDER BY subCatName');
+        foreach($categories as $cat){
+
+            // Get Subcategories
+            $subSql = $con->prepare("
+                SELECT subCatID, subCatName 
+                FROM tblsubcategory 
+                WHERE catID = ? 
+                AND subCatActive = 1 
+                ORDER BY subCatName
+            ");
             $subSql->execute([$cat['categoryId']]);
-            $subcats = $subSql->fetchAll();
+            $subs = $subSql->fetchAll();
 
-            echo '<div class="dropdown-section">';
-            // Category link
-            $catLink = 'category.php?cat=' . $cat['categoryId'];
-            echo '<h3 class="dropdown-cat"><a href="'.$catLink.'">'.$cat['catName'].'</a></h3>';
+            $hasSub = count($subs) > 0;
 
-            echo '<ul class="dropdown-subcats">';
-            foreach ($subcats as $sub) {
-                // Subcategory link
-                $subLink = 'category.php?subcat=' . $sub['subCatID'];
-                echo '<li><a href="'.$subLink.'">'.$sub['subCatName'].'</a></li>';
-            }
-            echo '</ul>';
-            echo '</div>'; 
+            echo '<div class="category_item">';
+
+                // Category Button
+                echo '
+                <div class="category_btn" 
+                     data-link="category.php?cat='.$cat['categoryId'].'">
+
+                    <div class="category_left">
+
+                        <img src="images/items/'.$cat['carImg'].'" 
+                             alt="'.$cat['carImg'].'">
+
+                        <span>'.$cat['catName'].'</span>
+
+                    </div>
+                ';
+
+                // Arrow if has subcategories
+                if($hasSub){
+                    echo '
+                    <svg class="category_arrow"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="20"
+                         height="20"
+                         viewBox="0 0 24 24"
+                         fill="none">
+
+                        <path d="M7 10L12 15L17 10"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                    ';
+                }
+
+                echo '</div>';
+
+                // Subcategories
+                if($hasSub){
+
+                    echo '<div class="subcategories">';
+
+                    foreach($subs as $sub){
+
+                        echo '
+                        <a href="category.php?subcat='.$sub['subCatID'].'">
+                            '.$sub['subCatName'].'
+                        </a>
+                        ';
+                    }
+
+                    echo '</div>';
+                }
+
+            echo '</div>';
         }
         ?>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+    <div class="main_content">
+
+        <!-- YOUR MAIN CONTENT HERE -->
+
     </div>
 
+</div>
 
 
+<script>
+$(document).ready(function(){
 
-    <script>
-     $('#btn1').click(function () {
-        $('#dropdown1').toggle();
+    $('.category_btn').click(function(e){
+
+        let parent = $(this).closest('.category_item');
+        let subMenu = parent.find('.subcategories');
+
+        // Has subcategories
+        if(subMenu.length){
+
+            e.preventDefault();
+
+            $('.subcategories').not(subMenu).slideUp(200);
+            $('.category_item').not(parent).removeClass('active');
+
+            subMenu.stop(true,true).slideToggle(200);
+            parent.toggleClass('active');
+
+        }else{
+
+            // No subcategories → direct redirect
+            window.location.href = $(this).data('link');
+        }
+
     });
 
-    $('#dropdown1').on('mouseleave', function () {
-        $('#dropdown1').hide();
-    });
-
-    $('#dropdown1').hide()
-
-    $('.btncate').click(function(){
-        let cat = $(this).attr('data-index');
-        location.href = "category.php?cat=" + encodeURIComponent(cat);
-    });
-    $('.dropdownlist a').hover(
-            function () {
-                // Hover in
-                var catName = $(this).data('index');
-                
-                // Make an Ajax request to your API
-                $.ajax({
-                    url: 'ajax/dislaplyimg.php', // Replace with your API endpoint
-                    method: 'GET',
-                    data: { catID: catName },
-                    success: function (response) {
-                        // Assuming the API response contains the image URL
-                        var imagePath = 'images/items/' + response.imgsource; // Adjust based on your API response
-                        $('#categoryImage').attr('src', imagePath);
-                        console.log(imagePath)
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle errors
-                        console.error('Ajax Request Failed:', status, error);
-                    }
-                });
-            },
-            function () {
-                // Hover out (optional: reset to a default image if needed)
-                $('#categoryImage').attr('src', 'img/items/default.jpg');
-            }
-        );
-    </script>
-
+});
+</script>

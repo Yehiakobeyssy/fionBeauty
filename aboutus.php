@@ -17,39 +17,46 @@
 <link rel="stylesheet" href="common/fcss/all.min.css">
 <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
 <link rel="stylesheet" href="common/root.css">
-<link rel="stylesheet" href="css/pages.css">
+<link rel="stylesheet" href="css/pages.css?v=1.1">
 </head>
 <body>
     <?php 
         include 'include/header.php';
         include 'include/clientheader.php'; 
-        include 'include/catecorysname.php';
+
     ?>
+<div class="fion_container">
+    <div class="fion_aside">
+        <?php include 'include/catecorysname.php'; ?>
+    </div>
+    <div class="fion_page">
+        <main>
+            <section class="card mt-3 mb-3">
+                <h1 class="h1">About Fion Beauty Supplies</h1>
+                <p class="p">
+                    Founded in 1998, <strong>Fion Beauty Supplies</strong> has proudly supported beauty and wellness professionals across Canada as a trusted source for premium spa supplies, advanced equipment, and high-quality salon furniture.
+                </p>
 
-    <main>
-    <section class="card mt-3 mb-3">
-        <h1 class="h1">About Fion Beauty Supplies</h1>
-        <p class="p">
-            Founded in 1998, <strong>Fion Beauty Supplies</strong> has proudly supported beauty and wellness professionals across Canada as a trusted source for premium spa supplies, advanced equipment, and high-quality salon furniture.
-        </p>
+                <p class="p">
+                    We are committed to delivering exceptional products that combine innovation, performance, and reliability, helping professionals achieve outstanding results and elevate their clients’ experience.
+                </p>
 
-        <p class="p">
-            We are committed to delivering exceptional products that combine innovation, performance, and reliability, helping professionals achieve outstanding results and elevate their clients’ experience.
-        </p>
+                <p class="p">
+                    As the sole distributor of <strong>ThermoCEUTICAL</strong> in Canada, Fion Beauty Supplies brings cutting-edge Korean skincare technology to Canadian spas and clinics. Our comprehensive line of professional-grade skincare solutions is designed to deliver visible, lasting results for every skin type and concern.
+                </p>
 
-        <p class="p">
-            As the sole distributor of <strong>ThermoCEUTICAL</strong> in Canada, Fion Beauty Supplies brings cutting-edge Korean skincare technology to Canadian spas and clinics. Our comprehensive line of professional-grade skincare solutions is designed to deliver visible, lasting results for every skin type and concern.
-        </p>
+                <p class="p">
+                    Our mission is to empower aestheticians, spas, and wellness centers with the tools, training, and expertise they need to create transformative results and lasting client satisfaction.
+                </p>
 
-        <p class="p">
-            Our mission is to empower aestheticians, spas, and wellness centers with the tools, training, and expertise they need to create transformative results and lasting client satisfaction.
-        </p>
+                <p class="p">
+                    With years of industry experience and a deep passion for beauty and care, Fion Beauty Supplies continues to set the standard for quality, trust, and professional excellence across Canada.
+                </p>
+            </section>
+        </main>
+    </div>
+</div>
 
-        <p class="p">
-            With years of industry experience and a deep passion for beauty and care, Fion Beauty Supplies continues to set the standard for quality, trust, and professional excellence across Canada.
-        </p>
-    </section>
-</main>
 
 
     <?php include 'include/footer.php' ?>

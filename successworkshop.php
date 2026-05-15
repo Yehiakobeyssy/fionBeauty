@@ -171,7 +171,6 @@ if ($status === 'succeeded') {
 <?php 
 include 'include/header.php';
 include 'include/clientheader.php';
-include 'include/catecorysname.php';
 ?>
 <div class="status-box">
     <?php if($showInvoiceBtn): ?>

@@ -1,4 +1,23 @@
+.fion_container{
+    display:flex;
+    gap:20px;
+    width:100%;
+    align-items:flex-start;
+}
 
+.fion_aside{
+    width:350px;
+    min-width:350px;
+}
+
+.fion_page{
+
+    width: 100%;
+
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
         .status-box {
             
             margin: 25px auto !important;

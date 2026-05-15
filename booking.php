@@ -195,21 +195,29 @@ try {
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/success.css">
+    <link rel="stylesheet" href="css/success.css?v=1.1">
 </head>
 <body>
 <?php 
 include 'include/header.php';
 include 'include/clientheader.php';
-include 'include/catecorysname.php';
+
 ?>
-<div class="status-box">
-    <?php if($showInvoiceBtn): ?>
-        <h1 class="text-success"><i class="fas fa-check-circle"></i> <?= htmlspecialchars($successMsg) ?></h1>
-        <p>Thank you! You’ve successfully booked the free workshop.</p>
-    <?php else: ?>
-        <h1 class="text-warning"><i class="fas fa-info-circle"></i> <?= htmlspecialchars($successMsg) ?></h1>
-    <?php endif; ?>
+<div class="fion_container">
+    <div class="fion_aside">
+        <?php include 'include/catecorysname.php'; ?>
+    </div>
+    <div class="fion_page">
+        <div class="status-box">
+            <?php if($showInvoiceBtn): ?>
+                <h1 class="text-success"><i class="fas fa-check-circle"></i> <?= htmlspecialchars($successMsg) ?></h1>
+                <p>Thank you! You’ve successfully booked the free workshop.</p>
+            <?php else: ?>
+                <h1 class="text-warning"><i class="fas fa-info-circle"></i> <?= htmlspecialchars($successMsg) ?></h1>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>
