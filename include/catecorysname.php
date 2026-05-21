@@ -149,9 +149,6 @@
     ========================== -->
     <aside class="category_aside">
 
-        <div class="category_header">
-            Categories
-        </div>
 
         <?php
         $sql = $con->prepare("
@@ -187,8 +184,6 @@
 
                     <div class="category_left">
 
-                        <img src="images/items/'.$cat['carImg'].'" 
-                             alt="'.$cat['carImg'].'">
 
                         <span>'.$cat['catName'].'</span>
 
