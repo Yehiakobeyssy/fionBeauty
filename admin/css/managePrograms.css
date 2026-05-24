@@ -1,0 +1,416 @@
+/* =========================
+   BASE LAYOUT
+========================= */
+
+main {
+    display: flex;
+    background: #f5f7fb;
+}
+
+.container_info {
+    width: 100%;
+    margin: 20px;
+    font-family: Outfit, sans-serif;
+}
+
+/* =========================
+   HEADER BUTTON
+========================= */
+
+.btnadd {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+}
+
+.btnadd a {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btnadd a:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* =========================
+   TABLE STYLE
+========================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+/* HEADER */
+thead {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+th {
+    padding: 16px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ROWS */
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+tr:hover {
+    background: #f9fafc;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+td a {
+    margin-right: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+td a:hover {
+    opacity: 0.7;
+}
+
+td a[href*="view"] {
+    color: #2563eb;
+}
+
+td a[href*="edit"] {
+    color: #f59e0b;
+}
+
+td a[href*="delete"] {
+    color: #ef4444;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+form {
+    width: 60%;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+
+form input[type="text"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+form input:focus,
+form textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+
+form button {
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+form button:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   TITLES
+========================= */
+
+h2 {
+    color: var(--color-primary);
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-top: 30px;
+    color: #333;
+    border-left: 4px solid var(--color-primary);
+    padding-left: 10px;
+}
+
+/* =========================
+   SECTION + ITEM BOX
+========================= */
+
+.section-box,
+.item-box {
+    background: #fff;
+    padding: 12px 14px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #eee;
+}
+
+.section-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.item-box img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-box b {
+    flex: 1;
+}
+
+/* =========================
+   FORCE BLACK TEXT (IMPORTANT FIX)
+========================= */
+
+table td:nth-child(3),
+table td:nth-child(3) *,
+table td:nth-child(4),
+table td:nth-child(4) * {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+
+/* =========================
+   SECTIONS WRAPPER
+========================= */
+.sections-wrapper{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:20px;
+}
+
+/* =========================
+   SECTION CARD
+========================= */
+.section-card{
+    display:flex;
+    background:var(--white);
+    border:1px solid #222;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,0.25);
+    transition:0.2s;
+}
+
+.section-card:hover{
+    transform:translateY(-2px);
+}
+
+/* =========================
+   IMAGE LEFT
+========================= */
+.section-image{
+    width:140px;
+    min-width:140px;
+    height:140px;
+    
+}
+
+.section-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================
+   CONTENT RIGHT
+========================= */
+.section-content{
+    padding:15px;
+    color:var(--color-muted);
+    flex:1;
+}
+
+.section-content h4{
+    margin:0;
+    font-size:18px;
+    color:var(--color-primary);
+}
+
+.section-content p{
+    margin:8px 0;
+    font-size:13px;
+    color:#bbb;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.section-actions{
+    margin-top:10px;
+}
+
+.section-actions a{
+    margin-right:10px;
+    font-size:13px;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.section-actions a:first-child{
+    color:#facc15; /* edit */
+}
+
+.section-actions a:last-child{
+    color:#ef4444; /* delete */
+}
+
+/* =========================
+   ADD BUTTON
+========================= */
+.add-section-btn{
+    display:inline-block;
+    margin-top:10px;
+    padding:10px 14px;
+    background:#22c55e;
+    color:#fff;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.add-section-btn:hover{
+    opacity:0.85;
+}
+
+/* =========================
+   ITEMS GRID
+========================= */
+.items-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+/* =========================
+   ITEM CARD
+========================= */
+.item-card{
+    background:var(--color-gary);
+    border:1px solid var(--color-primary);
+    border-radius:12px;
+    overflow:hidden;
+    text-align:center;
+    transition:0.2s;
+    box-shadow:0 4px 12px rgba(0,0,0,0.25);
+}
+
+.item-card:hover{
+    transform:translateY(-3px);
+    border-color:#333;
+}
+
+/* =========================
+   IMAGE
+========================= */
+.item-img{
+    width:100%;
+    height:140px;
+   
+}
+
+.item-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================
+   NAME
+========================= */
+.item-info{
+    padding:10px;
+}
+
+.item-info h4{
+    margin:0;
+    font-size:14px;
+    color:var(--color-dark);
+}
+
+/* =========================
+   ACTION
+========================= */
+.item-action{
+    padding-bottom:12px;
+}
+
+.item-action a{
+    display:inline-block;
+    padding:6px 10px;
+    font-size:12px;
+    background:#ef4444;
+    color:#fff;
+    border-radius:6px;
+    text-decoration:none;
+    transition:0.2s;
+}
+
+.item-action a:hover{
+    opacity:0.85;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+    form {
+        width: 92%;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    .btnadd {
+        justify-content: center;
+    }
+}

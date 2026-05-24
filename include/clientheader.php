@@ -398,6 +398,7 @@ width:95px;
 <li><a href="contactus.php">Contact</a></li>
 <li><a href="aboutus.php">About</a></li>
 <li><a href="workshops.php">Training</a></li>
+<li><a href="program.php">Programs</a></li>
 <li><a href="login.php">Register</a></li>
 </ul>
 </nav>
@@ -482,6 +483,7 @@ id="closeMenu"
 <li><a href="contactus.php">Contact</a></li>
 <li><a href="aboutus.php">About</a></li>
 <li><a href="workshops.php">Training</a></li>
+<li><a href="program.php">Programs</a></li> 
 <li><a href="login.php">Register</a></li>
 <li><a href="cart.php">Cart</a></li>
 </ul>

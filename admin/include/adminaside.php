@@ -82,6 +82,26 @@ aside a.active svg path {
         </svg>
         Customers
     </a>
+    <a href="managePrograms.php">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            
+            <!-- Top card / program window -->
+            <path d="M4 5.5C4 4.12 5.12 3 6.5 3H17.5C18.88 3 20 4.12 20 5.5V7H4V5.5Z" fill="#667085"/>
+
+            <!-- Main program panel -->
+            <rect x="4" y="7" width="16" height="13" rx="2.5" fill="#667085"/>
+
+            <!-- Inner content lines -->
+            <rect x="6" y="9" width="8" height="1.5" rx="0.75" fill="#FFFFFF"/>
+            <rect x="6" y="12" width="10" height="1.5" rx="0.75" fill="#FFFFFF"/>
+            <rect x="6" y="15" width="6" height="1.5" rx="0.75" fill="#FFFFFF"/>
+
+            <!-- Small action dot -->
+            <circle cx="17.5" cy="10" r="1.2" fill="#FFFFFF"/>
+
+        </svg>
+        Programs
+    </a>
     <a href="manageWorkshops.php">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 22l2-2 6-6 2 2-6 6-2 2z"/>
