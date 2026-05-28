@@ -72,7 +72,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/contactus.css?v=1.2">
+    <link rel="stylesheet" href="css/contactus.css?v=1.3">
 </head>
 <body>
     <?php 

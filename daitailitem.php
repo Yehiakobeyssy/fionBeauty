@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/daitailitem.css?2.9">
+    <link rel="stylesheet" href="css/daitailitem.css?v=3.0">
 </head>
 <body>
     <?php 

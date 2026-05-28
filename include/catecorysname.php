@@ -13,8 +13,10 @@
     background: var(--color-card);
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
+    overflow-x: auto !important;
     border: 1px solid rgba(0,0,0,0.05);
+   
+
 }
 
 /* Aside Header */
@@ -91,12 +93,10 @@
 /* ============================
    Subcategories
 ============================ */
-.subcategories{
-    display: none;
-    background: rgba(0,0,0,0.02);
-    padding: 0 0 10px 0;
+.subcategories{ display: none; background: rgba(0,0,0,0.02); padding: 0 0 10px 0; }
+.subcategories.show{
+    display: block !important;
 }
-
 .subcategories a{
     display: block;
     padding: 10px 20px 10px 72px;
@@ -138,6 +138,58 @@
     .main_content{
         width: 100%;
     }
+}
+@media (max-width:750px) {
+    /* Horizontal Scroll */
+.category_aside{
+    display: flex;
+    flex-wrap: nowrap;
+
+    overflow-x: auto !important;
+    overflow-y: hidden ;
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    gap: 12px;
+    padding: 5px 2px 10px;
+
+    scrollbar-width: none;
+}
+
+    .subcategories{
+        display: none;
+
+        position: fixed;
+        z-index: 99999;
+
+        width: 220px;
+
+        background: var(--color-card);
+        border-radius: 12px;
+
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+        border: 1px solid rgba(0,0,0,0.08);
+
+        padding: 6px 0;
+    }
+
+    .subcategories.show{
+        display: block !important;
+    }
+.category_aside::-webkit-scrollbar{
+    display: none;
+}
+
+/* Each category card */
+.category_item{
+        position: static;
+
+    flex: 0 0 auto;
+    width: 180px;
+}
+
 }
 </style>
 
@@ -255,21 +307,63 @@ $(document).ready(function(){
         let parent = $(this).closest('.category_item');
         let subMenu = parent.find('.subcategories');
 
-        // Has subcategories
+        // =========================
+        // DESKTOP (>500px)
+        // =========================
+        if(window.innerWidth > 500){
+
+            if(subMenu.length){
+
+                e.preventDefault();
+
+                $('.subcategories').not(subMenu).slideUp(200);
+                $('.category_item').not(parent).removeClass('active');
+
+                subMenu.stop(true,true).slideToggle(200);
+                parent.toggleClass('active');
+            }
+
+            return;
+        }
+
+        // =========================
+        // MOBILE (<=500px)
+        // =========================
         if(subMenu.length){
 
             e.preventDefault();
 
-            $('.subcategories').not(subMenu).slideUp(200);
-            $('.category_item').not(parent).removeClass('active');
+            let isOpen = subMenu.hasClass('show');
 
-            subMenu.stop(true,true).slideToggle(200);
-            parent.toggleClass('active');
+            $('.subcategories').removeClass('show');
+
+            if(!isOpen){
+
+                let rect = this.getBoundingClientRect();
+
+                subMenu.css({
+                    top: rect.bottom + 8 + "px",
+                    left: rect.left + "px"
+                });
+
+                subMenu.addClass('show');
+            }
 
         }else{
 
-            // No subcategories → direct redirect
             window.location.href = $(this).data('link');
+        }
+
+    });
+
+    // close mobile popup
+    $(document).on('click', function(e){
+
+        if(window.innerWidth <= 500){
+
+            if(!$(e.target).closest('.category_item').length){
+                $('.subcategories').removeClass('show');
+            }
         }
 
     });

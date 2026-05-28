@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=1.9">
+    <link rel="stylesheet" href="css/index.css?v=2">
 </head>
 <body>
     <?php 
@@ -100,51 +100,24 @@
                     ?>
 
                     <?php if (count($categories) >= 4): ?>
-                    <div class="container_new">
+                    <div class="categories-grid">
 
-                        <!-- Left Image -->
-                        <div class="left-image">
-                            <img src="images/items/<?= htmlspecialchars($categories[0]['carImg']) ?>" alt="">
-                            <div class="overlay">
-                                <h3><?= htmlspecialchars($categories[0]['catName']) ?></h3>
-                                <a href="category.php?cat=<?= $categories[0]['categoryId'] ?>" class="btn btn-ghost">Shop Now</a>
-                            </div>
-                        </div>
+                        <?php for ($i = 0; $i < 4; $i++): ?>
+                            <div class="category-card">
+                                <img src="images/items/<?= htmlspecialchars($categories[$i]['carImg']) ?>" alt="">
 
-                        <!-- Right Images -->
-                        <div class="right-images">
-
-                            <div class="top-right">
-                                <img src="images/items/<?= htmlspecialchars($categories[1]['carImg']) ?>" alt="">
                                 <div class="overlay">
-                                    <h3><?= htmlspecialchars($categories[1]['catName']) ?></h3>
-                                    <a href="category.php?cat=<?= $categories[1]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
+                                    <h3><?= htmlspecialchars($categories[$i]['catName']) ?></h3>
+                                    <a href="category.php?cat=<?= $categories[$i]['categoryId'] ?>">
+                                        Shop Now
+                                    </a>
                                 </div>
                             </div>
+                        <?php endfor; ?>
 
-                            <div class="bottom-right">
-                                <div>
-                                    <img src="images/items/<?= htmlspecialchars($categories[2]['carImg']) ?>" alt="">
-                                    <div class="overlay">
-                                        <h3><?= htmlspecialchars($categories[2]['catName']) ?></h3>
-                                        <a href="category.php?cat=<?= $categories[2]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <img src="images/items/<?= htmlspecialchars($categories[3]['carImg']) ?>" alt="">
-                                    <div class="overlay">
-                                        <h3><?= htmlspecialchars($categories[3]['catName']) ?></h3>
-                                        
-                                        <a href="category.php?cat=<?= $categories[3]['categoryId'] ?>" class="btn btn-primary">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
                     </div>
                     <?php endif; ?>
-                
+                                
             </div>
             <div class="foryou section_index">
                 <div class="sectiontitle">
