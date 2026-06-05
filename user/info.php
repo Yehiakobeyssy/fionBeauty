@@ -291,14 +291,14 @@
                             <label for="">Street</label>
                             <input type="text" name="street" id="" required>
                         </div>
-                        <div class="double">
+                        <div class="double" style="display: none;">
                             <div class="insite">
                                 <label for="">Bulting No </label>
-                                <input type="text" name="bultingNo" id="" required>
+                                <input type="text" name="bultingNo" id="" >
                             </div>
                             <div class="insite">
                                 <label for="">Door No </label>
-                                <input type="text" name="doorNo" id="" required>
+                                <input type="text" name="doorNo" id="" >
                             </div>
                         </div>
                         <div class="long">
@@ -430,14 +430,14 @@
                             <label for="">Street</label>
                             <input type="text" name="street" value="<?=isset($result_add)?$result_add['street']:''?>" required>
                         </div>
-                        <div class="double">
+                        <div class="double" style="display:none">
                             <div class="insite">
                                 <label for="">Bulting No </label>
-                                <input type="text" name="bultingNo" value="<?=isset($result_add)?$result_add['bultingNo']:''?>" required>
+                                <input type="text" name="bultingNo" value="<?=isset($result_add)?$result_add['bultingNo']:''?>" >
                             </div>
                             <div class="insite">
                                 <label for="">Door No </label>
-                                <input type="text" name="doorNo" value="<?=isset($result_add)?$result_add['doorNo']:''?>" required>
+                                <input type="text" name="doorNo" value="<?=isset($result_add)?$result_add['doorNo']:''?>" >
                             </div>
                         </div>
                         <div class="long">

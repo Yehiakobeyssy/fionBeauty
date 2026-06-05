@@ -23,14 +23,14 @@ main{
     text-align: center;
 }
 .side_decor img{
-    width: 550px;
-    height: 550px;
+    width: 125px;
+    height: 125px;
 }
 .container_form{
     width: 80%;
     margin: 0 auto;
     text-align: left;
-    background-color: var(--color-primary-variant);
+    background-color: #33C77A; 
     padding: 25px;
     border-radius: 25px;
 }
@@ -197,3 +197,4 @@ main{
         width: 100%;
     }
 }
+

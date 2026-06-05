@@ -129,7 +129,9 @@
                         For any inquiries regarding our Terms and Conditions or policies, please contact:<br>
                         📧 <strong><?= $info['companyEmail'] ?></strong><br>
                         📞 <em><?= $info['companyPhone'] ?></em><br>
-                        📍 <em><?= $info['companyAdd'] ?></em>
+                        📍 <em>9033 Leslie Street  Unit 7  
+                                Richmond Hill, ON
+                                L4B4K3</em>
                     </p>
                 </section>
             </main>

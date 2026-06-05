@@ -43,7 +43,7 @@
                         <p class="p">We accept credit cards (Visa, MasterCard), PayPal, Interac e-Transfer, and approved invoicing for registered professionals.</p>
 
                         <h2 class="h2">Can I return products?</h2>
-                        <p class="p">Yes, returns are accepted within 14 days for unopened items. All returns require prior authorization from our support team.</p>
+                        <p class="p">Final sales, No refund  for all items</p>
 
                         <h2 class="h2">How can I access product protocols or MSDS sheets?</h2>
                         <p class="p">Once approved and logged in, visit the <strong>Resources</strong> section to download MSDS, treatment protocols, and product catalogs.</p>

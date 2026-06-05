@@ -148,8 +148,8 @@
                                 <th>Date</th>
                                 <th>Produts</th>
                                 <th>Total</th>
-                                <th>Commition</th>
-                                <th>Trasaction NO:</th>
+                                
+                                <th>Transaction  NO:</th>
                                 <th>Status</th>
                             </thead>
                             <tbody id="tblorders">
@@ -455,5 +455,5 @@
         </div>
     </main>
     <?php include '../common/jslinks.php'?>
-    <script src="js/manageOrders.js"></script>
+    <script src="js/manageOrders.js?v=1.1"></script>
 </body>

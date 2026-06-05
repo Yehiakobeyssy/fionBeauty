@@ -193,14 +193,14 @@
                             <label for="">Street</label>
                             <input type="text" name="street" id="" required>
                         </div>
-                        <div class="double">
+                        <div class="double" style="display: none;">
                             <div class="insite">
                                 <label for="">Bulting No </label>
-                                <input type="text" name="bultingNo" id="" required>
+                                <input type="text" name="bultingNo" id=""  value="">
                             </div>
                             <div class="insite">
                                 <label for="">Door No </label>
-                                <input type="text" name="doorNo" id="" required>
+                                <input type="text" name="doorNo" id=""  value="">
                             </div>
                         </div>
                         <div class="long">

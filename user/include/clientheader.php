@@ -430,7 +430,7 @@ Search
 
 <div
 class="cart-box"
-onclick="location.href='cart.php'"
+onclick="location.href='../cart.php'"
 >
 
 🛒

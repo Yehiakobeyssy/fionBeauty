@@ -72,7 +72,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/contactus.css?v=1.3">
+    <link rel="stylesheet" href="css/contactus.css?v=1.4">
 </head>
 <body>
     <?php 
@@ -89,19 +89,20 @@
                     <img src="images/img_app/contactusimg1.png" alt="" srcset="">
                     <div class="add">
                         <h3>Address</h3>
-                        <p><?php echo htmlspecialchars($companyAdd); ?></p>
-                        
-                        <?php
-                            $sql=$con->prepare("SELECT provinceName FROM tblprovince WHERE provinceID  = ?");
-                            $sql->execute([$province]);
-                            $provinceName = $sql->fetchColumn();    
-
-                            $sql=$con->prepare("SELECT cityName FROM tblcity WHERE cityID = ?");
-                            $sql->execute([$city]); 
-                            $cityName = $sql->fetchColumn();    
-                        ?>
-                        <p><?php echo htmlspecialchars($cityName) . ", " . htmlspecialchars($provinceName).' '.htmlspecialchars($postalcode); ?></p>
+                        <p>9033 Leslie  St Unit:7  <br>
+                        Richmond Hill, Ontario <br>
+                        L4B4K3 <br>
+                        TEL: 905 886- 1882</p>
+                        <a href="mailto:sales@fionbeautysupplies.ca">sales@fionbeautysupplies.ca</a>
                     </div>
+                    <iframe
+                        src="https://maps.google.com/maps?q=9033%20Leslie%20St%20Unit%207,%20Richmond%20Hill,%20Ontario,%20L4B%204K3,%20Canada&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                        width="100%"
+                        height="450"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
                 </div>
                 <div class="contactus_form">
                     <div class="container_form">

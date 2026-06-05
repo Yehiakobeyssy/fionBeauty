@@ -202,7 +202,7 @@
                     <div class="container_new">
                         <div class="title_form">New Workshop</div>
                         <form action="" method="post">
-                            <label for="">Titel</label>
+                            <label for="">Title</label>
                             <input type="text" name="title" required>
 
                             <label for="">Description</label>
@@ -237,7 +237,7 @@
                                 <span class="slider"></span>
                             </label>
 
-                            <input type="text" id="adresse" placeholder="Adresse" name="location">
+                            <input type="text" id="adresse" placeholder="Address" name="location">
                             <input type="text" id="link" placeholder="Link" name="meetinlink">
                             </div>
                             <div class="btncontrol">
@@ -323,7 +323,7 @@
                     <div class="container_new">
                         <div class="title_form">Edit Workshop</div>
                         <form action="" method="post">
-                            <label>Titel</label>
+                            <label>Title</label>
                             <input type="text" name="title" required value="<?= htmlspecialchars($workshop['title']) ?>">
 
                             <label>Description</label>
@@ -358,7 +358,7 @@
                                     <span class="slider"></span>
                                 </label>
 
-                                <input type="text" id="adresse_edid" placeholder="Adresse" name="location" value="<?= htmlspecialchars($workshop['location']) ?>">
+                                <input type="text" id="adresse_edid" placeholder="Address" name="location" value="<?= htmlspecialchars($workshop['location']) ?>">
                                 <input type="text" id="link_edid" placeholder="Link" name="meetinlink" value="<?= htmlspecialchars($workshop['meeting_link']) ?>">
                             </div>
 
