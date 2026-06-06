@@ -149,7 +149,6 @@ $(document).ready(function() {
         if (prevPage < 1) prevPage = 1;
         loadItems(prevPage);
     });
-
     loadItems(1);
 
     /*********************

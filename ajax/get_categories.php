@@ -3,11 +3,12 @@ include '../settings/connect.php';
 
 $sql = "
     SELECT DISTINCT c.categoryId, c.catName
-    FROM tblcategory c
-    INNER JOIN tblitems i ON i.catId = c.categoryId
-    WHERE i.itmActive = 1
-    ORDER BY RAND()
-    LIMIT 5
+FROM tblcategory c
+INNER JOIN tblitems i ON i.catId = c.categoryId
+WHERE i.itmActive = 1
+  AND c.categoryId IN (8, 15)
+ORDER BY RAND();
+    
 ";
 
 $stmt = $con->prepare($sql);

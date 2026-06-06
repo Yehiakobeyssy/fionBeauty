@@ -165,8 +165,10 @@
                     </section>
                 <?php endif; ?>        
             </div>
-            <div id="categories_container" style="display: none;"> 
+            <div id="categories_container" > 
             </div>
+        </div>      
+    </div>
             <div class="topbrands section_index">
                 <h2>Top Brands Deal</h2>
                 <div class="brandslogos">
@@ -185,10 +187,7 @@
                     ?>
                 </div>        
             </div>
-        </div>
-        
-    </div>
-                <div class="whatyouWillGet">
+            <div class="whatyouWillGet">
                 <h3>What you will get?</h3>
                 <div class="cards_gets">
                     <div class="card_service">
