@@ -262,6 +262,12 @@
                         </div>
                         <div class="double">
                             <div class="insite">
+                                <label>City</label>
+                                <select name="cityID" id="citySelect" required>
+                                    <option value="">SELECT ONE</option>
+                                </select>
+                            </div>
+                            <div class="insite">
                                 <label>Province</label>
                                 <select name="provinceID" id="provinceSelect">
                                     <option value="0">SELECT ONE</option>
@@ -276,19 +282,14 @@
                                 </select>
                             </div>
 
-                            <div class="insite">
-                                <label>City</label>
-                                <select name="cityID" id="citySelect" required>
-                                    <option value="">SELECT ONE</option>
-                                </select>
-                            </div>
+                            
                             <div class="insite">
                                 <label for="">Postal Code</label>
                                 <input type="text" name="poatalCode" id="" required>
                             </div>
                         </div>
                         <div class="long">
-                            <label for="">Street</label>
+                            <label for="">Address 1</label>
                             <input type="text" name="street" id="" required>
                         </div>
                         <div class="double" style="display: none;">
@@ -384,22 +385,6 @@
                         </div>
                         <div class="double">
                             <div class="insite">
-                                <label for="">Province</label>
-                                <select name="provinceID" id="provinceSelect" required>
-                                    <option value="0">SELECT ONE</option>
-                                    <?php
-                                        $sql = $con->prepare('SELECT provinceID , provinceName FROM tblprovince WHERE provinceActive = 1');
-                                        $sql->execute();
-                                        $provinces = $sql->fetchAll(PDO::FETCH_ASSOC);
-                                        foreach ($provinces as $pro) {
-                                            $sel = (isset($result_add) && $result_add['provinceID'] == $pro['provinceID']) ? "selected" : "";
-                                            echo '<option value="'.$pro['provinceID'].'" '.$sel.'>'.$pro['provinceName'].'</option>';
-                                        }
-                                    ?>
-                                </select>
-                            </div>
-
-                            <div class="insite">
                                 <label for="">City</label>
                                 <select name="cityID" id="citySelect" required>
                                     <option value="">SELECT ONE</option>
@@ -420,6 +405,23 @@
                                     ?>
                                 </select>
                             </div>
+                            <div class="insite">
+                                <label for="">Province</label>
+                                <select name="provinceID" id="provinceSelect" required>
+                                    <option value="0">SELECT ONE</option>
+                                    <?php
+                                        $sql = $con->prepare('SELECT provinceID , provinceName FROM tblprovince WHERE provinceActive = 1');
+                                        $sql->execute();
+                                        $provinces = $sql->fetchAll(PDO::FETCH_ASSOC);
+                                        foreach ($provinces as $pro) {
+                                            $sel = (isset($result_add) && $result_add['provinceID'] == $pro['provinceID']) ? "selected" : "";
+                                            echo '<option value="'.$pro['provinceID'].'" '.$sel.'>'.$pro['provinceName'].'</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+
+                            
 
                             <div class="insite">
                                 <label for="">Postal Code</label>
@@ -427,7 +429,7 @@
                             </div>
                         </div>
                         <div class="long">
-                            <label for="">Street</label>
+                            <label for="">Address 1</label>
                             <input type="text" name="street" value="<?=isset($result_add)?$result_add['street']:''?>" required>
                         </div>
                         <div class="double" style="display:none">

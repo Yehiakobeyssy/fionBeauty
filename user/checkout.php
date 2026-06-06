@@ -163,6 +163,12 @@
                         </div>
                         <div class="double">
                             <div class="insite">
+                                <label for="">City</label>
+                                <select name="cityID" id="citySelect" required>
+                                    <option value="">SELECT ONE</option>
+                                </select>
+                            </div>
+                            <div class="insite">
                                 <label for="">Province</label>
                                 <select name="provinceID" id="provinceSelect" required>
                                     <option value="0">SELECT ONE</option>
@@ -177,12 +183,7 @@
                                 </select>
                             </div>
 
-                            <div class="insite">
-                                <label for="">City</label>
-                                <select name="cityID" id="citySelect" required>
-                                    <option value="">SELECT ONE</option>
-                                </select>
-                            </div>
+                            
 
                             <div class="insite">
                                 <label for="">Postal Code</label>
@@ -190,7 +191,7 @@
                             </div>
                         </div>
                         <div class="long">
-                            <label for="">Street</label>
+                            <label for="">Address</label>
                             <input type="text" name="street" id="" required>
                         </div>
                         <div class="double" style="display: none;">

@@ -8,8 +8,8 @@
    Aside Category Menu
 ============================ */
 .category_aside{
-    width: 350px;
-    min-width: 350px;
+    width: 250px;
+    min-width: 250px;
     background: var(--color-card);
     border-radius: var(--radius);
     box-shadow: var(--shadow-md);
@@ -24,7 +24,7 @@
     padding: 18px 20px;
     background: var(--color-primary);
     color: var(--color-white);
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
     font-family: 'Outfit', sans-serif;
 }
@@ -74,7 +74,7 @@
 
 /* Category Name */
 .category_left span{
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--color-dark);
     font-family: 'Outfit', sans-serif;
@@ -204,11 +204,21 @@
 
         <?php
         $sql = $con->prepare("
-            SELECT categoryId, catName, carImg 
-            FROM tblcategory 
-            WHERE catActive = 1 
-            ORDER BY catName
-        ");
+                                SELECT categoryId, catName, carImg
+                                FROM tblcategory
+                                WHERE catActive = 1
+                                ORDER BY
+                                    CASE LOWER(catName)
+                                        WHEN 'skin care' THEN 1
+                                        WHEN 'clinic program' THEN 2
+                                        WHEN 'skin booster' THEN 3
+                                        WHEN 'medical equipment' THEN 4
+                                        WHEN 'equipment' THEN 5
+                                        WHEN 'furniture' THEN 6
+                                        ELSE 999
+                                    END,
+                                    catName ASC
+                            ");
         $sql->execute();
         $categories = $sql->fetchAll();
 

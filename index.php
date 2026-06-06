@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=2">
+    <link rel="stylesheet" href="css/index.css?v=2.1">
 </head>
 <body>
     <?php 
@@ -81,7 +81,7 @@
                     ';
                 }
             ?>
-            <div class="newArrvals section_index">
+            <div class="newArrvals section_index" style="display: none;">
                     <div class="sectiontitle">
                         <h4>Featured</h4>
                     </div>
@@ -133,7 +133,7 @@
                     <button id="btnNext">Next</button>
                 </div>
             </div>
-            <div class="special_item section_index">
+            <div class="special_item section_index" style="display: none;">
                 <?php
                     // Fetch one random active item with its brand
                     $stmt = $con->prepare("
@@ -165,7 +165,7 @@
                     </section>
                 <?php endif; ?>        
             </div>
-            <div id="categories_container"> 
+            <div id="categories_container" style="display: none;"> 
             </div>
             <div class="topbrands section_index">
                 <h2>Top Brands Deal</h2>
@@ -185,7 +185,10 @@
                     ?>
                 </div>        
             </div>
-            <div class="whatyouWillGet">
+        </div>
+        
+    </div>
+                <div class="whatyouWillGet">
                 <h3>What you will get?</h3>
                 <div class="cards_gets">
                     <div class="card_service">
@@ -241,10 +244,7 @@
                     </div>
                     
                 </div>
-            </div>
-        </div>
-    </div>
-
+            </div>                    
     
     <?php include  'include/footer.php' ?>
     <?php include 'common/jslinks.php'?>
