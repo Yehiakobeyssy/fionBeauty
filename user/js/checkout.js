@@ -18,4 +18,4 @@ $(document).ready(function() {
     $("#txtinvoiceNote").on("input blur", function() {
         $("#txtnote").val($(this).val());
     });
-});
+}); 

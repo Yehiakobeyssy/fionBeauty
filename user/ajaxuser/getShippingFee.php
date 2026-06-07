@@ -113,11 +113,18 @@ foreach ($categoryTotals as $catId => $catSubtotal) {
 $totalDiscount += $totalCategoryDiscount;
 
 // --- Determine shipping fee ---
-if (!$hasPromotional && !$hasDiscount && $allFreeCategory && $totalAmount >= $amountOver) {
-    $shippingFee = $extraFee; // Free shipping + extra per-item fees
+// --- Determine shipping fee ---
+// If order total reaches the free-shipping threshold,
+// shipping becomes 0, otherwise use province shipping fee.
+
+if ($amountOver > 0 && $totalAmount >= $amountOver) {
+    $shippingFee = 0;
 } else {
-    $shippingFee = $provinceFee + $extraFee; // Normal shipping
+    $shippingFee = $provinceFee;
 }
+
+// Add extra shipping fees from items
+$shippingFee += $extraFee;
 
 // --- Apply tax ---
 if ($includeTax == 1) {
@@ -130,12 +137,13 @@ if ($includeTax == 1) {
     $grandTotal = $taxBase + $taxAmount + $shippingFee;
 }
 
+
 // --- Return JSON ---
 echo json_encode([
     'subtotal' => round($totalAmount, 2),
     'discount' => round($totalDiscount, 2),
     'categoryDiscount' => round($totalCategoryDiscount, 2),
     'tax' => round($taxAmount, 2),
-    'shipping' => round($shippingFee, 2),
+    'shippingFee' => round($shippingFee, 2), // 👈 IMPORTANT
     'total' => round($grandTotal, 2)
 ]);

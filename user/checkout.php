@@ -189,7 +189,7 @@
                                 <label for="">Postal Code</label>
                                 <input type="text" name="poatalCode" id="" required>
                             </div>
-                        </div>
+                        </div> 
                         <div class="long">
                             <label for="">Address</label>
                             <input type="text" name="street" id="" required>
