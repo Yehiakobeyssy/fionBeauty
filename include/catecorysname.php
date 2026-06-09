@@ -312,59 +312,56 @@
 <script>
 $(document).ready(function(){
 
-    $('.category_btn').click(function(e){
+$('.category_btn').click(function(e){
 
-        let parent = $(this).closest('.category_item');
-        let subMenu = parent.find('.subcategories');
+    let parent = $(this).closest('.category_item');
+    let subMenu = parent.find('.subcategories');
+    let link = $(this).data('link');
 
-        // =========================
-        // DESKTOP (>500px)
-        // =========================
-        if(window.innerWidth > 500){
+    // إذا لا يوجد Subcategory
+    if(subMenu.length === 0){
+        window.location.href = link;
+        return;
+    }
 
-            if(subMenu.length){
+    // =========================
+    // DESKTOP
+    // =========================
+    if(window.innerWidth > 750){
 
-                e.preventDefault();
+        e.preventDefault();
 
-                $('.subcategories').not(subMenu).slideUp(200);
-                $('.category_item').not(parent).removeClass('active');
+        $('.subcategories').not(subMenu).slideUp(200);
+        $('.category_item').not(parent).removeClass('active');
 
-                subMenu.stop(true,true).slideToggle(200);
-                parent.toggleClass('active');
-            }
+        subMenu.stop(true,true).slideToggle(200);
+        parent.toggleClass('active');
 
-            return;
-        }
+        return;
+    }
 
-        // =========================
-        // MOBILE (<=500px)
-        // =========================
-        if(subMenu.length){
+    // =========================
+    // MOBILE
+    // =========================
+    e.preventDefault();
 
-            e.preventDefault();
+    let isOpen = subMenu.hasClass('show');
 
-            let isOpen = subMenu.hasClass('show');
+    $('.subcategories').removeClass('show');
 
-            $('.subcategories').removeClass('show');
+    if(!isOpen){
 
-            if(!isOpen){
+        let rect = this.getBoundingClientRect();
 
-                let rect = this.getBoundingClientRect();
+        subMenu.css({
+            top: rect.bottom + 8 + "px",
+            left: rect.left + "px"
+        });
 
-                subMenu.css({
-                    top: rect.bottom + 8 + "px",
-                    left: rect.left + "px"
-                });
+        subMenu.addClass('show');
+    }
 
-                subMenu.addClass('show');
-            }
-
-        }else{
-
-            window.location.href = $(this).data('link');
-        }
-
-    });
+});
 
     // close mobile popup
     $(document).on('click', function(e){

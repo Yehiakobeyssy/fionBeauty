@@ -25,6 +25,16 @@
     }
 
 
+    $stmt = $con->prepare("
+        SELECT favItmID
+        FROM tblfavoriteitm
+        WHERE itemID = ?
+        AND clientID = ?
+    ");
+
+    $stmt->execute([$item_ID,$user_id]);
+
+    $isFavorite = $stmt->fetch();
     if ($user_id == 0) {
         $isActive = 0;
     } else {
@@ -46,7 +56,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/daitailitem.css?v=3.0">
+    <link rel="stylesheet" href="css/daitailitem.css?v=3.1">
 </head>
 <body>
     <?php 
@@ -75,7 +85,13 @@
                 </div>
                 
                 <div class="info">
-                    <h2><?= $itemInfo['itmName']?></h2>
+                    <div class="title_name">
+                        <h2><?= $itemInfo['itmName']?></h2>
+                        <i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart addtofavorite"
+                            data-itemid="<?= $item_ID; ?>">
+                            </i>
+                    </div>
+                    
                     <div class="rating_item">
                         <?php 
                             $sql=$con->prepare('SELECT AVG(rateScore)  AS score,COUNT(rateScore) AS review FROM tblrating WHERE itemID=?');
@@ -338,5 +354,94 @@
     <?php include  'include/footer.php' ?>
     <?php include 'common/jslinks.php'?>
     <script src="js/daitailitem.js"></script>
+    <script>
+        $(document).on('click', '.addtofavorite', function () {
 
+            let btn = $(this);
+            let itemID = btn.data('itemid');
+
+            $.ajax({
+                url: 'ajax/add_to_favorite.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    itemID: itemID
+                },
+
+                beforeSend: function () {
+                    btn.css('pointer-events', 'none');
+                },
+
+                success: function (response) {
+
+                    if (response.status === 'login') {
+
+                        showToast('Please login to save items to your wishlist.', 'warning');
+
+                    } else if (response.status === 'exists') {
+
+                        showToast('This item is already in your wishlist.', 'info');
+
+                        btn.removeClass('fa-regular')
+                        .addClass('fa-solid');
+
+                    } else if (response.status === 'success') {
+
+                        showToast('Item added to your wishlist successfully.', 'success');
+
+                        btn.removeClass('fa-regular')
+                        .addClass('fa-solid');
+
+                    } else {
+
+                        showToast('Something went wrong. Please try again.', 'error');
+                    }
+
+                },
+
+                error: function () {
+                    showToast('Connection error. Please try again.', 'error');
+                },
+
+                complete: function () {
+                    btn.css('pointer-events', 'auto');
+                }
+            });
+
+        });
+        function showToast(message, type = 'success') {
+
+            let bg = '#28a745';
+
+            if(type === 'warning') bg = '#ffc107';
+            if(type === 'error') bg = '#dc3545';
+            if(type === 'info') bg = '#17a2b8';
+
+            let toast = $(`
+                <div class="custom-toast">
+                    ${message}
+                </div>
+            `);
+
+            toast.css({
+                position:'fixed',
+                top:'20px',
+                right:'20px',
+                background:bg,
+                color:'#fff',
+                padding:'12px 18px',
+                borderRadius:'8px',
+                zIndex:'999999',
+                boxShadow:'0 5px 15px rgba(0,0,0,.2)'
+            });
+
+            $('body').append(toast);
+
+            setTimeout(function(){
+                toast.fadeOut(300,function(){
+                    $(this).remove();
+                });
+            },3000);
+        }
+    </script>
 </body>

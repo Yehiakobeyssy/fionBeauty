@@ -180,7 +180,7 @@
         <a href="dashboard.php">My Account</a>
         <a href="../login.php">Login /Register</a>
         <a href="../cart.php">Cart</a>
-        <a href="">Wishlist</a>
+        <a href="wishlist.php">Wishlist</a>
         <a href="../category.php">Shop</a>
     </div>
     <div class="quick_links">

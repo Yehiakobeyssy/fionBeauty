@@ -78,7 +78,13 @@
     filter: drop-shadow(0 20px 30px rgba(0,0,0,0.12));
 }
 
-
+.title_name{
+    display: flex;
+}
+.title_name i{
+    font-size: 28px;
+    cursor: pointer;
+}
 .info h2{
     color: var(--color-primary);
     font-family: Outfit;

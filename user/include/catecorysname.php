@@ -232,7 +232,7 @@
 
     $('.btncate').click(function(){
         let cat = $(this).attr('data-index');
-        location.href = "category.php?cat=" + encodeURIComponent(cat);
+        location.href = "../category.php?cat=" + encodeURIComponent(cat);
     });
     $('.dropdownlist a').hover(
             function () {
