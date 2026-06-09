@@ -105,9 +105,22 @@ if($categoryName > 0 ){
                         <h3>Categories</h3>
                         <?php
                 // Fetch all categories
-                $catStmt = $con->prepare("SELECT categoryId, catName FROM tblcategory WHERE catActive = 1 ORDER BY catName");
+                $catStmt = $con->prepare("SELECT categoryId, catName
+                                        FROM tblcategory
+                                        WHERE catActive = 1
+                                        ORDER BY
+                                            CASE LOWER(catName)
+                                                WHEN 'skin care' THEN 1
+                                                WHEN 'clinic program' THEN 2
+                                                WHEN 'skin booster' THEN 3
+                                                WHEN 'medical equipment' THEN 4
+                                                WHEN 'equipment' THEN 5
+                                                WHEN 'furniture' THEN 6
+                                                ELSE 999
+                                            END,
+                                            catName ASC");
                 $catStmt->execute();
-                $categories = $catStmt->fetchAll(PDO::FETCH_ASSOC);
+                $categories = $catStmt->fetchAll(PDO::FETCH_ASSOC); 
 
                 foreach ($categories as $cat):
                     // Fetch subcategories for this category along with item counts

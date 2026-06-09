@@ -12,7 +12,7 @@
 .program_slideshow img{
     width:100%;
     max-height:420px;
-    object-fit:cover;
+    object-fit: fill;
     border-radius:20px;
     box-shadow:0 15px 40px rgba(0,0,0,0.15);
 }
@@ -80,15 +80,7 @@
     justify-content:center;
 }
 
-.section_img img{
-    width:100%;
-    max-width:500px;
-    border-radius:18px;
-    object-fit:cover;
 
-    box-shadow:0 12px 30px rgba(0,0,0,0.12);
-    transition:0.3s ease;
-}
 
 .section_img img:hover{
     transform:scale(1.03);
@@ -172,7 +164,7 @@
 
     display:flex;
     justify-content:space-between;
-    align-items:center;
+    align-items:center; 
 
     font-weight:600;
     background:#f9f9f9;
@@ -218,16 +210,15 @@
 }
 
 /* fixed image frame */
-.item_img img{
-    width:100%;
-    max-width:420px;
-    height:280px;              /* ثابتة لكل الصور */
-    object-fit:cover;          /* مهم جداً لقص الصورة بدون تشويه */
 
+.section_img img,
+.item_img img{
+    width:320px;
+    height:220px;
+    object-fit: fill;
     border-radius:15px;
     box-shadow:0 12px 30px rgba(0,0,0,0.12);
 }
-
 /* =========================
    MOBILE
 ========================= */
