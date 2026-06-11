@@ -150,6 +150,7 @@ $html .= '
 
             // --- TOGGLE STATE ---
             $checked = ($row['foryouSection'] == 1) ? 'checked' : '';
+            $checkednew = ($row['newProductSection'] == 1) ? 'checked' : '';
 
             // --- TOGGLE (RIGHT) ---
             $html .= '
@@ -160,7 +161,13 @@ $html .= '
                        data-id="' . $row['itmId'] . '" 
                        ' . $checked . '>
             </label>
-
+            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <span style="font-size:12px;">New Product</span>
+                <input type="checkbox" 
+                       class="newproductToggle" 
+                       data-id="' . $row['itmId'] . '" 
+                       ' . $checkednew . '>
+            </label>
         </div>
     </div>
 

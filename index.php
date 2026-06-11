@@ -81,7 +81,7 @@
                     ';
                 }
             ?>
-            <div class="newArrvals section_index" style="display: none;">
+            <div class="newArrvals section_index" >
                     <div class="sectiontitle">
                         <h4>Featured</h4>
                     </div>
@@ -89,9 +89,9 @@
                         <h2>New Arrivals</h2>
                     </div>
                     <?php
-                        $sql = "SELECT categoryId, catName, catDescription, carImg 
-                                FROM tblcategory 
-                                WHERE catActive = 1 
+                        $sql = "SELECT itmId , itmName, itmDesc, mainpic 
+                                FROM  tblitems 
+                                WHERE itmActive = 1  AND newProductSection= 1
                                 ORDER BY RAND() 
                                 LIMIT 4";
                         $stmt = $con->prepare($sql);
@@ -104,11 +104,11 @@
 
                         <?php for ($i = 0; $i < 4; $i++): ?>
                             <div class="category-card">
-                                <img src="images/items/<?= htmlspecialchars($categories[$i]['carImg']) ?>" alt="">
+                                <img src="images/items/<?= htmlspecialchars($categories[$i]['mainpic']) ?>" alt="">
 
                                 <div class="overlay">
-                                    <h3><?= htmlspecialchars($categories[$i]['catName']) ?></h3>
-                                    <a href="category.php?cat=<?= $categories[$i]['categoryId'] ?>">
+                                    <h3><?= htmlspecialchars($categories[$i]['itmName']) ?></h3>
+                                    <a href="daitailitem.php?itemid=<?= $categories[$i]['itmId'] ?>">
                                         Shop Now
                                     </a>
                                 </div>

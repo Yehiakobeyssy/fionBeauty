@@ -595,7 +595,8 @@ table tbody td{
     width: 48%;
     border: 1px solid black;
 }
-.foryouToggle {
+.foryouToggle,
+.newproductToggle {
     appearance: none;
     width: 36px;
     height: 18px;
@@ -607,11 +608,13 @@ table tbody td{
     transition: 0.3s;
 }
 
-.foryouToggle:checked {
+.foryouToggle:checked,
+.newproductToggle:checked {
     background: #27ae60;
 }
 
-.foryouToggle::before {
+.foryouToggle::before,
+.newproductToggle::before {
     content: '';
     position: absolute;
     width: 14px;
@@ -623,6 +626,7 @@ table tbody td{
     transition: 0.3s;
 }
 
-.foryouToggle:checked::before {
+.foryouToggle:checked::before,
+.newproductToggle:checked::before {
     left: 20px;
 }

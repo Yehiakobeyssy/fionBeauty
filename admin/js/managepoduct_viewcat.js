@@ -185,3 +185,22 @@ $(document).on('change', '.foryouToggle', function() {
         }
     });
 });
+$(document).on('change', '.newproductToggle', function() {
+    let itmId = $(this).data('id');
+    let value = $(this).is(':checked') ? 1 : 0;
+
+    $.ajax({
+        url: 'ajaxadmin/update_newproduct.php',
+        type: 'POST',
+        data: {
+            itmId: itmId,
+            value: value
+        },
+        success: function(res) {
+            console.log('ForYou updated:', res);
+        },
+        error: function() {
+            alert('Error updating For You');
+        }
+    });
+});

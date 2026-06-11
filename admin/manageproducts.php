@@ -106,7 +106,7 @@
     }
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/manageproducts.css?v=1.7">
+    <link rel="stylesheet" href="css/manageproducts.css?v=1.8">
 </head>
 <body> 
     <?php include 'include/adminheader.php' ?>
@@ -334,7 +334,7 @@
                         <div class="addproduct">
                             <a href="manageproducts.php?do=additm&cat=<?=$cat?>" class="btn btn-primary">Add Product</a>
                         </div>
-                        <script src="js/managepoduct_viewcat.js?v=1.5"></script>
+                        <script src="js/managepoduct_viewcat.js?v=1.6"></script>
                         <?php
                         break;
 
@@ -774,9 +774,10 @@
                                 $getDiscount    = isset($_POST['getDiscount']) ? 1 : 0;
                                 $minQuantity    = $_POST['minQuantity'];
                                 $foryou         = $_POST['foryou'] ?? 0;
+                                $newProduct     = $_POST['newproduct']?? 0;
 
-                                $sql = $con ->prepare('INSERT INTO tblitems (catId,subCatID,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,foryouSection,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
-                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+                                $sql = $con ->prepare('INSERT INTO tblitems (catId,subCatID,brandId,itmName,itmDesc,ingredients,mainpic,sellPrice,foryouSection,newProductSection,commtion,promotional,extra_shipfee,itmActive,getDiscount,minQuantity)
+                                                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
                                 $sql->execute([
                                     $catId,
                                     $subCatID,         
@@ -787,6 +788,7 @@
                                     $mainpic,        
                                     $sellPrice,      
                                     $foryou,
+                                    $newProduct,
                                     $commtion,
                                     $promotional,
                                     $extra_shipfee,      
@@ -841,12 +843,21 @@
                                         <input type="text" placeholder="Product Name" name="itmName" required>
                                         <div class="barnd">
                                             <div class="selectoption">
+                                                <label for="">New Product  Section</label>
+                                                <select name="newproduct" id="" >
+                                                    <option value="0">No</option>
+                                                    <option value="1">Yes</option>
+                                                </select>   
+                                            </div>
+                                            <div class="selectoption">
                                                 <label for="">For You  Section</label>
                                                 <select name="foryou" id="" >
                                                     <option value="0">No</option>
                                                     <option value="1">Yes</option>
                                                 </select>   
                                             </div>
+                                        </div>
+                                        <div class="barnd">
                                             <div class="selectoption ">
                                                 <label for="">Category</label>
                                                 <select name="catId" id="AddItemCategory"  required>
@@ -867,10 +878,6 @@
                                                 </select>
                                                 
                                             </div>
-                                            
-                                        </div>
-                                        
-                                        <div class="barnd">
                                             <div class="selectoption">
                                                 <label for="">Sub Category</label>
                                                 <select name="subCatID" id="AddItemSub" required>
@@ -885,9 +892,10 @@
                                                     ?>
                                                 </select>
                                             </div>
-                                            <div class="selectoption">
+                                        </div>
+                                        <div class="quantity">
                                                 <label for="">Brand</label>
-                                                <select name="brandId" id="" required>
+                                                <select name="brandId" id="" required >
                                                     <option value="">[Select Brand]</option>
                                                     <?php
                                                         $stat = $con->prepare('SELECT brandId , brandName FROM  tblbrand WHERE brandActive = 1 ORDER BY brandName');
@@ -898,7 +906,7 @@
                                                         }
                                                     ?>
                                                 </select>
-                                            </div>
+                                            
                                             
                                         </div>
                                         <div class="barnd">
@@ -1077,6 +1085,7 @@
                             $sellPrice   = $_POST['sellPrice'];
                             $commtion    = $_POST['commtion'];
                             $foryou       = $_POST['foryou'] ?? 0;
+                            $newProduct   =$_POST['newproduct']??0;
                             $promotional = $_POST['promotional']??0;
                             $extra_shipfee = isset($_POST['extra_shipfee']) ? $_POST['extra_shipfee'] : 0;
                             $itmActive   = 1;
@@ -1085,11 +1094,11 @@
 
                             // Update item
                             $sql = $con->prepare("UPDATE tblitems 
-                                SET catId=?,subCatID=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=?, foryouSection=? 
+                                SET catId=?,subCatID=?, brandId=?, itmName=?, itmDesc=?,ingredients=?, mainpic=?, sellPrice=?, commtion=?,promotional=?,extra_shipfee=?, itmActive=?, getDiscount=?, minQuantity=?, foryouSection=?,newProductSection=? 
                                 WHERE itmId=?");
                             $sql->execute([
                                 $catId,$subCatID, $brandId, $itmName, $itmDesc,$itmIngredients, $filename,
-                                $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,$foryou,
+                                $sellPrice, $commtion,$promotional,$extra_shipfee, $itmActive, $getDiscount, $minQuantity,$foryou,$newProduct,
                                 $itmId
                             ]);
 
@@ -1133,12 +1142,21 @@
                                     <input type="text" placeholder="Product Name" name="itmName" required value="<?php echo htmlspecialchars($item['itmName']); ?>">
                                     <div class="barnd">
                                         <div class="selectoption">
+                                            <label for="">New Product  Section</label>
+                                            <select name="newproduct" id="" >
+                                                <option value="0" <?php echo ($item['newProductSection'] == 0) ? 'selected' : ''; ?>>No</option>
+                                                <option value="1" <?php echo ($item['newProductSection'] == 1) ? 'selected' : ''; ?>>Yes</option>
+                                            </select>
+                                        </div>
+                                        <div class="selectoption">
                                             <label for="">For You  Section</label>
                                             <select name="foryou" id="" >
                                                 <option value="0" <?php echo ($item['foryouSection'] == 0) ? 'selected' : ''; ?>>No</option>
                                                 <option value="1" <?php echo ($item['foryouSection'] == 1) ? 'selected' : ''; ?>>Yes</option>
                                             </select>
                                         </div>
+                                    </div>
+                                    <div class="barnd">
                                         <div class="selectoption">
                                             <label>Category</label>
                                             <select name="catId" id="edidItemCategory" required>
@@ -1154,42 +1172,46 @@
                                                 ?>
                                             </select>
                                         </div>
-                                    </div>
-                                    
-                                    
-                                    <div class="barnd">
                                         <div class="selectoption">
-                                            <label for="">Sub Category</label>
-                                            <select name="subCatID" id="edidItemSub" required>
-                                                <option value="">[Select SubCategory]</option>
-                                                <?php
-                                                    $stat = $con->prepare('SELECT subCatID  , subCatName FROM  tblsubcategory WHERE subCatActive = 1 ORDER BY subCatName ');
-                                                    $stat->execute();
-                                                    $subcats = $stat->fetchAll();
-                                                    foreach($subcats as $sub){
-                                                        $sel = ($item['subCatID'] == $ca['subCatID']) ? 'selected' : '';
-                                                        echo '<option value="'.$sub['subCatID'].'" ' . $sel . '>'.$sub['subCatName'].'</option>';
-                                                    }
-                                                ?>
-                                            </select>
-                                        </div>
-                                        <div class="selectoption">
-                                            <label>Brand</label>
-                                            <select name="brandId" required>
-                                                <option value="">[Select Brand]</option>
-                                                <?php
-                                                $stat = $con->prepare('SELECT brandId, brandName FROM tblbrand WHERE brandActive = 1 ORDER BY brandName');
-                                                $stat->execute();
-                                                $brands = $stat->fetchAll();
-                                                foreach ($brands as $brand) {
-                                                    $sel = ($item['brandId'] == $brand['brandId']) ? 'selected' : '';
-                                                    echo '<option value="' . $brand['brandId'] . '" ' . $sel . '>' . $brand['brandName'] . '</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
+                                                <label>Sub Category</label>
+                                                <select name="subCatID" id="edidItemSub" required>
+                                                    <option value="">[Select SubCategory]</option>
+                                                    <?php
+                                                        $stat = $con->prepare("
+                                                            SELECT subCatID, subCatName
+                                                            FROM tblsubcategory
+                                                            WHERE subCatActive = 1
+                                                            ORDER BY subCatName
+                                                        ");
+                                                        $stat->execute();
+                                                        $subcats = $stat->fetchAll(PDO::FETCH_ASSOC);
 
+                                                        foreach($subcats as $sub){
+                                                            $selected = ($item['subCatID'] == $sub['subCatID']) ? 'selected' : '';
+                                                            echo '<option value="'.$sub['subCatID'].'" '.$selected.'>'.$sub['subCatName'].'</option>';
+                                                        }
+                                                        
+                                                    ?>
+                                                </select>
+                                                
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="quantity">
+                                        <label>Brand</label>
+                                        <select name="brandId" required>
+                                            <option value="">[Select Brand]</option>
+                                            <?php
+                                            $stat = $con->prepare('SELECT brandId, brandName FROM tblbrand WHERE brandActive = 1 ORDER BY brandName');
+                                            $stat->execute();
+                                            $brands = $stat->fetchAll();
+                                            foreach ($brands as $brand) {
+                                                $sel = ($item['brandId'] == $brand['brandId']) ? 'selected' : '';
+                                                echo '<option value="' . $brand['brandId'] . '" ' . $sel . '>' . $brand['brandName'] . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                     <div class="barnd"> 
                                         <div class="selectoption">
                                             <label for="">Sell Price</label>
@@ -1267,45 +1289,7 @@
                         </form>
 
                         <script>
-                            $(document).ready(function () {
-                            const $cat = $('#edidItemCategory');
-                            const $sub = $('#edidItemSub');
                             
-                            function loadSubcategories(catId, selectedSub = '') {
-                                $sub.html('<option value="">[Select SubCategory]</option>');
-                                if (catId === '') return;
-
-                                $.ajax({
-                                    url: 'ajaxadmin/getSubCategories.php',
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: { catId: catId },
-                                    success: function (res) {
-                                        if (res.success) {
-                                            $.each(res.data, function (i, sub) {
-                                                const option = $('<option>', {
-                                                    value: sub.subCatID,
-                                                    text: sub.subCatName
-                                                });
-                                                if (sub.subCatID == selectedSub) option.prop('selected', true);
-                                                $sub.append(option);
-                                            });
-                                        }
-                                    }
-                                });
-                            }
-
-                            // On category change
-                            $cat.on('change', function () {
-                                loadSubcategories($(this).val());
-                            });
-
-                            // ✅ On page load: check if a category is already selected
-                            if ($cat.val() !== '') {
-                                const selectedSub = '<?php echo $subCat ?? ''; ?>'; // optional, if editing
-                                loadSubcategories($cat.val(), selectedSub);
-                            }
-                        });
 
                         function previewImage(event) {
                             const reader = new FileReader();
@@ -1403,7 +1387,7 @@
                         echo "<script>location.href='manageproducts.php'</script>";
                         break;
                 }
-            ?>
+            ?> 
         </div>
     </main>
     <?php include '../common/jslinks.php'?>
