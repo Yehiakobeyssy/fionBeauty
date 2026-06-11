@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/index.css?v=2.1">
+    <link rel="stylesheet" href="css/index.css?v=2.5">
 </head>
 <body>
     <?php 
@@ -169,24 +169,37 @@
             </div>
         </div>      
     </div>
-            <div class="topbrands section_index">
-                <h2>Top Brands Deal</h2>
-                <div class="brandslogos">
-                    <?php 
-                        $sql= $con->prepare('SELECT brandId ,brandName , brandIcon  FROM tblbrand  WHERE brandActive = 1 ORDER BY RAND() LIMIT 5');
-                        $sql->execute();
-                        $brands = $sql->fetchAll();
-                        foreach($brands as $brand){
-                            echo '
-                                <a class="brnadcard" href="brandinfo.php?bid='.$brand['brandId'].'">
-                                    <img src="images/brands/'.$brand['brandIcon'].'" >
-                                    <label><strong>'.$brand['brandName'].'</strong></label>
-                                </a>
-                            ';
-                        }
-                    ?>
-                </div>        
+        <?php 
+        $sql = $con->prepare('SELECT brandId, brandName, brandIcon 
+                            FROM tblbrand 
+                            WHERE brandActive = 1 
+                            ORDER BY RAND() 
+                            ');
+        $sql->execute();
+        $brands = $sql->fetchAll();
+
+        $count = count($brands);
+
+        // duplicate only if more than 5 OR you want smooth ticker
+        $repeat = ($count > 5) ? 15 : 1;
+        ?>
+
+        <div class="topbrands section_index"> 
+            <h2>Top Brands Deal</h2>
+
+            <div class="brands-wrapper <?php echo ($count > 5 ? 'moving' : 'static'); ?>">
+                <div class="brands-track">
+                    <?php for ($i = 0; $i < $repeat; $i++): ?>
+                        <?php foreach ($brands as $brand): ?>
+                            <a class="brnadcard" href="brandinfo.php?bid=<?php echo $brand['brandId']; ?>">
+                                <img src="images/brands/<?php echo $brand['brandIcon']; ?>">
+                                <label><strong><?php echo $brand['brandName']; ?></strong></label>
+                            </a>
+                        <?php endforeach; ?>
+                    <?php endfor; ?>
+                </div>
             </div>
+        </div>
             <div class="whatyouWillGet">
                 <h3>What you will get?</h3>
                 <div class="cards_gets">

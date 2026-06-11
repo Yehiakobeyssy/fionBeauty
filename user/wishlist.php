@@ -17,13 +17,12 @@
     $do= (isset($_GET['do']))?$_GET['do']:'manage'
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/wishlist.css">
+    <link rel="stylesheet" href="css/wishlist.css?v=1.1">
 </head>
 <body>
     <?php
         include 'include/header.php';
         include 'include/clientheader.php';
-        include 'include/catecorysname.php';
     ?>
     <div class="titleCatecory">
         <div class="navbarsection">
@@ -102,102 +101,110 @@
             echo "<h2> WELCOME , <span>". $fullname ." </span></h2>"
         ?>
     </div>
-    <main>
-        <?php
-            $sql = $con->prepare('SELECT clientBlock FROM  tblclient WHERE clientID  = ?');
-            $sql->execute([$user_id]);
-            $result_block = $sql->fetch();
-            $isBlock = $result_block['clientBlock'];
+    <div class="fion_container">
+        <div class="fion_aside">
+            <?php   include 'include/catecorysname.php'; ?>
+        </div>
+        <div class="fion_page">
+            <main>
+                <?php
+                    $sql = $con->prepare('SELECT clientBlock FROM  tblclient WHERE clientID  = ?');
+                    $sql->execute([$user_id]);
+                    $result_block = $sql->fetch();
+                    $isBlock = $result_block['clientBlock'];
 
-            if ($isBlock == 1) {
-                echo '
-                    <div class="alert alert-danger">
-                        <h2>OPPS! You are Blocked from Admin</h2>
-                    </div>
-                    <script>
-                        setTimeout(function() {
-                            window.location.href = "../index.php";
-                        }, 2000);
-                    </script>
-                ';
-                exit(); // stop the rest of the page from executing
-            }
-        ?>
-        <?php include 'include/aside.php' ?>
-        <div class="sections_side">
-            <?php
-                $sql = $con->prepare("
-                    SELECT 
-                        i.itmId,
-                        i.itmName,
-                        i.itmDesc,
-                        i.sellPrice,
-                        i.mainpic
-                    FROM tblfavoriteitm f
-                    INNER JOIN tblitems i ON i.itmId = f.itemID
-                    WHERE f.clientID = ?
-                ");
-
-                $sql->execute([$user_id]);
-                $favorites = $sql->fetchAll(PDO::FETCH_ASSOC);
-            ?>
-            <div class="wishlist_container">
-
-                <?php if (count($favorites) > 0): ?>
-
-                    <?php foreach ($favorites as $item): ?>
-
-                        <div class="wishlist_item" data-id="<?= $item['itmId']; ?>">
-
-                            <!-- IMAGE -->
-                            <div class="wishlist_img">
-                                <img src="../images/items/<?= $item['mainpic']; ?>" alt="">
+                    if ($isBlock == 1) {
+                        echo '
+                            <div class="alert alert-danger">
+                                <h2>OPPS! You are Blocked from Admin</h2>
                             </div>
+                            <script>
+                                setTimeout(function() {
+                                    window.location.href = "../index.php";
+                                }, 2000);
+                            </script>
+                        ';
+                        exit(); // stop the rest of the page from executing
+                    }
+                ?>
+                <?php include 'include/aside.php' ?>
+                <div class="sections_side">
+                    <?php
+                        $sql = $con->prepare("
+                            SELECT 
+                                i.itmId,
+                                i.itmName,
+                                i.itmDesc,
+                                i.sellPrice,
+                                i.mainpic
+                            FROM tblfavoriteitm f
+                            INNER JOIN tblitems i ON i.itmId = f.itemID
+                            WHERE f.clientID = ?
+                        ");
 
-                            <!-- CONTENT -->
-                            <div class="wishlist_content">
+                        $sql->execute([$user_id]);
+                        $favorites = $sql->fetchAll(PDO::FETCH_ASSOC);
+                    ?>
+                    <div class="wishlist_container">
 
-                                <h3><?= htmlspecialchars($item['itmName']); ?></h3>
+                        <?php if (count($favorites) > 0): ?>
 
-                                <p>
-                                    <?= substr(strip_tags($item['itmDesc']), 0, 120); ?>...
-                                </p>
+                            <?php foreach ($favorites as $item): ?>
 
-                                <div class="wishlist_bottom">
+                                <div class="wishlist_item" data-id="<?= $item['itmId']; ?>">
 
-                                    <span class="price">
-                                        $<?= number_format($item['sellPrice'], 2); ?>
-                                    </span>
+                                    <!-- IMAGE -->
+                                    <div class="wishlist_img">
+                                        <img src="../images/items/<?= $item['mainpic']; ?>" alt="">
+                                    </div>
 
-                                    <div class="wishlist_actions">
+                                    <!-- CONTENT -->
+                                    <div class="wishlist_content">
 
-                                        <button class="btn_cart" data-id="<?= $item['itmId']; ?>">
-                                            Add to Cart
-                                        </button>
+                                        <h3><?= htmlspecialchars($item['itmName']); ?></h3>
 
-                                        <button class="btn_remove" data-id="<?= $item['itmId']; ?>">
-                                            Remove
-                                        </button>
+                                        <p>
+                                            <?= substr(strip_tags($item['itmDesc']), 0, 120); ?>...
+                                        </p>
+
+                                        <div class="wishlist_bottom">
+
+                                            <span class="price">
+                                                $<?= number_format($item['sellPrice'], 2); ?>
+                                            </span>
+
+                                            <div class="wishlist_actions">
+
+                                                <button class="btn_cart" data-id="<?= $item['itmId']; ?>">
+                                                    Add to Cart
+                                                </button>
+
+                                                <button class="btn_remove" data-id="<?= $item['itmId']; ?>">
+                                                    Remove
+                                                </button>
+
+                                            </div>
+
+                                        </div>
 
                                     </div>
 
                                 </div>
 
-                            </div>
+                            <?php endforeach; ?>
 
-                        </div>
+                        <?php else: ?>
 
-                    <?php endforeach; ?>
+                            <p class="empty_wishlist">Your wishlist is empty.</p>
 
-                <?php else: ?>
+                        <?php endif; ?>
 
-                    <p class="empty_wishlist">Your wishlist is empty.</p>
-
-                <?php endif; ?>
-
-            </div>
+                    </div>
+                </div>
+            </main>
         </div>
-    </main>
+  </div>
+    
     <?php include 'include/footer.php' ?>
     <?php include '../common/jslinks.php'?>
     <script src="js/wishlist.js"></script>

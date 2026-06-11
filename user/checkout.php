@@ -54,7 +54,6 @@
     <?php
         include 'include/header.php';
         include 'include/clientheader.php';
-        include 'include/catecorysname.php';
     ?>
     <?php
             $sql = $con->prepare('SELECT clientBlock FROM  tblclient WHERE clientID  = ?');
@@ -344,7 +343,7 @@
 
                 ?>
                 <table>
-                    <tr>
+                    <tr> 
                         <th>Subtotal</th>
                         <td class="lblnumbers">$<?= number_format(($includeTax ? $subtotalExcludingTax : $totalSubtotal), 2) ?></td>
                     </tr>

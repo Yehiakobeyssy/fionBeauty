@@ -25,7 +25,6 @@ include '../common/head.php';
 <?php
 include 'include/header.php';
 include 'include/clientheader.php';
-include 'include/catecorysname.php';
 ?>
 
 <main>
