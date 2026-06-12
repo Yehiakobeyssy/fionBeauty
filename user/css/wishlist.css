@@ -3,8 +3,16 @@
     padding: 25px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background: linear-gradient(135deg, var(--color-primary), var(--color-primary-variant));
     color: var(--color-bg);
+    position: relative;
+}
+
+.catecoryname {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 .welcome_note{
     width: 100%;

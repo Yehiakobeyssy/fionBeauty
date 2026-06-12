@@ -17,7 +17,7 @@
     $do= (isset($_GET['do']))?$_GET['do']:'manage'
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/wishlist.css?v=1.1">
+    <link rel="stylesheet" href="css/wishlist.css?v=1.2">
 </head>
 <body>
     <?php

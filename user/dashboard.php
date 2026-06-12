@@ -15,7 +15,7 @@
     include '../common/head.php';
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/dashboard.css?v=1.1">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.2">
 </head>
 <body>
     <?php

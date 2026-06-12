@@ -15,7 +15,7 @@
     include '../common/head.php';
 ?>
     <link rel="stylesheet" href="../common/root.css">
-    <link rel="stylesheet" href="css/traininghistory.css?v=1.1">
+    <link rel="stylesheet" href="css/traininghistory.css?v=1.2">
 </head>
 <body>
     <?php
@@ -25,10 +25,10 @@
     ?>
     <div class="titleCatecory">
         <div class="navbarsection">
-            <h5>Home/ user's Account/ <strong>Dashboard</strong></h5>
+            <h5>Home/ user's Account/ <strong>Training</strong></h5>
         </div>
         <div class="catecoryname">
-            <h2>Dashboard</h2>
+            <h2>Training</h2>
         </div>      
         <div class="desgin">
 
