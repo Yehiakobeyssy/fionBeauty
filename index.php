@@ -99,24 +99,24 @@
                         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     ?>
 
-                    <?php if (count($categories) >= 4): ?>
+                    
                     <div class="categories-grid">
 
-                        <?php for ($i = 0; $i < 4; $i++): ?>
+                        <?php foreach ($categories as $item): ?>
                             <div class="category-card">
-                                <img src="images/items/<?= htmlspecialchars($categories[$i]['mainpic']) ?>" alt="">
+                                <img src="images/items/<?= htmlspecialchars($item['mainpic']) ?>" alt="">
 
                                 <div class="overlay">
-                                    <h3><?= htmlspecialchars($categories[$i]['itmName']) ?></h3>
-                                    <a href="daitailitem.php?itemid=<?= $categories[$i]['itmId'] ?>">
+                                    <h3><?= htmlspecialchars($item['itmName']) ?></h3>
+                                    <a href="daitailitem.php?itemid=<?= $item['itmId'] ?>">
                                         Shop Now
                                     </a>
                                 </div>
                             </div>
-                        <?php endfor; ?>
+                        <?php endforeach; ?>
 
                     </div>
-                    <?php endif; ?>
+                    
                                 
             </div>
             <div class="foryou section_index">
