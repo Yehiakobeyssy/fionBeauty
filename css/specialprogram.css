@@ -31,7 +31,7 @@
     margin:15px auto 0;
     line-height:1.7;
 }
-
+ 
 /* =========================
    SECTIONS WRAPPER
 ========================= */
@@ -56,6 +56,7 @@
 ========================= */
 .section_text{
     flex:1;
+    min-width:0; /* prevents overflow issues */
 }
 
 .section_text h2{
@@ -72,17 +73,31 @@
 }
 
 /* =========================
-   IMAGE SIDE
+   MEDIA SIDE (IMAGE + VIDEO)
 ========================= */
 .section_img{
     flex:1;
     display:flex;
     justify-content:center;
+    align-items:center;
+    overflow:hidden;
 }
 
+/* IMPORTANT: apply same rules to both */
+.section_img img,
+.section_img video{
+    width:100%;
+    max-width:500px;
+    height:auto;
+    border-radius:10px;
+    object-fit:cover;
+    display:block;
+    transition:transform 0.3s ease;
+}
 
-
-.section_img img:hover{
+/* hover effect only for image/video */
+.section_img img:hover,
+.section_img video:hover{
     transform:scale(1.03);
 }
 
@@ -95,18 +110,22 @@
     .program_section.reverse{
         flex-direction:column;
         text-align:center;
+        gap:25px;
     }
 
-    .section_img img{
+    .section_img{
+        width:100%;
+    }
+
+    .section_img img,
+    .section_img video{
         max-width:100%;
     }
 
-    .program_title{
-        font-size:30px;
+    .section_text h2{
+        font-size:26px;
     }
-
 }
-
 /* =========================
    ITEM SECTION (like POS layout)
 ========================= */
@@ -219,6 +238,8 @@
     border-radius:15px;
     box-shadow:0 12px 30px rgba(0,0,0,0.12);
 }
+
+
 /* =========================
    MOBILE
 ========================= */

@@ -21,7 +21,7 @@ $itemId = isset($_GET['iid']) ? (int)$_GET['iid'] : 0;
 ?>
 
 <link rel="stylesheet" href="../common/root.css">
-<link rel="stylesheet" href="css/managePrograms.css">
+<link rel="stylesheet" href="css/managePrograms.css?v=1.1">
 
 <body>
 
@@ -316,16 +316,31 @@ $stmt->execute([$pid]);
 
 while ($s = $stmt->fetch()) {
 ?>
-
     <div class="section-card">
 
-        <!-- IMAGE LEFT -->
+        <!-- MEDIA LEFT -->
         <div class="section-image">
-            <?php if (!empty($s['SectionPhoto'])) { ?>
-                <img src="../images/programs/<?= $s['SectionPhoto'] ?>" alt="">
-            <?php } else { ?>
+
+            <?php if (!empty($s['SectionPhoto'])) : ?>
+
+                <?php if ($s['file_type'] == 'image') : ?>
+
+                    <img src="../images/programs/<?= htmlspecialchars($s['SectionPhoto']) ?>" alt="">
+
+                <?php elseif ($s['file_type'] == 'video') : ?>
+
+                    <video controls>
+                        <source src="../images/programs/<?= htmlspecialchars($s['SectionPhoto']) ?>">
+                    </video>
+
+                <?php endif; ?>
+
+            <?php else : ?>
+
                 <img src="../images/programs/default.jpg" alt="">
-            <?php } ?>
+
+            <?php endif; ?>
+
         </div>
 
         <!-- CONTENT RIGHT -->
@@ -406,17 +421,35 @@ elseif ($do === 'addSection') {
 if (isset($_POST['saveSection'])) {
 
     $name = $_POST['name'] ?? '';
+    $discription= $_POST['discriptyion'];
 
-    $photo = "";
+    
 
     // =========================
     // IMAGE UPLOAD
     // =========================
+    $photo = "";
+    $fileType = "";
+
     if (!empty($_FILES['SectionPhoto']['name'])) {
 
-        $ext = pathinfo($_FILES['SectionPhoto']['name'], PATHINFO_EXTENSION);
+        $ext = strtolower(pathinfo($_FILES['SectionPhoto']['name'], PATHINFO_EXTENSION));
 
-        // time.ext ONLY
+        // Image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+        // Video extensions
+        $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+
+        if (in_array($ext, $imageExtensions)) {
+            $fileType = "image";
+        } elseif (in_array($ext, $videoExtensions)) {
+            $fileType = "video";
+        } else {
+            die("Invalid file type.");
+        }
+
+        // Create unique filename
         $photo = time() . "." . $ext;
 
         move_uploaded_file(
@@ -429,12 +462,19 @@ if (isset($_POST['saveSection'])) {
     // INSERT
     // =========================
     $stmt = $con->prepare("
-        INSERT INTO tblprogramsection 
-        (ProgramID, SectionTitle, SectionPhoto)
-        VALUES (?, ?, ?)
+        INSERT INTO tblprogramsection
+        (ProgramID, SectionTitle,SectionDiscription, SectionPhoto, file_type)
+        VALUES (?, ?, ?, ?,?)
     ");
 
-    $stmt->execute([$pid, $name, $photo]);
+    $stmt->execute([
+        $pid,
+        $name,
+        $discription,
+        $photo,
+        $fileType
+    ]);
+    
 
     echo "<script>location.href='managePrograms.php?do=view&pid=$pid';</script>";
     exit();
@@ -444,9 +484,10 @@ if (isset($_POST['saveSection'])) {
 <form method="post" enctype="multipart/form-data">
 
     <input type="text" name="name" placeholder="Section Name" required>
+    <textarea name="discriptyion" id="" placeholder="Discription"></textarea>
 
-    <label>Section Photo</label>
-    <input type="file" name="SectionPhoto" accept="image/*">
+    <label>Section Photo/Viedeo</label>
+    <input type="file" name="SectionPhoto" >
 
     <button name="saveSection">Save</button>
 
@@ -460,71 +501,118 @@ if (isset($_POST['saveSection'])) {
 ========================================================= */
 elseif ($do === 'editSection') {
 
-$stmt = $con->prepare("SELECT * FROM tblprogramsection WHERE SectionID=?");
-$stmt->execute([$sectionId]);
-$s = $stmt->fetch();
+    $stmt = $con->prepare("SELECT * FROM tblprogramsection WHERE SectionID=?");
+    $stmt->execute([$sectionId]);
+    $s = $stmt->fetch();
 
-if (isset($_POST['updateSection'])) {
+    if (isset($_POST['updateSection'])) {
 
-    $name = $_POST['name'] ?? '';
+        $name = $_POST['name'] ?? '';
+        $dis = $_POST['disc']??'';
 
-    $photo = $s['SectionPhoto']; // keep old by default
+        // Keep old values by default
+        $photo = $s['SectionPhoto'];
+        $fileType = $s['file_type'];
 
-    // =========================
-    // NEW IMAGE UPLOAD
-    // =========================
-    if (!empty($_FILES['SectionPhoto']['name'])) {
+        if (!empty($_FILES['SectionPhoto']['name'])) {
 
-        // DELETE OLD IMAGE
-        if (!empty($s['SectionPhoto'])) {
-            $oldPath = "../images/programs/" . $s['SectionPhoto'];
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
+            // Delete old file
+            if (!empty($s['SectionPhoto'])) {
+                $oldPath = "../images/programs/" . $s['SectionPhoto'];
+
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
             }
+
+            $ext = strtolower(pathinfo($_FILES['SectionPhoto']['name'], PATHINFO_EXTENSION));
+
+            $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $videoExtensions = ['mp4', 'webm', 'ogg', 'mov'];
+
+            if (in_array($ext, $imageExtensions)) {
+                $fileType = 'image';
+            } elseif (in_array($ext, $videoExtensions)) {
+                $fileType = 'video';
+            } else {
+                die('Invalid file type');
+            }
+
+            $photo = time() . "." . $ext;
+
+            move_uploaded_file(
+                $_FILES['SectionPhoto']['tmp_name'],
+                "../images/programs/" . $photo
+            );
         }
 
-        // UPLOAD NEW IMAGE (time.ext)
-        $ext = pathinfo($_FILES['SectionPhoto']['name'], PATHINFO_EXTENSION);
-        $photo = time() . "." . $ext;
+        $stmt = $con->prepare("
+            UPDATE tblprogramsection
+            SET SectionTitle=?,SectionDiscription=?, SectionPhoto=?, file_type=?
+            WHERE SectionID=?
+        ");
 
-        move_uploaded_file(
-            $_FILES['SectionPhoto']['tmp_name'],
-            "../images/programs/" . $photo
-        );
-    }
+        $stmt->execute([
+            $name,
+            $dis,
+            $photo,
+            $fileType,
+            $sectionId
+        ]);
 
-    // =========================
-    // UPDATE DB
-    // =========================
-    $stmt = $con->prepare("
-        UPDATE tblprogramsection 
-        SET SectionTitle=?, SectionPhoto=?
-        WHERE SectionID=?
-    ");
+        echo "<script>location.href='managePrograms.php?do=view&pid=$pid';</script>";
+        exit();
+    }?>
+        <form method="post" enctype="multipart/form-data">
 
-    $stmt->execute([$name, $photo, $sectionId]);
+    <div class="form-group">
+        <label>Section Title</label>
+        <input type="text"
+               name="name"
+               value="<?= htmlspecialchars($s['SectionTitle']) ?>"
+               required>
+        <textarea name="disc" id=""><?= htmlspecialchars($s['SectionDiscription']) ?></textarea>
+    </div>
 
-    echo "<script>location.href='managePrograms.php?do=view&pid=$pid';</script>";
-    exit();
-}
-?>
+    <div class="form-group">
+        <label>Section Media (Image or Video)</label>
+        <input type="file"
+               name="SectionPhoto"
+               accept="image/*,video/*">
+    </div>
 
-<form method="post" enctype="multipart/form-data">
+    <?php if (!empty($s['SectionPhoto'])) : ?>
 
-    <input type="text" name="name" value="<?= $s['SectionTitle'] ?>">
+        <div class="current-media">
 
-    <label>Section Photo</label>
-    <input type="file" name="SectionPhoto" accept="image/*">
+            <label>Current Media</label><br>
 
-    <?php if (!empty($s['SectionPhoto'])): ?>
-        <img src="../images/programs/<?= $s['SectionPhoto'] ?>" width="120">
+            <?php if ($s['file_type'] == 'image') : ?>
+
+                <img src="../images/programs/<?= htmlspecialchars($s['SectionPhoto']) ?>"
+                     width="200"
+                     alt="Section Image">
+
+            <?php elseif ($s['file_type'] == 'video') : ?>
+
+                <video width="300" controls>
+                    <source src="../images/programs/<?= htmlspecialchars($s['SectionPhoto']) ?>">
+                    Your browser does not support the video tag.
+                </video>
+
+            <?php endif; ?>
+
+        </div>
+
     <?php endif; ?>
 
-    <button name="updateSection">Update</button>
+    <button type="submit" name="updateSection">
+        Update Section
+    </button>
 
 </form>
+    <?php
 
-<?php
 }
 
 /* =========================================================

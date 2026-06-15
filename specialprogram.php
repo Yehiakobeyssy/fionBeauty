@@ -60,7 +60,7 @@
     <link rel="stylesheet" href="common/fcss/all.min.css">
     <link rel="stylesheet" href="common/fcss/fontawesome.min.css">
     <link rel="stylesheet" href="common/root.css">
-    <link rel="stylesheet" href="css/specialprogram.css?v=1.1">
+    <link rel="stylesheet" href="css/specialprogram.css?v=1.3">
 </head>
 <body>
     <?php 
@@ -93,16 +93,36 @@
         ?>
             
         <div class="program_section <?php echo $reverse; ?>">
-
-            <!-- TEXT -->
-            <div class="section_text">
+            
+            <div class="section_text"> 
                 <h2><?php echo $sec['SectionTitle']; ?></h2>
-                <p><?php echo $sec['SectionDiscription']; ?></p>
+                 <p><?php echo $sec['SectionDiscription']; ?></p> 
             </div>
-
-            <!-- IMAGE -->
+            <!-- TEXT -->
             <div class="section_img">
-                <img src="images/programs/<?php echo $sec['SectionPhoto']; ?>">
+
+                <?php if (!empty($sec['SectionPhoto'])) : ?>
+
+                    <?php if ($sec['file_type'] == 'image') : ?>
+
+                        <img src="images/programs/<?= htmlspecialchars($sec['SectionPhoto']) ?>"
+                            alt="Section Image">
+
+                    <?php elseif ($sec['file_type'] == 'video') : ?>
+
+                        <video controls>
+                            <source src="images/programs/<?= htmlspecialchars($sec['SectionPhoto']) ?>">
+                            Your browser does not support the video tag.
+                        </video>
+
+                    <?php endif; ?>
+
+                <?php else : ?>
+
+                    <img src="images/programs/default.jpg" alt="Default Image">
+
+                <?php endif; ?>
+
             </div>
 
         </div>
